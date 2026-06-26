@@ -124,7 +124,9 @@
   .live-band{background:#EDE8DB;border:1px solid #D9D2C4;border-radius:14px;padding:14px 14px 16px;margin-top:6px;color:#181513;font-variant-numeric:tabular-nums}
   .live-hd{display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid #181513;padding-bottom:7px}
   .live-ttl{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#181513}
-  .live-date{font-weight:700;font-size:11px;letter-spacing:.06em;color:#8C857A}
+  .live-date{font-weight:700;font-size:11px;letter-spacing:.06em;color:#8C857A;display:flex;align-items:center;gap:9px}
+  .live-hide{background:none;border:none;color:#8C857A;font-family:inherit;font-weight:700;font-size:10px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;padding:0;text-decoration:underline}
+  .live-collapsed{background:#EDE8DB;border:1px solid #D9D2C4;border-radius:12px;padding:11px 14px;margin-top:6px;color:#8C857A;font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;text-align:center;cursor:pointer}
   .dot{width:8px;height:8px;border-radius:50%;background:#E5483D;animation:blink 1.3s steps(1,end) infinite;flex:0 0 auto}
   @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.2}}
   .live-sec{font-weight:800;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8C857A;margin-top:16px;padding-bottom:2px}
@@ -197,7 +199,7 @@ const DATA = [{"id":2,"g":"A","j":"J1","date":"11/06","e1":"Mexico","e2":"South 
 const GROUPS=['A','B','C','D','E','F','G','H','I','J','K','L'];
 const PLAYERS=[{id:'nina',name:'Nina',col:'#ED6965'},{id:'mael',name:'Maël',col:'#14D3A9'},{id:'tom',name:'Tom',col:'#5BA8F5'}];
 const NAME={nina:'Nina',mael:'Maël',tom:'Tom'};
-let player='nina', filter='all', view='matchs', sortMode='poule';
+let player='nina', filter='all', view='matchs', sortMode='poule', liveHidden=false;
 
 // auto-update config
 const LEAGUE_ID='4429', SEASON='2026';   // FIFA World Cup sur TheSportsDB (ajustable)
@@ -280,6 +282,7 @@ function renderLive(){const el=document.getElementById('live');
   const todays=DATA.filter(m=>m.date===today);
   if(!todays.length){el.style.display='none';el.innerHTML='';return;}
   el.style.display='block';
+  if(liveHidden){el.innerHTML='<div class="live-collapsed" onclick="toggleLive()">Afficher le direct ('+todays.length+')</div>';return;}
   todays.sort((a,b)=>a.g<b.g?-1:a.g>b.g?1:a.id-b.id);
   const anyLive=todays.some(m=>m.r1!=null);
   const LCOL={nina:'#E83F84',mael:'#137A6E',tom:'#2E6FB7'};
@@ -300,7 +303,8 @@ function renderLive(){const el=document.getElementById('live');
   todays.forEach(m=>{const key='Groupe '+m.g+' · '+m.j;if(key!==cur){cur=key;body+='<div class="live-sec">'+key+'</div>';}body+=card(m);});
   el.innerHTML='<div class="live-band"><div class="live-hd">'
     +'<span class="live-ttl">'+(anyLive?'<span class="dot"></span>En direct':'Aujourd\'hui')+'</span>'
-    +'<span class="live-date">'+today+'</span></div>'+body+'</div>';}
+    +'<span class="live-date">'+today+'<button class="live-hide" onclick="toggleLive()">masquer</button></span></div>'+body+'</div>';}
+function toggleLive(){liveHidden=!liveHidden;try{localStorage.setItem('cdm2026_live_hidden',liveHidden?'1':'0');}catch(e){}renderLive();}
 function renderList(){document.getElementById('list').innerHTML=sortedList().map(cardHTML).join('');}
 function updateCard(id){const m=DATA.find(x=>x.id===id);if(!m)return;const pr=P[player][id];
   const b=document.getElementById('b'+id);if(b)b.innerHTML=badgeFor(m,pr,player);
@@ -387,6 +391,7 @@ document.getElementById('foot').innerHTML='Scores mis à jour automatiquement à
 
 load();
 try{const s=localStorage.getItem('cdm2026_sort');if(s==='date'||s==='poule')sortMode=s;}catch(e){}
+try{liveHidden=localStorage.getItem('cdm2026_live_hidden')==='1';}catch(e){}
 setSort(sortMode);setPlayer('nina');renderChips();
 fetchScores(false);
 setInterval(()=>{if(!document.hidden)fetchScores(false);},120000);
