@@ -202,8 +202,12 @@ const NAME={nina:'Nina',mael:'Maël',tom:'Tom'};
 let player='nina', filter='all', view='matchs', sortMode='poule', liveHidden=false;
 
 // auto-update config
-const LEAGUE_ID='4429', SEASON='2026';   // FIFA World Cup sur TheSportsDB (ajustable)
-const API='https://www.thesportsdb.com/api/v1/json/123/eventsseason.php?id='+LEAGUE_ID+'&s='+SEASON;
+const API='results.json';   // repli : genere par GitHub Actions (scores.py scrape ESPN)
+const ESPN='https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=';
+const TALIAS={unitedstates:'usa',usmnt:'usa',us:'usa',turkiye:'turkey',czechrepublic:'czechia',cotedivoire:'ivorycoast',caboverde:'capeverde',bosniaherzegovina:'bosnia',bosniaandherzegovina:'bosnia',congodr:'drcongo',democraticrepublicofcongo:'drcongo',congo:'drcongo',korearepublic:'southkorea',iriran:'iran'};
+function tnorm(s){s=(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');return TALIAS[s]||s;}
+const FX={};DATA.forEach(m=>{const a=tnorm(m.e1),b=tnorm(m.e2);FX[[a,b].sort().join('|')]={id:m.id,e1:a};});
+function espnDates(){const f=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');const n=new Date();const y=new Date(n);y.setDate(n.getDate()-1);return [f(y),f(n)];}
 
 const P={nina:{},mael:{},tom:{}}; const X2={nina:null,mael:null,tom:null};
 DATA.forEach(m=>{P.nina[m.id]=m.nina.slice();P.mael[m.id]=m.mael.slice();P.tom[m.id]=(m.tom||[null,null]).slice();});
@@ -284,7 +288,7 @@ function renderLive(){const el=document.getElementById('live');
   el.style.display='block';
   if(liveHidden){el.innerHTML='<div class="live-collapsed" onclick="toggleLive()">Afficher le direct ('+todays.length+')</div>';return;}
   todays.sort((a,b)=>a.g<b.g?-1:a.g>b.g?1:a.id-b.id);
-  const anyLive=todays.some(m=>m.r1!=null);
+  const anyLive=todays.some(m=>m.live===true);
   const LCOL={nina:'#E83F84',mael:'#137A6E',tom:'#2E6FB7'};
   function pron(m,p){const pr=(P[p.id][m.id]||[null,null]);
     let v=(pr[0]==null)?'<span class="lp-v dash">–</span>':'<span class="lp-v">'+pr[0]+'–'+pr[1]+'</span>';
@@ -292,11 +296,16 @@ function renderLive(){const el=document.getElementById('live');
     if(m.r1!=null&&pr[0]!=null){let pp=matchPts(m,pr);if(pp==null)pp=0;const x2=X2[p.id]===m.id;const eff=x2?pp*2:pp;
       const exact=pr[0]===m.r1&&pr[1]===m.r2;pts='<span class="lp-p'+(eff>0?' g':'')+'">'+(eff>0?'+'+eff:'0')+(exact?' ★':'')+(x2?' ×2':'')+'</span>';}
     return '<div class="lp"><span class="lp-i" style="color:'+LCOL[p.id]+'">'+p.name+'</span>'+v+pts+'</div>';}
-  function card(m){const live=m.r1!=null;
+  function hhmm(iso){if(!iso)return'';const d=new Date(iso);if(isNaN(d))return'';return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+  function card(m){const has=m.r1!=null;const inplay=m.live===true;const t=hhmm(m.time);
+    let st;
+    if(inplay)st='<span class="dot"></span>en direct'+(m.clock?' · '+m.clock:'');
+    else if(has)st='terminé'+(t?' · '+t:'');
+    else st='à suivre';
     return '<div class="live-card">'
       +'<div class="lc-mid"><div class="lc-team"><span class="lc-fl">'+m.fl1+'</span><span class="lc-nm">'+m.fr1+'</span></div>'
-      +'<div class="lc-ctr"><div class="lc-sc'+(live?'':' soon')+'">'+(live?(m.r1+'–'+m.r2):'vs')+'</div>'
-      +'<div class="lc-st'+(live?' live':'')+'">'+(live?'<span class="dot"></span>en direct':'à suivre')+'</div></div>'
+      +'<div class="lc-ctr"><div class="lc-sc'+(has?'':' soon')+'">'+(has?(m.r1+'–'+m.r2):(t||'vs'))+'</div>'
+      +'<div class="lc-st'+(inplay?' live':'')+'">'+st+'</div></div>'
       +'<div class="lc-team r"><span class="lc-fl">'+m.fl2+'</span><span class="lc-nm">'+m.fr2+'</span></div></div>'
       +'<div class="lc-pros">'+PLAYERS.map(p=>pron(m,p)).join('')+'</div></div>';}
   let body='',cur='';
@@ -361,23 +370,38 @@ function setStatus(t,cls){const e=document.getElementById('status');e.textConten
 async function fetchScores(manual){
   const btn=document.getElementById('refreshBtn');btn.classList.add('spin');
   setStatus('Mise à jour des scores…');
+  let ok=false,upd=0,src='';
+  // 1) ESPN en direct (navigateur)
   try{
-    const r=await fetch(API,{cache:'no-store'});const j=await r.json();
-    if(!j||!j.events)throw new Error('no events');
-    const idx={};
-    j.events.forEach(e=>{const h=normTeam(e.strHomeTeam),a=normTeam(e.strAwayTeam);if(h&&a)idx[h+'|'+a]={hs:e.intHomeScore,as:e.intAwayScore};});
-    let upd=0;
-    DATA.forEach(m=>{const a=normTeam(m.e1),b=normTeam(m.e2);let ev=idx[a+'|'+b],sw=false;
-      if(!ev){ev=idx[b+'|'+a];sw=true;}
-      if(ev&&ev.hs!=null&&ev.hs!==''&&ev.as!=null&&ev.as!==''){
-        let r1=parseInt(sw?ev.as:ev.hs),r2=parseInt(sw?ev.hs:ev.as);
-        if(!isNaN(r1)&&!isNaN(r2)&&(m.r1!==r1||m.r2!==r2)){m.r1=r1;m.r2=r2;upd++;}}});
-    const hh=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    for(const d of espnDates()){
+      const r=await fetch(ESPN+d,{cache:'no-store'});if(!r.ok)continue;
+      const j=await r.json();
+      (j.events||[]).forEach(ev=>{const comp=(ev.competitions||[])[0];if(!comp)return;
+        const cs=comp.competitors||[];if(cs.length!==2)return;
+        const home=cs.find(c=>c.homeAway==='home')||cs[0],away=cs.find(c=>c.homeAway==='away')||cs[1];
+        const hn=tnorm((home.team||{}).displayName||(home.team||{}).name),an=tnorm((away.team||{}).displayName||(away.team||{}).name);
+        const f=FX[[hn,an].sort().join('|')];if(!f)return;
+        const m=DATA.find(x=>x.id===f.id);if(!m)return;
+        const stt=ev.status||{},typ=stt.type||{},state=typ.state||'';
+        if(ev.date)m.time=ev.date;
+        if(state==='pre'){m.live=false;m.clock='';return;}
+        const hs=parseInt(home.score),as=parseInt(away.score);if(isNaN(hs)||isNaN(as))return;
+        let r1,r2;if(hn===f.e1){r1=hs;r2=as;}else{r1=as;r2=hs;}
+        m.live=(state==='in');m.clock=(state==='in')?(stt.displayClock||typ.shortDetail||''):'';
+        if(m.r1!==r1||m.r2!==r2){m.r1=r1;m.r2=r2;upd++;}});
+      ok=true;src='ESPN';
+    }
+  }catch(e){ok=false;}
+  // 2) repli results.json (flux GitHub Actions)
+  if(!ok){try{const r=await fetch(API+'?t='+Date.now(),{cache:'no-store'});const j=await r.json();const sc=j.scores||j;
+    DATA.forEach(m=>{const v=sc[m.id];if(v){m.live=(v[2]==='live');if(v[3])m.time=v[3];if(v[0]!=null&&(m.r1!==v[0]||m.r2!==v[1])){m.r1=v[0];m.r2=v[1];upd++;}}});
+    ok=true;src='cache';}catch(e2){}}
+  if(ok){const hh=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
     setStatus('Scores à jour · '+hh+(upd?(' · '+upd+' maj'):''),'live');
     renderHero();renderLive();renderList();if(view==='compare')renderCompare();
-    if(manual)toast(upd?upd+' score(s) mis à jour':'Déjà à jour');
-  }catch(e){setStatus('Hors ligne — derniers scores connus','err');if(manual)toast('Mise à jour impossible');}
-  finally{btn.classList.remove('spin');}}
+    if(manual)toast(upd?upd+' score(s) mis à jour':'Déjà à jour');}
+  else{setStatus('Hors ligne — derniers scores connus','err');if(manual)toast('Mise à jour impossible');}
+  btn.classList.remove('spin');}
 
 function exportPronos(){const out=DATA.map(m=>({id:m.id,g:m.g,j:m.j,match:m.fr1+' - '+m.fr2,prono:P[player][m.id],x2:X2[player]===m.id}));
   const blob=new Blob([JSON.stringify({joueur:NAME[player],x2_match:X2[player],pronos:out},null,2)],{type:'application/json'});
@@ -387,14 +411,14 @@ function resetPronos(){if(!confirm('Remettre les pronos d\'origine pour '+NAME[p
   saveP(player);saveX(player);renderHero();renderList();toast('Réinitialisé');}
 let tt;function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1600);}
 
-document.getElementById('foot').innerHTML='Scores mis à jour automatiquement à l\'ouverture, puis toutes les 2 min tant que l\'appli reste ouverte, et via le bouton 🔄. Flèches ▲▼ pour les pronos. Bouton ×2 : double UN match (un seul par joueur). Calcul : cote de la bonne issue + 20 si score exact, doublé si ×2. Pronos gardés sur l\'appareil, jamais écrasés par la mise à jour.';
+document.getElementById('foot').innerHTML='Scores mis à jour automatiquement à l\'ouverture, puis toutes les minutes tant que l\'appli reste ouverte, et via le bouton 🔄. Flèches ▲▼ pour les pronos. Bouton ×2 : double UN match (un seul par joueur). Calcul : cote de la bonne issue + 20 si score exact, doublé si ×2. Pronos gardés sur l\'appareil, jamais écrasés par la mise à jour.';
 
 load();
 try{const s=localStorage.getItem('cdm2026_sort');if(s==='date'||s==='poule')sortMode=s;}catch(e){}
 try{liveHidden=localStorage.getItem('cdm2026_live_hidden')==='1';}catch(e){}
 setSort(sortMode);setPlayer('nina');renderChips();
 fetchScores(false);
-setInterval(()=>{if(!document.hidden)fetchScores(false);},120000);
+setInterval(()=>{if(!document.hidden)fetchScores(false);},60000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)fetchScores(false);});
 </script>
 </body>
