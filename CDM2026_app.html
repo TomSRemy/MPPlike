@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mes Pronos · CDM 2026</title>
+<meta name="theme-color" content="#0a130f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pronos CDM">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0a130f; --card:#111e18; --card2:#16271f; --line:#26392f;
+    --mint:#14D3A9; --coral:#ED6965; --canary:#FFFD82; --blue:#5BA8F5;
+    --tx:#EAF3EF; --tx2:#9bb3a8; --tx3:#6a8478; --accent:var(--mint);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{background:var(--bg);color:var(--tx);font-family:'Archivo',sans-serif;-webkit-font-smoothing:antialiased;
+    padding-bottom:40px;background-image:radial-gradient(900px 400px at 50% -5%, rgba(20,211,169,.08), transparent 60%);}
+  body[data-p="nina"]{--accent:var(--coral)} body[data-p="mael"]{--accent:var(--mint)} body[data-p="tom"]{--accent:var(--blue)}
+  .mono{font-family:'JetBrains Mono',monospace}
+  .wrap{max-width:560px;margin:0 auto;padding:0 14px}
+  .topbar{padding:14px 14px 4px;max-width:560px;margin:0 auto;display:flex;align-items:center;gap:8px}
+  .topbar .logo{font-size:18px}
+  .topbar .ttl{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--tx3);font-weight:700}
+
+  .statusbar{max-width:560px;margin:0 auto;padding:4px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .statusbar #status{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--tx3)}
+  .statusbar #status.err{color:var(--coral)} .statusbar #status.live{color:var(--mint)}
+  .refresh{padding:7px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--tx);
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;white-space:nowrap}
+  .refresh:active{transform:scale(.97)} .refresh.spin{opacity:.5}
+
+  .tabs{display:flex;gap:6px;max-width:560px;margin:6px auto 4px;padding:0 14px}
+  .tabs button{flex:1;padding:11px;border-radius:12px 12px 0 0;border:1px solid var(--line);border-bottom:none;
+    background:var(--card);color:var(--tx2);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase}
+  .tabs button.act{background:var(--card2);color:var(--tx);border-color:var(--accent)}
+
+  .toggle{display:flex;gap:6px;margin:12px 0 14px}
+  .toggle button{flex:1;padding:12px 4px;border-radius:13px;border:1.5px solid var(--line);background:var(--card);
+    color:var(--tx2);font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase;transition:.15s}
+  .toggle button[data-on="nina"].act{border-color:var(--coral);color:var(--coral);background:rgba(237,105,101,.1)}
+  .toggle button[data-on="mael"].act{border-color:var(--mint);color:var(--mint);background:rgba(20,211,169,.1)}
+  .toggle button[data-on="tom"].act{border-color:var(--blue);color:var(--blue);background:rgba(91,168,245,.1)}
+
+  .hero{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 18px 16px;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--accent)}
+  .hero .lbl{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--tx3)}
+  .hero .total{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:54px;line-height:1;color:var(--accent);letter-spacing:-.03em;margin-top:4px}
+  .hero .total small{font-size:16px;color:var(--tx3);font-weight:500;letter-spacing:0}
+  .hero .stats{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap}
+  .hero .stats div{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--tx2);font-weight:500}
+  .hero .stats b{color:var(--tx)}
+  .hero .rival{margin-top:10px;font-size:12.5px;color:var(--tx2)}
+  .hero .rival .gap{font-family:'JetBrains Mono',monospace;font-weight:800}
+  .hero .x2info{margin-top:8px;font-size:11.5px;color:var(--canary);font-family:'JetBrains Mono',monospace}
+  .emptyhint{margin-top:10px;font-size:12px;color:var(--blue);font-weight:600}
+
+  .actions{display:flex;gap:8px;margin:12px 0 4px}
+  .actions button{flex:1;padding:11px;border-radius:12px;border:1px solid var(--line);background:var(--card2);color:var(--tx);font-family:'Archivo';font-weight:600;font-size:13px}
+  .actions button:active{transform:scale(.98)}
+
+  .sortrow{display:flex;align-items:center;gap:7px;margin:14px 0 2px}
+  .sortrow .lab{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3)}
+  .sortbtn{padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--tx2);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px}
+  .sortbtn.act{background:var(--accent);color:#08120d;border-color:var(--accent)}
+
+  .chips{position:sticky;top:0;z-index:10;background:linear-gradient(var(--bg) 70%,transparent);padding:14px 0 10px;display:flex;gap:7px;overflow-x:auto;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{white-space:nowrap;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--tx2);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px}
+  .chip.act{background:var(--accent);color:#08120d;border-color:var(--accent)}
+
+  .match{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px}
+  .match.live{border-color:var(--coral)}
+  .match .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}
+  .match .gchip{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--tx3)}
+  .headr{display:flex;align-items:center;gap:7px}
+  .x2btn{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:11px;padding:4px 8px;border-radius:8px;border:1px solid var(--line);background:var(--card2);color:var(--tx3);letter-spacing:.03em}
+  .x2btn.on{background:var(--canary);color:#1a1700;border-color:var(--canary)}
+  .badge{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px;padding:3px 9px;border-radius:8px;background:var(--card2);color:var(--tx3)}
+  .badge.win{color:var(--accent)} .badge.exact{background:var(--canary);color:#1a1700} .badge.soon{color:var(--tx3);font-size:11px;font-weight:700}
+  .teams{display:flex;align-items:flex-start;justify-content:space-between;gap:6px}
+  .team{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+  .team .nm{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;min-width:0}
+  .team.r{align-items:flex-end} .team.r .nm{flex-direction:row-reverse;text-align:right}
+  .team .nm .fl{font-size:20px;line-height:1}
+  .team .nm span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .stepper{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .stepper button{width:38px;height:24px;border-radius:7px;background:var(--card2);border:1px solid var(--line);color:var(--accent);font-size:12px;font-weight:800;line-height:1}
+  .stepper button:active{background:var(--accent);color:#08120d}
+  .stepper .num{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;width:38px;text-align:center;color:var(--tx)}
+  .stepper .num.empty{color:var(--tx3)}
+  .mid{display:flex;align-items:center;gap:10px;padding-top:2px}
+  .mid .sep{font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--tx3);font-weight:700;align-self:center;margin-top:8px}
+  .resline{margin-top:11px;padding-top:9px;border-top:1px dashed var(--line);display:flex;align-items:center;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--tx2)}
+  .resline .score{font-weight:800;color:var(--tx);font-size:14px}
+  .resline.soon{color:var(--tx3)}
+  .prlbl{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);text-align:center;margin:9px 0 5px}
+
+  .lb{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:12px}
+  .lb th,.lb td{padding:11px 12px;text-align:left;font-size:13px}
+  .lb th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);border-bottom:1px solid var(--line)}
+  .lb td{border-bottom:1px solid var(--line)} .lb tr:last-child td{border-bottom:none}
+  .lb td.b{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:16px} .lb td.nm{font-weight:800}
+  .cmp-tug{height:14px;border-radius:999px;overflow:hidden;display:flex;border:1px solid var(--line);background:var(--card2);margin:12px 0 0}
+  .chartcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:12px}
+  .chartcard h3{font-size:14px;font-weight:800;margin-bottom:3px}
+  .chartcard p{font-size:12px;color:var(--tx2);margin-bottom:12px}
+  .legend{display:flex;gap:16px;margin-bottom:10px;flex-wrap:wrap}
+  .legend span{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--tx2)}
+  .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .chartbox{position:relative;height:280px}
+
+  footer{max-width:560px;margin:18px auto 0;padding:14px;color:var(--tx3);font-size:11.5px;line-height:1.6;border-top:1px solid var(--line)}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--accent);color:#08120d;font-weight:700;font-size:13px;padding:10px 18px;border-radius:999px;opacity:0;transition:.25s;pointer-events:none;z-index:50;font-family:'JetBrains Mono',monospace}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body data-p="nina">
+
+<div class="topbar"><span class="logo">⚽</span><span class="ttl">Mes Pronos · Coupe du Monde 2026</span></div>
+<div class="statusbar"><span id="status">Chargement des scores…</span><button class="refresh" id="refreshBtn" onclick="fetchScores(true)">🔄 Rafraîchir</button></div>
+
+<div class="tabs">
+  <button id="tabMatchs" class="act" onclick="showView('matchs')">Mes matchs</button>
+  <button id="tabCmp" onclick="showView('compare')">Classement</button>
+</div>
+
+<div class="wrap" id="viewMatchs">
+  <div class="toggle" id="toggle"></div>
+  <div class="hero">
+    <div class="lbl" id="heroName">Score</div>
+    <div class="total"><span id="heroTotal">0</span> <small>pts</small></div>
+    <div class="stats"><div>✓ <b id="hBons">0</b> bons</div><div>★ <b id="hExacts">0</b> exacts</div><div><b id="hPlayed">0</b>/72 joués</div></div>
+    <div class="rival" id="rival"></div>
+    <div class="x2info" id="x2info"></div>
+    <div class="emptyhint" id="emptyhint" style="display:none">Tu n'as pas encore de pronos. Ajoute-les avec les flèches ▲▼ ci-dessous.</div>
+  </div>
+  <div class="actions"><button onclick="exportPronos()">💾 Exporter</button><button onclick="resetPronos()">↺ Réinitialiser</button></div>
+  <div class="sortrow"><span class="lab">Trier</span>
+    <button id="sPoule" class="sortbtn act" onclick="setSort('poule')">Par poule</button>
+    <button id="sDate" class="sortbtn" onclick="setSort('date')">Par date</button></div>
+  <div class="chips" id="chips"></div>
+  <div id="list"></div>
+</div>
+
+<div class="wrap" id="viewCompare" style="display:none">
+  <div id="lb"></div>
+  <div class="cmp-tug" id="cmpTug"></div>
+  <div class="chartcard"><h3>La course</h3><p>Points cumulés, match après match (×2 inclus).</p>
+    <div class="legend" id="legRace"></div><div class="chartbox"><canvas id="raceChart"></canvas></div></div>
+  <div class="chartcard"><h3>Points par groupe</h3><p>Qui marque le plus dans chaque groupe.</p>
+    <div class="legend" id="legGroup"></div><div class="chartbox"><canvas id="groupChart"></canvas></div></div>
+</div>
+
+<footer id="foot"></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+const DATA = [{"id":2,"g":"A","j":"J1","date":"11/06","e1":"Mexico","e2":"South Africa","fr1":"Mexique","fr2":"Afrique du Sud","fl1":"🇲🇽","fl2":"🇿🇦","c1":49,"cN":null,"c2":null,"r1":2,"r2":0,"nina":[1,0],"mael":[1,0],"tom":[null,null]},{"id":3,"g":"A","j":"J1","date":"12/06","e1":"South Korea","e2":"Czechia","fr1":"Corée du Sud","fr2":"Tchéquie","fl1":"🇰🇷","fl2":"🇨🇿","c1":96,"cN":null,"c2":null,"r1":2,"r2":1,"nina":[0,0],"mael":[0,0],"tom":[null,null]},{"id":4,"g":"A","j":"J2","date":"18/06","e1":"Czechia","e2":"South Africa","fr1":"Tchéquie","fr2":"Afrique du Sud","fl1":"🇨🇿","fl2":"🇿🇦","c1":null,"cN":112,"c2":null,"r1":1,"r2":1,"nina":[0,0],"mael":[1,2],"tom":[0,0]},{"id":5,"g":"A","j":"J2","date":"18/06","e1":"Mexico","e2":"South Korea","fr1":"Mexique","fr2":"Corée du Sud","fl1":"🇲🇽","fl2":"🇰🇷","c1":69,"cN":117,"c2":129,"r1":1,"r2":0,"nina":[1,0],"mael":[1,0],"tom":[1,1]},{"id":6,"g":"A","j":"J3","date":"25/06","e1":"Czechia","e2":"Mexico","fr1":"Tchéquie","fr2":"Mexique","fl1":"🇨🇿","fl2":"🇲🇽","c1":109,"cN":99,"c2":91,"r1":null,"r2":null,"nina":[0,1],"mael":[0,3],"tom":[1,0]},{"id":7,"g":"A","j":"J3","date":"25/06","e1":"South Africa","e2":"South Korea","fr1":"Afrique du Sud","fr2":"Corée du Sud","fl1":"🇿🇦","fl2":"🇰🇷","c1":117,"cN":103,"c2":87,"r1":null,"r2":null,"nina":[1,1],"mael":[1,0],"tom":[0,1]},{"id":8,"g":"B","j":"J1","date":"12/06","e1":"Canada","e2":"Bosnia","fr1":"Canada","fr2":"Bosnie","fl1":"🇨🇦","fl2":"🇧🇦","c1":65,"cN":null,"c2":null,"r1":1,"r2":1,"nina":[2,0],"mael":[3,0],"tom":[null,null]},{"id":9,"g":"B","j":"J1","date":"13/06","e1":"Switzerland","e2":"Qatar","fr1":"Suisse","fr2":"Qatar","fl1":"🇨🇭","fl2":"🇶🇦","c1":33,"cN":null,"c2":null,"r1":1,"r2":1,"nina":[1,0],"mael":[2,0],"tom":[null,null]},{"id":10,"g":"B","j":"J2","date":"18/06","e1":"Switzerland","e2":"Bosnia","fr1":"Suisse","fr2":"Bosnie","fl1":"🇨🇭","fl2":"🇧🇦","c1":76,"cN":108,"c2":134,"r1":4,"r2":1,"nina":[2,0],"mael":[2,0],"tom":[0,1]},{"id":11,"g":"B","j":"J2","date":"18/06","e1":"Canada","e2":"Qatar","fr1":"Canada","fr2":"Qatar","fl1":"🇨🇦","fl2":"🇶🇦","c1":71,"cN":null,"c2":null,"r1":6,"r2":0,"nina":[1,0],"mael":[3,0],"tom":[2,0]},{"id":12,"g":"B","j":"J3","date":"24/06","e1":"Switzerland","e2":"Canada","fr1":"Suisse","fr2":"Canada","fl1":"🇨🇭","fl2":"🇨🇦","c1":68,"cN":106,"c2":129,"r1":2,"r2":1,"nina":[1,1],"mael":[1,1],"tom":[0,1]},{"id":13,"g":"B","j":"J3","date":"24/06","e1":"Bosnia","e2":"Qatar","fr1":"Bosnie","fr2":"Qatar","fl1":"🇧🇦","fl2":"🇶🇦","c1":87,"cN":102,"c2":120,"r1":3,"r2":1,"nina":[0,0],"mael":[0,0],"tom":[2,0]},{"id":14,"g":"C","j":"J1","date":"13/06","e1":"Brazil","e2":"Morocco","fr1":"Brésil","fr2":"Maroc","fl1":"🇧🇷","fl2":"🇲🇦","c1":55,"cN":null,"c2":null,"r1":1,"r2":1,"nina":[2,1],"mael":[2,0],"tom":[2,1]},{"id":15,"g":"C","j":"J1","date":"13/06","e1":"Scotland","e2":"Haiti","fr1":"Écosse","fr2":"Haïti","fl1":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","fl2":"🇭🇹","c1":44,"cN":131,"c2":154,"r1":1,"r2":0,"nina":[2,0],"mael":[1,0],"tom":[0,0]},{"id":16,"g":"C","j":"J2","date":"19/06","e1":"Morocco","e2":"Scotland","fr1":"Maroc","fr2":"Écosse","fl1":"🇲🇦","fl2":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","c1":91,"cN":null,"c2":null,"r1":1,"r2":0,"nina":[2,1],"mael":[1,0],"tom":[0,2]},{"id":17,"g":"C","j":"J2","date":"19/06","e1":"Brazil","e2":"Haiti","fr1":"Brésil","fr2":"Haïti","fl1":"🇧🇷","fl2":"🇭🇹","c1":21,"cN":null,"c2":null,"r1":3,"r2":0,"nina":[3,0],"mael":[5,0],"tom":[5,0]},{"id":18,"g":"C","j":"J3","date":"25/06","e1":"Scotland","e2":"Brazil","fr1":"Écosse","fr2":"Brésil","fl1":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","fl2":"🇧🇷","c1":145,"cN":124,"c2":48,"r1":null,"r2":null,"nina":[1,2],"mael":[3,0],"tom":[0,3]},{"id":19,"g":"C","j":"J3","date":"25/06","e1":"Morocco","e2":"Haiti","fr1":"Maroc","fr2":"Haïti","fl1":"🇲🇦","fl2":"🇭🇹","c1":29,"cN":159,"c2":187,"r1":null,"r2":null,"nina":[2,0],"mael":[2,0],"tom":[3,0]},{"id":20,"g":"D","j":"J1","date":"13/06","e1":"USA","e2":"Paraguay","fr1":"États-Unis","fr2":"Paraguay","fl1":"🇺🇸","fl2":"🇵🇾","c1":74,"cN":113,"c2":115,"r1":4,"r2":1,"nina":[1,0],"mael":[1,0],"tom":[0,1]},{"id":21,"g":"D","j":"J1","date":"13/06","e1":"Australia","e2":"Türkiye","fr1":"Australie","fr2":"Turquie","fl1":"🇦🇺","fl2":"🇹🇷","c1":null,"cN":null,"c2":66,"r1":2,"r2":0,"nina":[1,1],"mael":[1,1],"tom":[0,1]},{"id":22,"g":"D","j":"J2","date":"19/06","e1":"USA","e2":"Australia","fr1":"États-Unis","fr2":"Australie","fl1":"🇺🇸","fl2":"🇦🇺","c1":58,"cN":null,"c2":null,"r1":2,"r2":0,"nina":[1,0],"mael":[1,1],"tom":[2,0]},{"id":23,"g":"D","j":"J2","date":"19/06","e1":"Paraguay","e2":"Türkiye","fr1":"Paraguay","fr2":"Turquie","fl1":"🇵🇾","fl2":"🇹🇷","c1":null,"cN":null,"c2":84,"r1":1,"r2":0,"nina":[0,1],"mael":[1,1],"tom":[0,2]},{"id":24,"g":"D","j":"J3","date":"26/06","e1":"Türkiye","e2":"United States","fr1":"Turquie","fr2":"États-Unis","fl1":"🇹🇷","fl2":"🇺🇸","c1":109,"cN":102,"c2":93,"r1":null,"r2":null,"nina":[1,1],"mael":[1,1],"tom":[1,0]},{"id":25,"g":"D","j":"J3","date":"26/06","e1":"Paraguay","e2":"Australia","fr1":"Paraguay","fr2":"Australie","fl1":"🇵🇾","fl2":"🇦🇺","c1":74,"cN":104,"c2":131,"r1":null,"r2":null,"nina":[0,1],"mael":[0,1],"tom":[1,0]},{"id":26,"g":"E","j":"J1","date":"14/06","e1":"Germany","e2":"Curaçao","fr1":"Allemagne","fr2":"Curaçao","fl1":"🇩🇪","fl2":"🇨🇼","c1":15,"cN":null,"c2":null,"r1":7,"r2":1,"nina":[2,0],"mael":[3,1],"tom":[4,1]},{"id":27,"g":"E","j":"J1","date":"14/06","e1":"Ivory Coast","e2":"Ecuador","fr1":"Côte d'Ivoire","fr2":"Équateur","fl1":"🇨🇮","fl2":"🇪🇨","c1":108,"cN":null,"c2":null,"r1":1,"r2":0,"nina":[1,0],"mael":[1,0],"tom":[2,0]},{"id":28,"g":"E","j":"J2","date":"20/06","e1":"Germany","e2":"Ivory Coast","fr1":"Allemagne","fr2":"Côte d'Ivoire","fl1":"🇩🇪","fl2":"🇨🇮","c1":38,"cN":137,"c2":164,"r1":2,"r2":1,"nina":[2,1],"mael":[1,1],"tom":[2,1]},{"id":29,"g":"E","j":"J2","date":"21/06","e1":"Ecuador","e2":"Curaçao","fr1":"Équateur","fr2":"Curaçao","fl1":"🇪🇨","fl2":"🇨🇼","c1":41,"cN":143,"c2":168,"r1":0,"r2":0,"nina":[0,0],"mael":[1,0],"tom":[3,0]},{"id":30,"g":"E","j":"J3","date":"25/06","e1":"Ecuador","e2":"Germany","fr1":"Équateur","fr2":"Allemagne","fl1":"🇪🇨","fl2":"🇩🇪","c1":145,"cN":129,"c2":42,"r1":null,"r2":null,"nina":[0,3],"mael":[0,7],"tom":[1,3]},{"id":31,"g":"E","j":"J3","date":"25/06","e1":"Curaçao","e2":"Ivory Coast","fr1":"Curaçao","fr2":"Côte d'Ivoire","fl1":"🇨🇼","fl2":"🇨🇮","c1":163,"cN":118,"c2":53,"r1":null,"r2":null,"nina":[0,2],"mael":[0,4],"tom":[0,3]},{"id":32,"g":"F","j":"J1","date":"14/06","e1":"Netherlands","e2":"Japan","fr1":"Pays-Bas","fr2":"Japon","fl1":"🇳🇱","fl2":"🇯🇵","c1":74,"cN":115,"c2":113,"r1":2,"r2":2,"nina":[1,1],"mael":[1,0],"tom":[0,1]},{"id":33,"g":"F","j":"J1","date":"14/06","e1":"Sweden","e2":"Tunisia","fr1":"Suède","fr2":"Tunisie","fl1":"🇸🇪","fl2":"🇹🇳","c1":null,"cN":null,"c2":122,"r1":5,"r2":1,"nina":[0,1],"mael":[0,1],"tom":[null,null]},{"id":34,"g":"F","j":"J2","date":"20/06","e1":"Netherlands","e2":"Sweden","fr1":"Pays-Bas","fr2":"Suède","fl1":"🇳🇱","fl2":"🇸🇪","c1":67,"cN":122,"c2":131,"r1":5,"r2":1,"nina":[1,0],"mael":[0,0],"tom":[0,1]},{"id":35,"g":"F","j":"J2","date":"21/06","e1":"Tunisia","e2":"Japan","fr1":"Tunisie","fr2":"Japon","fl1":"🇹🇳","fl2":"🇯🇵","c1":118,"cN":103,"c2":91,"r1":0,"r2":4,"nina":[1,1],"mael":[3,0],"tom":[0,1]},{"id":36,"g":"F","j":"J3","date":"26/06","e1":"Tunisia","e2":"Netherlands","fr1":"Tunisie","fr2":"Pays-Bas","fl1":"🇹🇳","fl2":"🇳🇱","c1":131,"cN":123,"c2":56,"r1":null,"r2":null,"nina":[0,2],"mael":[0,2],"tom":[1,0]},{"id":37,"g":"F","j":"J3","date":"26/06","e1":"Japan","e2":"Sweden","fr1":"Japon","fr2":"Suède","fl1":"🇯🇵","fl2":"🇸🇪","c1":96,"cN":108,"c2":111,"r1":null,"r2":null,"nina":[2,0],"mael":[2,1],"tom":[2,1]},{"id":38,"g":"G","j":"J1","date":"15/06","e1":"Belgium","e2":"Egypt","fr1":"Belgique","fr2":"Égypte","fl1":"🇧🇪","fl2":"🇪🇬","c1":null,"cN":122,"c2":null,"r1":1,"r2":1,"nina":[1,1],"mael":[1,1],"tom":[1,1]},{"id":39,"g":"G","j":"J1","date":"15/06","e1":"Iran","e2":"New Zealand","fr1":"Iran","fr2":"Nouvelle-Zélande","fl1":"🇮🇷","fl2":"🇳🇿","c1":null,"cN":null,"c2":130,"r1":2,"r2":2,"nina":[0,1],"mael":[0,1],"tom":[0,1]},{"id":40,"g":"G","j":"J2","date":"21/06","e1":"Belgium","e2":"Iran","fr1":"Belgique","fr2":"Iran","fl1":"🇧🇪","fl2":"🇮🇷","c1":39,"cN":138,"c2":171,"r1":0,"r2":0,"nina":[2,0],"mael":[2,0],"tom":[2,0]},{"id":41,"g":"G","j":"J2","date":"22/06","e1":"New Zealand","e2":"Egypt","fr1":"Nouvelle-Zélande","fr2":"Égypte","fl1":"🇳🇿","fl2":"🇪🇬","c1":148,"cN":116,"c2":59,"r1":1,"r2":3,"nina":[1,2],"mael":[1,1],"tom":[0,1]},{"id":42,"g":"G","j":"J3","date":"27/06","e1":"New Zealand","e2":"Belgium","fr1":"Nouvelle-Zélande","fr2":"Belgique","fl1":"🇳🇿","fl2":"🇧🇪","c1":172,"cN":129,"c2":32,"r1":null,"r2":null,"nina":[2,0],"mael":[0,2],"tom":[0,2]},{"id":43,"g":"G","j":"J3","date":"27/06","e1":"Egypt","e2":"Iran","fr1":"Égypte","fr2":"Iran","fl1":"🇪🇬","fl2":"🇮🇷","c1":85,"cN":114,"c2":123,"r1":null,"r2":null,"nina":[1,2],"mael":[1,0],"tom":[1,0]},{"id":44,"g":"H","j":"J1","date":"15/06","e1":"Spain","e2":"Cape Verde","fr1":"Espagne","fr2":"Cap-Vert","fl1":"🇪🇸","fl2":"🇨🇻","c1":16,"cN":null,"c2":null,"r1":0,"r2":0,"nina":[3,0],"mael":[3,0],"tom":[3,0]},{"id":45,"g":"H","j":"J1","date":"15/06","e1":"Saudi Arabia","e2":"Uruguay","fr1":"Arabie saoudite","fr2":"Uruguay","fl1":"🇸🇦","fl2":"🇺🇾","c1":null,"cN":null,"c2":50,"r1":1,"r2":1,"nina":[0,2],"mael":[0,4],"tom":[0,1]},{"id":46,"g":"H","j":"J2","date":"21/06","e1":"Spain","e2":"Saudi Arabia","fr1":"Espagne","fr2":"Arabie saoudite","fl1":"🇪🇸","fl2":"🇸🇦","c1":31,"cN":139,"c2":176,"r1":4,"r2":0,"nina":[3,0],"mael":[3,0],"tom":[2,0]},{"id":47,"g":"H","j":"J2","date":"22/06","e1":"Uruguay","e2":"Cape Verde","fr1":"Uruguay","fr2":"Cap-Vert","fl1":"🇺🇾","fl2":"🇨🇻","c1":72,"cN":109,"c2":137,"r1":2,"r2":2,"nina":[1,0],"mael":[3,0],"tom":[2,0]},{"id":48,"g":"H","j":"J3","date":"27/06","e1":"Uruguay","e2":"Spain","fr1":"Uruguay","fr2":"Espagne","fl1":"🇺🇾","fl2":"🇪🇸","c1":143,"cN":112,"c2":57,"r1":null,"r2":null,"nina":[1,2],"mael":[0,1],"tom":[1,0]},{"id":49,"g":"H","j":"J3","date":"27/06","e1":"Cape Verde","e2":"Saudi Arabia","fr1":"Cap-Vert","fr2":"Arabie saoudite","fl1":"🇨🇻","fl2":"🇸🇦","c1":99,"cN":123,"c2":94,"r1":null,"r2":null,"nina":[0,0],"mael":[0,0],"tom":[0,0]},{"id":50,"g":"I","j":"J1","date":"16/06","e1":"France","e2":"Senegal","fr1":"France","fr2":"Sénégal","fl1":"🇫🇷","fl2":"🇸🇳","c1":null,"cN":128,"c2":null,"r1":3,"r2":1,"nina":[1,1],"mael":[1,1],"tom":[2,2]},{"id":51,"g":"I","j":"J1","date":"16/06","e1":"Iraq","e2":"Norway","fr1":"Irak","fr2":"Norvège","fl1":"🇮🇶","fl2":"🇳🇴","c1":178,"cN":144,"c2":30,"r1":1,"r2":4,"nina":[0,1],"mael":[0,1],"tom":[0,0]},{"id":52,"g":"I","j":"J2","date":"22/06","e1":"France","e2":"Iraq","fr1":"France","fr2":"Irak","fl1":"🇫🇷","fl2":"🇮🇶","c1":22,"cN":166,"c2":189,"r1":3,"r2":0,"nina":[2,0],"mael":[3,0],"tom":[3,1]},{"id":53,"g":"I","j":"J2","date":"23/06","e1":"Norway","e2":"Senegal","fr1":"Norvège","fr2":"Sénégal","fl1":"🇳🇴","fl2":"🇸🇳","c1":64,"cN":105,"c2":137,"r1":3,"r2":2,"nina":[0,1],"mael":[1,1],"tom":[0,2]},{"id":54,"g":"I","j":"J3","date":"26/06","e1":"Norway","e2":"France","fr1":"Norvège","fr2":"France","fl1":"🇳🇴","fl2":"🇫🇷","c1":141,"cN":108,"c2":68,"r1":null,"r2":null,"nina":[1,2],"mael":[0,2],"tom":[0,1]},{"id":55,"g":"I","j":"J3","date":"26/06","e1":"Senegal","e2":"Iraq","fr1":"Sénégal","fr2":"Irak","fl1":"🇸🇳","fl2":"🇮🇶","c1":54,"cN":115,"c2":149,"r1":null,"r2":null,"nina":[1,0],"mael":[3,0],"tom":[2,0]},{"id":56,"g":"J","j":"J1","date":"16/06","e1":"Argentina","e2":"Algeria","fr1":"Argentine","fr2":"Algérie","fl1":"🇦🇷","fl2":"🇩🇿","c1":43,"cN":null,"c2":null,"r1":3,"r2":0,"nina":[2,1],"mael":[1,0],"tom":[null,null]},{"id":57,"g":"J","j":"J1","date":"17/06","e1":"Austria","e2":"Jordan","fr1":"Autriche","fr2":"Jordanie","fl1":"🇦🇹","fl2":"🇯🇴","c1":38,"cN":null,"c2":null,"r1":3,"r2":1,"nina":[1,0],"mael":[1,0],"tom":[null,null]},{"id":58,"g":"J","j":"J2","date":"22/06","e1":"Argentina","e2":"Austria","fr1":"Argentine","fr2":"Autriche","fl1":"🇦🇷","fl2":"🇦🇹","c1":63,"cN":105,"c2":132,"r1":2,"r2":0,"nina":[2,0],"mael":[2,0],"tom":[3,1]},{"id":59,"g":"J","j":"J2","date":"23/06","e1":"Jordan","e2":"Algeria","fr1":"Jordanie","fr2":"Algérie","fl1":"🇯🇴","fl2":"🇩🇿","c1":152,"cN":139,"c2":67,"r1":1,"r2":2,"nina":[0,1],"mael":[0,2],"tom":[0,2]},{"id":60,"g":"J","j":"J3","date":"28/06","e1":"Jordan","e2":"Argentina","fr1":"Jordanie","fr2":"Argentine","fl1":"🇯🇴","fl2":"🇦🇷","c1":165,"cN":145,"c2":32,"r1":null,"r2":null,"nina":[1,2],"mael":[0,3],"tom":[0,2]},{"id":61,"g":"J","j":"J3","date":"28/06","e1":"Algeria","e2":"Austria","fr1":"Algérie","fr2":"Autriche","fl1":"🇩🇿","fl2":"🇦🇹","c1":96,"cN":103,"c2":107,"r1":null,"r2":null,"nina":[1,1],"mael":[1,1],"tom":[2,0]},{"id":62,"g":"K","j":"J1","date":"17/06","e1":"Portugal","e2":"DR Congo","fr1":"Portugal","fr2":"RD Congo","fl1":"🇵🇹","fl2":"🇨🇩","c1":34,"cN":null,"c2":null,"r1":1,"r2":1,"nina":[1,0],"mael":[1,0],"tom":[3,0]},{"id":63,"g":"K","j":"J1","date":"17/06","e1":"Uzbekistan","e2":"Colombia","fr1":"Ouzbékistan","fr2":"Colombie","fl1":"🇺🇿","fl2":"🇨🇴","c1":null,"cN":null,"c2":44,"r1":1,"r2":3,"nina":[0,3],"mael":[0,4],"tom":[null,null]},{"id":64,"g":"K","j":"J2","date":"23/06","e1":"Portugal","e2":"Uzbekistan","fr1":"Portugal","fr2":"Ouzbékistan","fl1":"🇵🇹","fl2":"🇺🇿","c1":24,"cN":154,"c2":173,"r1":5,"r2":0,"nina":[1,0],"mael":[3,0],"tom":[4,0]},{"id":65,"g":"K","j":"J2","date":"23/06","e1":"Colombia","e2":"DR Congo","fr1":"Colombie","fr2":"RD Congo","fl1":"🇨🇴","fl2":"🇨🇩","c1":77,"cN":111,"c2":123,"r1":1,"r2":0,"nina":[2,0],"mael":[3,0],"tom":[1,1]},{"id":66,"g":"K","j":"J3","date":"28/06","e1":"Colombia","e2":"Portugal","fr1":"Colombie","fr2":"Portugal","fl1":"🇨🇴","fl2":"🇵🇹","c1":154,"cN":102,"c2":55,"r1":null,"r2":null,"nina":[2,1],"mael":[1,1],"tom":[1,0]},{"id":67,"g":"K","j":"J3","date":"28/06","e1":"DR Congo","e2":"Uzbekistan","fr1":"RD Congo","fr2":"Ouzbékistan","fl1":"🇨🇩","fl2":"🇺🇿","c1":63,"cN":107,"c2":158,"r1":null,"r2":null,"nina":[0,0],"mael":[1,1],"tom":[2,1]},{"id":68,"g":"L","j":"J1","date":"17/06","e1":"England","e2":"Croatia","fr1":"Angleterre","fr2":"Croatie","fl1":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","fl2":"🇭🇷","c1":null,"cN":119,"c2":null,"r1":4,"r2":2,"nina":[2,2],"mael":[1,1],"tom":[null,null]},{"id":69,"g":"L","j":"J1","date":"17/06","e1":"Ghana","e2":"Panama","fr1":"Ghana","fr2":"Panama","fl1":"🇬🇭","fl2":"🇵🇦","c1":73,"cN":null,"c2":null,"r1":1,"r2":0,"nina":[0,0],"mael":[1,0],"tom":[null,null]},{"id":70,"g":"L","j":"J2","date":"23/06","e1":"England","e2":"Ghana","fr1":"Angleterre","fr2":"Ghana","fl1":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","fl2":"🇬🇭","c1":44,"cN":127,"c2":162,"r1":0,"r2":0,"nina":[2,0],"mael":[3,0],"tom":[1,0]},{"id":71,"g":"L","j":"J2","date":"24/06","e1":"Panama","e2":"Croatia","fr1":"Panama","fr2":"Croatie","fl1":"🇵🇦","fl2":"🇭🇷","c1":165,"cN":123,"c2":36,"r1":0,"r2":1,"nina":[0,2],"mael":[0,2],"tom":[0,2]},{"id":72,"g":"L","j":"J3","date":"27/06","e1":"Panama","e2":"England","fr1":"Panama","fr2":"Angleterre","fl1":"🇵🇦","fl2":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","c1":168,"cN":137,"c2":32,"r1":null,"r2":null,"nina":[0,3],"mael":[0,3],"tom":[0,2]},{"id":73,"g":"L","j":"J3","date":"27/06","e1":"Croatia","e2":"Ghana","fr1":"Croatie","fr2":"Ghana","fl1":"🇭🇷","fl2":"🇬🇭","c1":57,"cN":120,"c2":138,"r1":null,"r2":null,"nina":[2,1],"mael":[3,0],"tom":[0,0]}];
+const GROUPS=['A','B','C','D','E','F','G','H','I','J','K','L'];
+const PLAYERS=[{id:'nina',name:'Nina',col:'#ED6965'},{id:'mael',name:'Maël',col:'#14D3A9'},{id:'tom',name:'Tom',col:'#5BA8F5'}];
+const NAME={nina:'Nina',mael:'Maël',tom:'Tom'};
+let player='nina', filter='all', view='matchs', sortMode='poule';
+
+// auto-update config
+const LEAGUE_ID='4429', SEASON='2026';   // FIFA World Cup sur TheSportsDB (ajustable)
+const API='https://www.thesportsdb.com/api/v1/json/123/eventsseason.php?id='+LEAGUE_ID+'&s='+SEASON;
+
+const P={nina:{},mael:{},tom:{}}; const X2={nina:null,mael:null,tom:null};
+DATA.forEach(m=>{P.nina[m.id]=m.nina.slice();P.mael[m.id]=m.mael.slice();P.tom[m.id]=(m.tom||[null,null]).slice();});
+
+function lsP(p){return 'cdm2026_pronos_'+p;} function lsX(p){return 'cdm2026_x2_'+p;}
+function load(){for(const p of ['nina','mael','tom']){
+  try{const s=localStorage.getItem(lsP(p));if(s){const o=JSON.parse(s);for(const id in o)if(P[p][id])P[p][id]=o[id];}}catch(e){}
+  try{const x=localStorage.getItem(lsX(p));if(x!==null&&x!=='')X2[p]=parseInt(x);}catch(e){}
+}}
+function saveP(p){try{localStorage.setItem(lsP(p),JSON.stringify(P[p]));}catch(e){}}
+function saveX(p){try{localStorage.setItem(lsX(p),X2[p]==null?'':String(X2[p]));}catch(e){}}
+
+function sign(a,b){return a>b?1:(a===b?0:-1);}
+function matchPts(m,pr){const k=pr[0],l=pr[1];
+  if(k==null||l==null)return null; if(m.r1==null)return null;
+  const ks=sign(k,l),rs=sign(m.r1,m.r2);let p=0;
+  if(ks===rs){let c=ks>0?m.c1:(ks===0?m.cN:m.c2);p=c||0;}
+  if(k===m.r1&&l===m.r2)p+=20; return p;}
+function effPts(m,pr,p){const b=matchPts(m,pr);if(b==null)return null;return X2[p]===m.id?b*2:b;}
+function totals(p){let tot=0,bons=0,exacts=0,played=0,filled=0;
+  DATA.forEach(m=>{const pr=P[p][m.id];if(pr[0]!=null)filled++;if(m.r1!=null)played++;
+    const e=effPts(m,pr,p);if(e!=null){tot+=e;if(sign(pr[0],pr[1])===sign(m.r1,m.r2))bons++;if(pr[0]===m.r1&&pr[1]===m.r2)exacts++;}});
+  return {tot,bons,exacts,played,filled};}
+
+function renderToggle(){document.getElementById('toggle').innerHTML=PLAYERS.map(p=>
+  '<button data-on="'+p.id+'" class="'+(p.id===player?'act':'')+'" onclick="setPlayer(\''+p.id+'\')">'+p.name+'</button>').join('');}
+
+function renderHero(){const t=totals(player);
+  document.getElementById('heroName').textContent='Score de '+NAME[player];
+  document.getElementById('heroTotal').textContent=t.tot;
+  document.getElementById('hBons').textContent=t.bons;
+  document.getElementById('hExacts').textContent=t.exacts;
+  document.getElementById('hPlayed').textContent=t.played;
+  const others=PLAYERS.filter(p=>p.id!==player).map(p=>({n:p.name,t:totals(p.id).tot}));
+  document.getElementById('rival').innerHTML=others.map(o=>{const d=t.tot-o.t;
+    const col=d>0?'var(--accent)':(d<0?'var(--tx2)':'var(--canary)');
+    return o.n+' '+o.t+' (<span class="gap" style="color:'+col+'">'+(d>0?'+'+d:(d<0?d:'='))+'</span>)';}).join(' · ');
+  const x=X2[player];
+  document.getElementById('x2info').textContent = x?('×2 actif sur : '+(()=>{const m=DATA.find(z=>z.id===x);return m.fr1+' – '+m.fr2;})()):'×2 : choisis un match à doubler (bouton ×2)';
+  document.getElementById('emptyhint').style.display = t.filled===0?'block':'none';}
+
+function renderChips(){const c=document.getElementById('chips');c.innerHTML='';
+  [['all','Tous'],['soon','À jouer'],['J1','J1'],['J2','J2'],['J3','J3']].forEach(([k,lab])=>{
+    const b=document.createElement('button');b.className='chip'+(filter===k?' act':'');b.textContent=lab;
+    b.onclick=()=>{filter=k;renderChips();renderList();document.getElementById('list').scrollIntoView({behavior:'smooth',block:'start'});};
+    c.appendChild(b);});}
+function visible(m){if(filter==='all')return true;if(filter==='soon')return m.r1==null;return m.j===filter;}
+function dkey(m){const p=(m.date||'1/1').split('/').map(Number);return (p[1]||0)*100+(p[0]||0);}
+function sortedList(){let a=DATA.filter(visible);if(sortMode==='date')a=a.slice().sort((x,y)=>dkey(x)-dkey(y)||x.g.localeCompare(y.g)||x.id-y.id);return a;}
+function setSort(s){sortMode=s;try{localStorage.setItem('cdm2026_sort',s);}catch(e){}
+  document.getElementById('sPoule').classList.toggle('act',s==='poule');document.getElementById('sDate').classList.toggle('act',s==='date');renderList();}
+
+function badgeFor(m,pr,p){const x2=X2[p]===m.id;
+  if(m.r1==null)return '<span class="badge soon">à jouer'+(x2?' ×2':'')+'</span>';
+  let pts=matchPts(m,pr);if(pts==null)pts=0;const exact=pr[0]===m.r1&&pr[1]===m.r2;const eff=x2?pts*2:pts;
+  if(eff===0)return '<span class="badge">0</span>';
+  return '<span class="badge '+(exact?'exact':'win')+'">+'+eff+(exact?' ★':'')+(x2?' ×2':'')+'</span>';}
+function stepper(side,id){const pr=P[player][id];const v=pr[side];
+  return '<div class="stepper"><button onclick="bump('+id+','+side+',1)">▲</button>'
+    +'<div class="'+(v==null?'num empty':'num')+'" id="n'+id+'_'+side+'">'+(v==null?'–':v)+'</div>'
+    +'<button onclick="bump('+id+','+side+',-1)">▼</button></div>';}
+function cardHTML(m){const pr=P[player][m.id];
+  let res=m.r1!=null?'<div class="resline"><span>Résultat réel</span><span class="score">'+m.r1+' – '+m.r2+'</span></div>'
+    :'<div class="resline soon"><span>Pas encore joué</span><span>'+(m.date||'')+'</span></div>';
+  return '<div class="match" id="m'+m.id+'">'
+    +'<div class="head"><span class="gchip">'+m.j+' · Gr.'+m.g+' · '+(m.date||'')+'</span>'
+      +'<span class="headr"><button class="x2btn'+(X2[player]===m.id?' on':'')+'" id="x'+m.id+'" onclick="toggleX2('+m.id+')">×2</button>'
+      +'<span id="b'+m.id+'">'+badgeFor(m,pr,player)+'</span></span></div>'
+    +'<div class="teams">'
+      +'<div class="team"><div class="nm"><span class="fl">'+m.fl1+'</span><span>'+m.fr1+'</span></div></div>'
+      +'<div class="team" style="flex:0 0 auto;align-items:center"><div class="prlbl">mon prono</div><div class="mid">'+stepper(0,m.id)+'<span class="sep">–</span>'+stepper(1,m.id)+'</div></div>'
+      +'<div class="team r"><div class="nm"><span class="fl">'+m.fl2+'</span><span>'+m.fr2+'</span></div></div>'
+    +'</div>'+res+'</div>';}
+function renderList(){document.getElementById('list').innerHTML=sortedList().map(cardHTML).join('');}
+function updateCard(id){const m=DATA.find(x=>x.id===id);if(!m)return;const pr=P[player][id];
+  const b=document.getElementById('b'+id);if(b)b.innerHTML=badgeFor(m,pr,player);
+  const x=document.getElementById('x'+id);if(x)x.classList.toggle('on',X2[player]===id);}
+function bump(id,side,d){const pr=P[player][id];let v=pr[side];
+  if(v==null)v=0;else v=Math.max(0,Math.min(20,v+d));pr[side]=v;saveP(player);
+  const nEl=document.getElementById('n'+id+'_'+side);nEl.textContent=v;nEl.className='num';updateCard(id);renderHero();}
+function toggleX2(id){const old=X2[player];X2[player]=(old===id?null:id);saveX(player);
+  if(old&&old!==id)updateCard(old);updateCard(id);renderHero();toast(X2[player]?'×2 placé':'×2 retiré');}
+function setPlayer(p){player=p;document.body.dataset.p=p;renderToggle();renderHero();renderList();}
+
+// ---- CLASSEMENT ----
+let raceC=null,groupC=null;
+function cumFor(p){let run=0;const a=[];DATA.forEach(m=>{if(m.r1==null)return;let e=effPts(m,P[p][m.id],p);run+=(e||0);a.push(run);});return a;}
+function groupVals(p){const g={};DATA.forEach(m=>{let e=effPts(m,P[p][m.id],p);if(e==null)return;g[m.g]=(g[m.g]||0)+e;});return GROUPS.map(x=>g[x]||0);}
+function legend(el){document.getElementById(el).innerHTML=PLAYERS.map(p=>'<span><i class="dot" style="background:'+p.col+'"></i>'+p.name+'</span>').join('');}
+function renderCompare(){
+  const T=PLAYERS.map(p=>({...p,...totals(p.id)})).sort((a,b)=>b.tot-a.tot);
+  let html='<table class="lb"><tr><th>#</th><th>Joueur</th><th>Pts</th><th>✓</th><th>★</th></tr>';
+  T.forEach((p,i)=>{html+='<tr><td>'+(i+1)+(i===0&&p.tot>0?' 👑':'')+'</td><td class="nm" style="color:'+p.col+'">'+p.name+'</td><td class="b">'+p.tot+'</td><td>'+p.bons+'</td><td>'+p.exacts+'</td></tr>';});
+  document.getElementById('lb').innerHTML=html+'</table>';
+  const sum=T.reduce((s,p)=>s+p.tot,0)||1;
+  document.getElementById('cmpTug').innerHTML=PLAYERS.map(p=>'<div style="width:'+(totals(p.id).tot/sum*100)+'%;background:'+p.col+'"></div>').join('');
+  legend('legRace');legend('legGroup');
+  Chart.defaults.font.family="'JetBrains Mono', monospace";Chart.defaults.color='#6a8478';const grid='rgba(38,57,47,.7)';
+  const lab=cumFor('nina').map((_,i)=>i+1);
+  if(raceC)raceC.destroy();
+  raceC=new Chart(document.getElementById('raceChart'),{type:'line',data:{labels:lab,
+    datasets:PLAYERS.map(p=>({label:p.name,data:cumFor(p.id),borderColor:p.col,backgroundColor:p.col+'14',borderWidth:2.5,pointRadius:0,tension:.18,fill:false}))},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#16271f',borderColor:'#26392f',borderWidth:1,padding:9,callbacks:{title:i=>'Match n°'+i[0].label,label:c=>'  '+c.dataset.label+' : '+c.parsed.y+' pts'}}},
+      scales:{x:{grid:{color:grid},ticks:{maxTicksLimit:10,font:{size:10}}},y:{grid:{color:grid},ticks:{font:{size:10}},beginAtZero:true}}}});
+  if(groupC)groupC.destroy();
+  groupC=new Chart(document.getElementById('groupChart'),{type:'bar',data:{labels:GROUPS,
+    datasets:PLAYERS.map(p=>({label:p.name,data:groupVals(p.id),backgroundColor:p.col,borderRadius:3,maxBarThickness:16}))},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#16271f',borderColor:'#26392f',borderWidth:1,padding:9,callbacks:{title:i=>'Groupe '+i[0].label,label:c=>'  '+c.dataset.label+' : '+c.parsed.y+' pts'}}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:12,weight:700}}},y:{grid:{color:grid},ticks:{font:{size:10}},beginAtZero:true}}}});}
+
+function showView(v){view=v;
+  document.getElementById('viewMatchs').style.display=v==='matchs'?'':'none';
+  document.getElementById('viewCompare').style.display=v==='compare'?'':'none';
+  document.getElementById('tabMatchs').classList.toggle('act',v==='matchs');
+  document.getElementById('tabCmp').classList.toggle('act',v==='compare');
+  if(v==='compare')renderCompare();window.scrollTo({top:0,behavior:'smooth'});}
+
+// ---- AUTO-UPDATE DES SCORES ----
+function normTeam(n){if(!n)return '';let s=n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z]/g,'');
+  const A={unitedstates:'usa',usa:'usa',turkiye:'turkey',turkey:'turkey',korearepublic:'southkorea',southkorea:'southkorea',
+    bosniaandherzegovina:'bosnia',bosniaherzegovina:'bosnia',bosnia:'bosnia',drcongo:'drcongo',congodr:'drcongo',
+    democraticrepublicofthecongo:'drcongo',caboverde:'capeverde',capeverde:'capeverde',ivorycoast:'ivorycoast',cotedivoire:'ivorycoast',
+    czechrepublic:'czechia',czechia:'czechia',southafrica:'southafrica'};
+  return A[s]||s;}
+function setStatus(t,cls){const e=document.getElementById('status');e.textContent=t;e.className=cls||'';}
+async function fetchScores(manual){
+  const btn=document.getElementById('refreshBtn');btn.classList.add('spin');
+  setStatus('Mise à jour des scores…');
+  try{
+    const r=await fetch(API,{cache:'no-store'});const j=await r.json();
+    if(!j||!j.events)throw new Error('no events');
+    const idx={};
+    j.events.forEach(e=>{const h=normTeam(e.strHomeTeam),a=normTeam(e.strAwayTeam);if(h&&a)idx[h+'|'+a]={hs:e.intHomeScore,as:e.intAwayScore};});
+    let upd=0;
+    DATA.forEach(m=>{const a=normTeam(m.e1),b=normTeam(m.e2);let ev=idx[a+'|'+b],sw=false;
+      if(!ev){ev=idx[b+'|'+a];sw=true;}
+      if(ev&&ev.hs!=null&&ev.hs!==''&&ev.as!=null&&ev.as!==''){
+        let r1=parseInt(sw?ev.as:ev.hs),r2=parseInt(sw?ev.hs:ev.as);
+        if(!isNaN(r1)&&!isNaN(r2)&&(m.r1!==r1||m.r2!==r2)){m.r1=r1;m.r2=r2;upd++;}}});
+    const hh=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    setStatus('Scores à jour · '+hh+(upd?(' · '+upd+' maj'):''),'live');
+    renderHero();renderList();if(view==='compare')renderCompare();
+    if(manual)toast(upd?upd+' score(s) mis à jour':'Déjà à jour');
+  }catch(e){setStatus('Hors ligne — derniers scores connus','err');if(manual)toast('Mise à jour impossible');}
+  finally{btn.classList.remove('spin');}}
+
+function exportPronos(){const out=DATA.map(m=>({id:m.id,g:m.g,j:m.j,match:m.fr1+' - '+m.fr2,prono:P[player][m.id],x2:X2[player]===m.id}));
+  const blob=new Blob([JSON.stringify({joueur:NAME[player],x2_match:X2[player],pronos:out},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pronos_'+NAME[player]+'.json';a.click();toast('Pronos exportés ✓');}
+function resetPronos(){if(!confirm('Remettre les pronos d\'origine pour '+NAME[player]+' ?'))return;
+  DATA.forEach(m=>{P[player][m.id]=player==='tom'?(m.tom||[null,null]).slice():(player==='nina'?m.nina:m.mael).slice();});X2[player]=null;
+  saveP(player);saveX(player);renderHero();renderList();toast('Réinitialisé');}
+let tt;function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1600);}
+
+document.getElementById('foot').innerHTML='Scores mis à jour automatiquement à l\'ouverture, puis toutes les 2 min tant que l\'appli reste ouverte, et via le bouton 🔄. Flèches ▲▼ pour les pronos. Bouton ×2 : double UN match (un seul par joueur). Calcul : cote de la bonne issue + 20 si score exact, doublé si ×2. Pronos gardés sur l\'appareil, jamais écrasés par la mise à jour.';
+
+load();
+try{const s=localStorage.getItem('cdm2026_sort');if(s==='date'||s==='poule')sortMode=s;}catch(e){}
+setSort(sortMode);setPlayer('nina');renderChips();
+fetchScores(false);
+setInterval(()=>{if(!document.hidden)fetchScores(false);},120000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)fetchScores(false);});
+</script>
+</body>
+</html>
