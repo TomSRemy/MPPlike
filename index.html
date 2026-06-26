@@ -119,13 +119,43 @@
 
   footer{max-width:560px;margin:18px auto 0;padding:14px;color:var(--tx3);font-size:11.5px;line-height:1.6;border-top:1px solid var(--line)}
   .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--accent);color:#08120d;font-weight:700;font-size:13px;padding:10px 18px;border-radius:999px;opacity:0;transition:.25s;pointer-events:none;z-index:50;font-family:'JetBrains Mono',monospace}
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}  /* ---- Bandeau EN DIRECT ---- */
+  #live{padding:0 14px}
+  .live-band{background:#EDE8DB;border:1px solid #D9D2C4;border-radius:14px;padding:14px 14px 16px;margin-top:6px;color:#181513;font-variant-numeric:tabular-nums}
+  .live-hd{display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid #181513;padding-bottom:7px}
+  .live-ttl{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#181513}
+  .live-date{font-weight:700;font-size:11px;letter-spacing:.06em;color:#8C857A}
+  .dot{width:8px;height:8px;border-radius:50%;background:#E5483D;animation:blink 1.3s steps(1,end) infinite;flex:0 0 auto}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.2}}
+  .live-sec{font-weight:800;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8C857A;margin-top:16px;padding-bottom:2px}
+  .live-sec:first-of-type{margin-top:12px}
+  .live-card{background:#FFFFFF;border:1px solid #DDD5C5;border-radius:10px;padding:10px 12px;margin-top:8px}
+  .lc-mid{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 0 0}
+  .lc-team{display:flex;align-items:center;gap:7px;flex:1;min-width:0}
+  .lc-team.r{flex-direction:row-reverse}
+  .lc-fl{font-size:22px;line-height:1;flex:0 0 auto}
+  .lc-nm{font-size:13px;color:#181513;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lc-ctr{display:flex;flex-direction:column;align-items:center;gap:2px;flex:0 0 auto;min-width:52px}
+  .lc-sc{font-weight:800;font-size:22px;color:#181513;letter-spacing:.01em}
+  .lc-sc.soon{font-size:12px;color:#8C857A;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .lc-st{font-size:8px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8C857A;display:flex;align-items:center;gap:4px}
+  .lc-st.live{color:#E5483D}
+  .lc-pros{display:flex;margin-top:8px;padding-top:8px;border-top:1px solid #E8E2D6}
+  .lp{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;padding:0 4px}
+  .lp+.lp{border-left:1px solid #E8E2D6}
+  .lp-i{font-weight:800;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase}
+  .lp-v{font-weight:800;font-size:15px;color:#181513}
+  .lp-v.dash{color:#B8AF9F;font-weight:600}
+  .lp-p{font-size:10px;font-weight:700;color:#8C857A}
+  .lp-p.g{color:#137A6E}
 </style>
 </head>
 <body data-p="nina">
 
 <div class="topbar"><span class="logo">⚽</span><span class="ttl">Mes Pronos · Coupe du Monde 2026</span></div>
 <div class="statusbar"><span id="status">Chargement des scores…</span><button class="refresh" id="refreshBtn" onclick="fetchScores(true)">🔄 Rafraîchir</button></div>
+
+<div id="live"></div>
 
 <div class="tabs">
   <button id="tabMatchs" class="act" onclick="showView('matchs')">Mes matchs</button>
@@ -245,6 +275,32 @@ function cardHTML(m){const pr=P[player][m.id];
       +'<div class="team" style="flex:0 0 auto;align-items:center"><div class="prlbl">mon prono</div><div class="mid">'+stepper(0,m.id)+'<span class="sep">–</span>'+stepper(1,m.id)+'</div></div>'
       +'<div class="team r"><div class="nm"><span class="fl">'+m.fl2+'</span><span>'+m.fr2+'</span></div></div>'
     +'</div>'+res+'</div>';}
+function renderLive(){const el=document.getElementById('live');
+  const now=new Date();const today=String(now.getDate()).padStart(2,'0')+'/'+String(now.getMonth()+1).padStart(2,'0');
+  const todays=DATA.filter(m=>m.date===today);
+  if(!todays.length){el.style.display='none';el.innerHTML='';return;}
+  el.style.display='block';
+  todays.sort((a,b)=>a.g<b.g?-1:a.g>b.g?1:a.id-b.id);
+  const anyLive=todays.some(m=>m.r1!=null);
+  const LCOL={nina:'#E83F84',mael:'#137A6E',tom:'#2E6FB7'};
+  function pron(m,p){const pr=(P[p.id][m.id]||[null,null]);
+    let v=(pr[0]==null)?'<span class="lp-v dash">–</span>':'<span class="lp-v">'+pr[0]+'–'+pr[1]+'</span>';
+    let pts='';
+    if(m.r1!=null&&pr[0]!=null){let pp=matchPts(m,pr);if(pp==null)pp=0;const x2=X2[p.id]===m.id;const eff=x2?pp*2:pp;
+      const exact=pr[0]===m.r1&&pr[1]===m.r2;pts='<span class="lp-p'+(eff>0?' g':'')+'">'+(eff>0?'+'+eff:'0')+(exact?' ★':'')+(x2?' ×2':'')+'</span>';}
+    return '<div class="lp"><span class="lp-i" style="color:'+LCOL[p.id]+'">'+p.name+'</span>'+v+pts+'</div>';}
+  function card(m){const live=m.r1!=null;
+    return '<div class="live-card">'
+      +'<div class="lc-mid"><div class="lc-team"><span class="lc-fl">'+m.fl1+'</span><span class="lc-nm">'+m.fr1+'</span></div>'
+      +'<div class="lc-ctr"><div class="lc-sc'+(live?'':' soon')+'">'+(live?(m.r1+'–'+m.r2):'vs')+'</div>'
+      +'<div class="lc-st'+(live?' live':'')+'">'+(live?'<span class="dot"></span>en direct':'à suivre')+'</div></div>'
+      +'<div class="lc-team r"><span class="lc-fl">'+m.fl2+'</span><span class="lc-nm">'+m.fr2+'</span></div></div>'
+      +'<div class="lc-pros">'+PLAYERS.map(p=>pron(m,p)).join('')+'</div></div>';}
+  let body='',cur='';
+  todays.forEach(m=>{const key='Groupe '+m.g+' · '+m.j;if(key!==cur){cur=key;body+='<div class="live-sec">'+key+'</div>';}body+=card(m);});
+  el.innerHTML='<div class="live-band"><div class="live-hd">'
+    +'<span class="live-ttl">'+(anyLive?'<span class="dot"></span>En direct':'Aujourd\'hui')+'</span>'
+    +'<span class="live-date">'+today+'</span></div>'+body+'</div>';}
 function renderList(){document.getElementById('list').innerHTML=sortedList().map(cardHTML).join('');}
 function updateCard(id){const m=DATA.find(x=>x.id===id);if(!m)return;const pr=P[player][id];
   const b=document.getElementById('b'+id);if(b)b.innerHTML=badgeFor(m,pr,player);
@@ -254,7 +310,7 @@ function bump(id,side,d){const pr=P[player][id];let v=pr[side];
   const nEl=document.getElementById('n'+id+'_'+side);nEl.textContent=v;nEl.className='num';updateCard(id);renderHero();}
 function toggleX2(id){const old=X2[player];X2[player]=(old===id?null:id);saveX(player);
   if(old&&old!==id)updateCard(old);updateCard(id);renderHero();toast(X2[player]?'×2 placé':'×2 retiré');}
-function setPlayer(p){player=p;document.body.dataset.p=p;renderToggle();renderHero();renderList();}
+function setPlayer(p){player=p;document.body.dataset.p=p;renderToggle();renderHero();renderLive();renderList();}
 
 // ---- CLASSEMENT ----
 let raceC=null,groupC=null;
@@ -314,7 +370,7 @@ async function fetchScores(manual){
         if(!isNaN(r1)&&!isNaN(r2)&&(m.r1!==r1||m.r2!==r2)){m.r1=r1;m.r2=r2;upd++;}}});
     const hh=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
     setStatus('Scores à jour · '+hh+(upd?(' · '+upd+' maj'):''),'live');
-    renderHero();renderList();if(view==='compare')renderCompare();
+    renderHero();renderLive();renderList();if(view==='compare')renderCompare();
     if(manual)toast(upd?upd+' score(s) mis à jour':'Déjà à jour');
   }catch(e){setStatus('Hors ligne — derniers scores connus','err');if(manual)toast('Mise à jour impossible');}
   finally{btn.classList.remove('spin');}}
