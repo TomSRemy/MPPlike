@@ -129,7 +129,12 @@
   .live-collapsed{background:#EDE8DB;border:1px solid #D9D2C4;border-radius:12px;padding:11px 14px;margin-top:6px;color:#8C857A;font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;text-align:center;cursor:pointer}
   .dot{width:8px;height:8px;border-radius:50%;background:#E5483D;animation:blink 1.3s steps(1,end) infinite;flex:0 0 auto}
   @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.2}}
-  .live-sec{font-weight:800;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8C857A;margin-top:16px;padding-bottom:2px}
+  .live-section{margin-top:14px;padding-left:11px;border-left:3px solid var(--acc,#D9D2C4)}
+  .live-section:first-of-type{margin-top:8px}
+  .s-live{--acc:#E5483D} .s-soon{--acc:#2E6FB7} .s-past{--acc:#137A6E}
+  .live-sec{font-weight:800;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc,#8C857A);margin-top:0;padding:4px 0 6px;display:flex;align-items:center;gap:7px;cursor:pointer}
+  .live-sec .sec-n{color:#B8AF9F;font-weight:700}
+  .live-sec .sec-ch{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(24,21,19,.06);color:var(--acc,#8C857A);font-size:13px;font-weight:900;line-height:1}
   .live-sec:first-of-type{margin-top:12px}
   .live-card{background:#FFFFFF;border:1px solid #DDD5C5;border-radius:10px;padding:10px 12px;margin-top:8px}
   .lc-mid{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 0 0}
@@ -270,7 +275,7 @@ const DATA = [{"id":2,"g":"A","j":"J1","date":"11/06","e1":"Mexico","e2":"South 
 const GROUPS=['A','B','C','D','E','F','G','H','I','J','K','L'];
 const PLAYERS=[{id:'nina',name:'Nina',col:'#ED6965'},{id:'mael',name:'Maël',col:'#14D3A9'},{id:'tom',name:'Tom',col:'#5BA8F5'}];
 const NAME={nina:'Nina',mael:'Maël',tom:'Tom'};
-let player='nina', filter='all', view='matchs', sortMode='poule', liveHidden=false;
+let player='nina', filter='all', view='matchs', sortMode='poule', liveHidden=false, SEC={live:false,soon:false,past:true};
 
 // auto-update config
 const API='results.json';   // repli : genere par GitHub Actions (scores.py scrape ESPN)
@@ -358,15 +363,16 @@ function cardHTML(m){const pr=P[player][m.id];
       +'<div class="team r"><div class="nm"><span class="fl">'+m.fl2+'</span><span>'+m.fr2+'</span></div></div>'
     +'</div>'+res+'</div>';}
 function renderLive(){const el=document.getElementById('live');
-  const past=DATA.filter(m=>m.live===true||m.r1!=null)
-    .sort((a,b)=>((b.live===true)-(a.live===true))||(chrono(b)-chrono(a))||(b.id-a.id)).slice(0,3);
+  const live=DATA.filter(m=>m.live===true).sort((a,b)=>chrono(b)-chrono(a)||(b.id-a.id)).slice(0,6);
   const now=Date.now(),H12=12*3600*1000;
   const soon=DATA.filter(m=>m.live!==true&&m.r1==null).map(m=>({m,k:koMs(m)}))
     .filter(o=>o.k!=null&&o.k<=now+H12&&o.k>=now-2*3600*1000)
-    .sort((a,b)=>a.k-b.k).map(o=>o.m);
-  if(!past.length&&!soon.length){el.style.display='none';el.innerHTML='';return;}
+    .sort((a,b)=>a.k-b.k).map(o=>o.m).slice(0,6);
+  const past=DATA.filter(m=>m.live!==true&&m.r1!=null)
+    .sort((a,b)=>chrono(b)-chrono(a)||(b.id-a.id)).slice(0,6);
+  if(!live.length&&!soon.length&&!past.length){el.style.display='none';el.innerHTML='';return;}
   el.style.display='block';
-  const nLive=past.filter(m=>m.live===true).length;
+  const nLive=live.length;
   if(liveHidden){el.innerHTML='<div class="live-collapsed" onclick="toggleLive()">'+(nLive?'Afficher le direct ('+nLive+')':'Afficher les matchs')+'</div>';return;}
   const anyLive=nLive>0;
   const LCOL={nina:'#E83F84',mael:'#137A6E',tom:'#2E6FB7'};
@@ -388,12 +394,17 @@ function renderLive(){const el=document.getElementById('live');
       +'<div class="lc-st'+(inplay?' live':'')+'">'+st+'</div></div>'
       +'<div class="lc-team r"><span class="lc-fl">'+m.fl2+'</span><span class="lc-nm">'+m.fr2+'</span></div></div>'
       +'<div class="lc-pros">'+PLAYERS.map(p=>pron(m,p)).join('')+'</div></div>';}
+  const secs=[{k:'live',cl:'s-live',lab:'En direct',arr:live,dot:true},{k:'soon',cl:'s-soon',lab:'À venir',arr:soon},{k:'past',cl:'s-past',lab:'Derniers résultats',arr:past}];
   let body='';
-  if(soon.length)body+='<div class="live-sec">À venir</div>'+soon.map(card).join('');
-  if(past.length)body+='<div class="live-sec">'+(anyLive?'En cours / derniers':'Derniers résultats')+'</div>'+past.map(card).join('');
+  secs.forEach(s=>{if(!s.arr.length)return;const col=SEC[s.k]===true;
+    body+='<div class="live-section '+s.cl+'"><div class="live-sec" onclick="toggleSec(\''+s.k+'\')">'+(s.dot?'<span class="dot"></span>':'')+s.lab
+      +'<span class="sec-n">'+s.arr.length+'</span><span class="sec-ch">'+(col?'▸':'▾')+'</span></div>';
+    if(!col)body+=s.arr.map(card).join('');
+    body+='</div>';});
   el.innerHTML='<div class="live-band"><div class="live-hd">'
     +'<span class="live-ttl">'+(anyLive?'<span class="dot"></span>En direct':'Matchs')+'</span>'
     +'<button class="live-hide" onclick="toggleLive()">masquer</button></div>'+body+'</div>';}
+function toggleSec(k){SEC[k]=!SEC[k];try{localStorage.setItem('cdm2026_live_sec',JSON.stringify(SEC));}catch(e){}renderLive();}
 function toggleLive(){liveHidden=!liveHidden;try{localStorage.setItem('cdm2026_live_hidden',liveHidden?'1':'0');}catch(e){}renderLive();}
 function renderList(){document.getElementById('list').innerHTML=sortedList().map(cardHTML).join('');}
 function updateCard(id){const m=DATA.find(x=>x.id===id);if(!m)return;const pr=P[player][id];
@@ -647,6 +658,7 @@ document.getElementById('foot').innerHTML='Scores mis à jour automatiquement à
 load();
 try{const s=localStorage.getItem('cdm2026_sort');if(s==='date'||s==='poule')sortMode=s;}catch(e){}
 try{const v=localStorage.getItem('cdm2026_live_hidden');liveHidden=(v===null?true:v==='1');}catch(e){}
+try{const s=localStorage.getItem('cdm2026_live_sec');if(s)SEC=Object.assign(SEC,JSON.parse(s));}catch(e){}
 loadKO();
 setSort(sortMode);setPlayer('nina');renderChips();
 fetchScores(false,true);
