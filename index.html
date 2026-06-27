@@ -150,6 +150,66 @@
   .lp-v.dash{color:#B8AF9F;font-weight:600}
   .lp-p{font-size:10px;font-weight:700;color:#8C857A}
   .lp-p.g{color:#137A6E}
+  /* ---- Recap du jour ---- */
+  .recap{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:14px}
+  .recap h4{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);margin:0 0 8px}
+  .rc-row{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13px;border-top:1px solid var(--line)}
+  .rc-row:first-of-type{border-top:none}
+  .rc-tm{flex:1;min-width:0;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rc-sc{font-family:'JetBrains Mono',monospace;font-weight:800;color:var(--tx)}
+  .rc-sc.rc-live{color:#ff6b6b;display:inline-flex;align-items:center;gap:5px}
+  .rc-dot{width:7px;height:7px;border-radius:50%;background:#ff4d4d;animation:blink 1.3s steps(1,end) infinite}
+  .rc-tag{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--tx3)}
+  .rc-pts{margin-top:9px;padding-top:9px;border-top:1px solid var(--line);display:flex;gap:12px;font-size:12px;color:var(--tx2)}
+  .rc-pts b{font-family:'JetBrains Mono',monospace}
+  /* ---- Poules (classement groupes) ---- */
+  .pgrp{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 12px 6px;margin-bottom:12px}
+  .pgrp h4{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--tx);margin:0 0 8px}
+  .ptab{width:100%;border-collapse:collapse;font-size:12px}
+  .ptab th{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--tx3);text-align:center;padding:4px 5px;border-bottom:1px solid var(--line)}
+  .ptab th.l{text-align:left}
+  .ptab td{padding:7px 5px;text-align:center;border-bottom:1px solid var(--line);color:var(--tx2)}
+  .ptab tr:last-child td{border-bottom:none}
+  .ptab td.l{text-align:left;color:var(--tx);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+  .ptab td.pts{font-family:'JetBrains Mono',monospace;font-weight:800;color:var(--tx)}
+  .prk{display:inline-block;width:16px;font-family:'JetBrains Mono',monospace;font-weight:800;color:var(--tx3)}
+  .pq td .prk{color:var(--mint)} .pq td.l{color:var(--tx)}
+  .pq td:first-child{box-shadow:inset 3px 0 0 var(--mint)}
+  .p3 td:first-child{box-shadow:inset 3px 0 0 var(--canary)}
+  .pleg{font-size:11px;color:var(--tx3);margin:2px 2px 12px;display:flex;gap:14px}
+  .pleg i{font-style:normal} .pleg .q{color:var(--mint)} .pleg .t3{color:var(--canary)}
+  /* ---- Projection ---- */
+  .proj{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
+  .proj h3{font-size:15px;margin:0 0 2px} .proj .sub{font-size:12px;color:var(--tx3);margin:0 0 12px}
+  .pjrow{margin:10px 0}
+  .pjhd{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:4px}
+  .pjnm{font-weight:700;color:var(--tx)}
+  .pjval{font-family:'JetBrains Mono',monospace;color:var(--tx2)} .pjval b{color:var(--tx)}
+  .pjbar{height:9px;border-radius:5px;background:var(--card2);overflow:hidden;position:relative}
+  .pjfill{height:100%;border-radius:5px} .pjghost{position:absolute;top:0;height:100%;border-radius:5px;opacity:.28}
+  .pjnote{font-size:12px;color:var(--tx2);margin-top:10px;padding-top:10px;border-top:1px solid var(--line);line-height:1.5}
+  /* ---- Bracket (Coupe) ---- */
+  .brkhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;gap:10px}
+  .brkhead h3{font-size:15px;margin:0}
+  .brkhint{font-size:11px;color:var(--tx3);margin:-4px 0 12px}
+  .brkreset{background:none;border:1px solid var(--line);color:var(--tx2);font:inherit;font-size:11px;font-weight:600;padding:5px 10px;border-radius:8px;cursor:pointer;white-space:nowrap}
+  .brkscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-bottom:8px}
+  .brkcols{display:flex;gap:22px;min-width:max-content;align-items:stretch;position:relative}
+  .brkcol{display:flex;flex-direction:column;min-width:168px}
+  .brktie{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:8px}
+  .brklines{position:absolute;left:0;top:0;pointer-events:none;overflow:visible;z-index:0}
+  .brklines path{fill:none;stroke:var(--line);stroke-width:1.5}
+  .brkcol>*{position:relative;z-index:1}
+  .brkrnd{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);text-align:center;padding-bottom:2px}
+  .tie{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:7px;display:flex;flex-direction:column;gap:5px}
+  .tie .tm{display:flex;align-items:center;gap:7px;padding:6px 7px;border-radius:8px;cursor:pointer;background:var(--card2);min-height:32px}
+  .tie .tm.pk{background:rgba(20,211,169,.16);box-shadow:inset 0 0 0 1px var(--mint)}
+  .tie .tm.ph{cursor:default;opacity:.55}
+  .tie .fl{font-size:17px;flex:0 0 auto}
+  .tie .nm{font-size:12.5px;color:var(--tx);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tie .nm.lab{color:var(--tx3);font-weight:500;font-size:11px}
+  .tie .mno{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.06em;color:var(--tx3);text-align:center;text-transform:uppercase}
+  .brkfin .tie{border-color:var(--canary)}
 </style>
 </head>
 <body data-p="nina">
@@ -161,6 +221,8 @@
 
 <div class="tabs">
   <button id="tabMatchs" class="act" onclick="showView('matchs')">Mes matchs</button>
+  <button id="tabPoules" onclick="showView('poules')">Poules</button>
+  <button id="tabBracket" onclick="showView('bracket')">Coupe</button>
   <button id="tabCmp" onclick="showView('compare')">Classement</button>
 </div>
 
@@ -184,6 +246,7 @@
 
 <div class="wrap" id="viewCompare" style="display:none">
   <div id="lb"></div>
+  <div id="cmpProj"></div>
   <div class="cmp-tug" id="cmpTug"></div>
   <div class="chartcard"><h3>La course</h3><p>Points cumulés, match après match (×2 inclus).</p>
     <div class="legend" id="legRace"></div><div class="chartbox"><canvas id="raceChart"></canvas></div></div>
@@ -191,11 +254,19 @@
     <div class="legend" id="legGroup"></div><div class="chartbox"><canvas id="groupChart"></canvas></div></div>
 </div>
 
+<div class="wrap" id="viewPoules" style="display:none">
+  <div id="poules"></div>
+</div>
+
+<div class="wrap" id="viewBracket" style="display:none">
+  <div id="bracket"></div>
+</div>
+
 <footer id="foot"></footer>
 <div class="toast" id="toast"></div>
 
 <script>
-const DATA = [{"id":2,"g":"A","j":"J1","date":"11/06","e1":"Mexico","e2":"South Africa","fr1":"Mexique","fr2":"Afrique du Sud","fl1":"🇲🇽","fl2":"🇿🇦","c1":49,"cN":null,"c2":null,"r1":2,"r2":0,"nina":[1,0],"mael":[1,0],"tom":[null,null]},{"id":3,"g":"A","j":"J1","date":"12/06","e1":"South Korea","e2":"Czechia","fr1":"Corée du Sud","fr2":"Tchéquie","fl1":"🇰🇷","fl2":"🇨🇿","c1":96,"cN":null,"c2":null,"r1":2,"r2":1,"nina":[0,0],"mael":[0,0],"tom":[null,null]},{"id":4,"g":"A","j":"J2","date":"18/06","e1":"Czechia","e2":"South Africa","fr1":"Tchéquie","fr2":"Afrique du Sud","fl1":"🇨🇿","fl2":"🇿🇦","c1":null,"cN":112,"c2":null,"r1":1,"r2":1,"nina":[0,0],"mael":[1,2],"tom":[0,0]},{"id":5,"g":"A","j":"J2","date":"18/06","e1":"Mexico","e2":"South Korea","fr1":"Mexique","fr2":"Corée du Sud","fl1":"🇲🇽","fl2":"🇰🇷","c1":69,"cN":117,"c2":129,"r1":1,"r2":0,"nina":[1,0],"mael":[1,0],"tom":[1,1]},{"id":6,"g":"A","j":"J3","date":"25/06","e1":"Czechia","e2":"Mexico","fr1":"Tchéquie","fr2":"Mexique","fl1":"🇨🇿","fl2":"🇲🇽","c1":109,"cN":99,"c2":91,"r1":null,"r2":null,"nina":[0,1],"mael":[0,3],"tom":[1,0]},{"id":7,"g":"A","j":"J3","date":"25/06","e1":"South Africa","e2":"South Korea","fr1":"Afrique du Sud","fr2":"Corée du Sud","fl1":"🇿🇦","fl2":"🇰🇷","c1":117,"cN":103,"c2":87,"r1":null,"r2":null,"nina":[1,1],"mael":[1,0],"tom":[0,1]},{"id":8,"g":"B","j":"J1","date":"12/06","e1":"Canada","e2":"Bosnia","fr1":"Canada","fr2":"Bosnie","fl1":"🇨🇦","fl2":"🇧🇦","c1":65,"cN":null,"c2":null,"r1":1,"r2":1,"nina":[2,0],"mael":[3,0],"tom":[null,null]},{"id":9,"g":"B","j":"J1","date":"13/06","e1":"Switzerland","e2":"Qatar","fr1":"Suisse","fr2":"Qatar","fl1":"🇨🇭","fl2":"🇶🇦","c1":33,"cN":null,"c2":null,"r1":1,"r2":1,"nina":[1,0],"mael":[2,0],"tom":[null,null]},{"id":10,"g":"B","j":"J2","date":"18/06","e1":"Switzerland","e2":"Bosnia","fr1":"Suisse","fr2":"Bosnie","fl1":"🇨🇭","fl2":"🇧🇦","c1":76,"cN":108,"c2":134,"r1":4,"r2":1,"nina":[2,0],"mael":[2,0],"tom":[0,1]},{"id":11,"g":"B","j":"J2","date":"18/06","e1":"Canada","e2":"Qatar","fr1":"Canada","fr2":"Qatar","fl1":"🇨🇦","fl2":"🇶🇦","c1":71,"cN":null,"c2":null,"r1":6,"r2":0,"nina":[1,0],"mael":[3,0],"tom":[2,0]},{"id":12,"g":"B","j":"J3","date":"24/06","e1":"Switzerland","e2":"Canada","fr1":"Suisse","fr2":"Canada","fl1":"🇨🇭","fl2":"🇨🇦","c1":68,"cN":106,"c2":129,"r1":2,"r2":1,"nina":[1,1],"mael":[1,1],"tom":[0,1]},{"id":13,"g":"B","j":"J3","date":"24/06","e1":"Bosnia","e2":"Qatar","fr1":"Bosnie","fr2":"Qatar","fl1":"🇧🇦","fl2":"🇶🇦","c1":87,"cN":102,"c2":120,"r1":3,"r2":1,"nina":[0,0],"mael":[0,0],"tom":[2,0]},{"id":14,"g":"C","j":"J1","date":"13/06","e1":"Brazil","e2":"Morocco","fr1":"Brésil","fr2":"Maroc","fl1":"🇧🇷","fl2":"🇲🇦","c1":55,"cN":null,"c2":null,"r1":1,"r2":1,"nina":[2,1],"mael":[2,0],"tom":[2,1]},{"id":15,"g":"C","j":"J1","date":"13/06","e1":"Scotland","e2":"Haiti","fr1":"Écosse","fr2":"Haïti","fl1":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","fl2":"🇭🇹","c1":44,"cN":131,"c2":154,"r1":1,"r2":0,"nina":[2,0],"mael":[1,0],"tom":[0,0]},{"id":16,"g":"C","j":"J2","date":"19/06","e1":"Morocco","e2":"Scotland","fr1":"Maroc","fr2":"Écosse","fl1":"🇲🇦","fl2":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","c1":91,"cN":null,"c2":null,"r1":1,"r2":0,"nina":[2,1],"mael":[1,0],"tom":[0,2]},{"id":17,"g":"C","j":"J2","date":"19/06","e1":"Brazil","e2":"Haiti","fr1":"Brésil","fr2":"Haïti","fl1":"🇧🇷","fl2":"🇭🇹","c1":21,"cN":null,"c2":null,"r1":3,"r2":0,"nina":[3,0],"mael":[5,0],"tom":[5,0]},{"id":18,"g":"C","j":"J3","date":"25/06","e1":"Scotland","e2":"Brazil","fr1":"Écosse","fr2":"Brésil","fl1":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","fl2":"🇧🇷","c1":145,"cN":124,"c2":48,"r1":null,"r2":null,"nina":[1,2],"mael":[3,0],"tom":[0,3]},{"id":19,"g":"C","j":"J3","date":"25/06","e1":"Morocco","e2":"Haiti","fr1":"Maroc","fr2":"Haïti","fl1":"🇲🇦","fl2":"🇭🇹","c1":29,"cN":159,"c2":187,"r1":null,"r2":null,"nina":[2,0],"mael":[2,0],"tom":[3,0]},{"id":20,"g":"D","j":"J1","date":"13/06","e1":"USA","e2":"Paraguay","fr1":"États-Unis","fr2":"Paraguay","fl1":"🇺🇸","fl2":"🇵🇾","c1":74,"cN":113,"c2":115,"r1":4,"r2":1,"nina":[1,0],"mael":[1,0],"tom":[0,1]},{"id":21,"g":"D","j":"J1","date":"13/06","e1":"Australia","e2":"Türkiye","fr1":"Australie","fr2":"Turquie","fl1":"🇦🇺","fl2":"🇹🇷","c1":null,"cN":null,"c2":66,"r1":2,"r2":0,"nina":[1,1],"mael":[1,1],"tom":[0,1]},{"id":22,"g":"D","j":"J2","date":"19/06","e1":"USA","e2":"Australia","fr1":"États-Unis","fr2":"Australie","fl1":"🇺🇸","fl2":"🇦🇺","c1":58,"cN":null,"c2":null,"r1":2,"r2":0,"nina":[1,0],"mael":[1,1],"tom":[2,0]},{"id":23,"g":"D","j":"J2","date":"19/06","e1":"Paraguay","e2":"Türkiye","fr1":"Paraguay","fr2":"Turquie","fl1":"🇵🇾","fl2":"🇹🇷","c1":null,"cN":null,"c2":84,"r1":1,"r2":0,"nina":[0,1],"mael":[1,1],"tom":[0,2]},{"id":24,"g":"D","j":"J3","date":"26/06","e1":"Türkiye","e2":"United States","fr1":"Turquie","fr2":"États-Unis","fl1":"🇹🇷","fl2":"🇺🇸","c1":109,"cN":102,"c2":93,"r1":null,"r2":null,"nina":[1,1],"mael":[1,1],"tom":[1,0]},{"id":25,"g":"D","j":"J3","date":"26/06","e1":"Paraguay","e2":"Australia","fr1":"Paraguay","fr2":"Australie","fl1":"🇵🇾","fl2":"🇦🇺","c1":74,"cN":104,"c2":131,"r1":null,"r2":null,"nina":[0,1],"mael":[0,1],"tom":[1,0]},{"id":26,"g":"E","j":"J1","date":"14/06","e1":"Germany","e2":"Curaçao","fr1":"Allemagne","fr2":"Curaçao","fl1":"🇩🇪","fl2":"🇨🇼","c1":15,"cN":null,"c2":null,"r1":7,"r2":1,"nina":[2,0],"mael":[3,1],"tom":[4,1]},{"id":27,"g":"E","j":"J1","date":"14/06","e1":"Ivory Coast","e2":"Ecuador","fr1":"Côte d'Ivoire","fr2":"Équateur","fl1":"🇨🇮","fl2":"🇪🇨","c1":108,"cN":null,"c2":null,"r1":1,"r2":0,"nina":[1,0],"mael":[1,0],"tom":[2,0]},{"id":28,"g":"E","j":"J2","date":"20/06","e1":"Germany","e2":"Ivory Coast","fr1":"Allemagne","fr2":"Côte d'Ivoire","fl1":"🇩🇪","fl2":"🇨🇮","c1":38,"cN":137,"c2":164,"r1":2,"r2":1,"nina":[2,1],"mael":[1,1],"tom":[2,1]},{"id":29,"g":"E","j":"J2","date":"21/06","e1":"Ecuador","e2":"Curaçao","fr1":"Équateur","fr2":"Curaçao","fl1":"🇪🇨","fl2":"🇨🇼","c1":41,"cN":143,"c2":168,"r1":0,"r2":0,"nina":[0,0],"mael":[1,0],"tom":[3,0]},{"id":30,"g":"E","j":"J3","date":"25/06","e1":"Ecuador","e2":"Germany","fr1":"Équateur","fr2":"Allemagne","fl1":"🇪🇨","fl2":"🇩🇪","c1":145,"cN":129,"c2":42,"r1":null,"r2":null,"nina":[0,3],"mael":[0,7],"tom":[1,3]},{"id":31,"g":"E","j":"J3","date":"25/06","e1":"Curaçao","e2":"Ivory Coast","fr1":"Curaçao","fr2":"Côte d'Ivoire","fl1":"🇨🇼","fl2":"🇨🇮","c1":163,"cN":118,"c2":53,"r1":null,"r2":null,"nina":[0,2],"mael":[0,4],"tom":[0,3]},{"id":32,"g":"F","j":"J1","date":"14/06","e1":"Netherlands","e2":"Japan","fr1":"Pays-Bas","fr2":"Japon","fl1":"🇳🇱","fl2":"🇯🇵","c1":74,"cN":115,"c2":113,"r1":2,"r2":2,"nina":[1,1],"mael":[1,0],"tom":[0,1]},{"id":33,"g":"F","j":"J1","date":"14/06","e1":"Sweden","e2":"Tunisia","fr1":"Suède","fr2":"Tunisie","fl1":"🇸🇪","fl2":"🇹🇳","c1":null,"cN":null,"c2":122,"r1":5,"r2":1,"nina":[0,1],"mael":[0,1],"tom":[null,null]},{"id":34,"g":"F","j":"J2","date":"20/06","e1":"Netherlands","e2":"Sweden","fr1":"Pays-Bas","fr2":"Suède","fl1":"🇳🇱","fl2":"🇸🇪","c1":67,"cN":122,"c2":131,"r1":5,"r2":1,"nina":[1,0],"mael":[0,0],"tom":[0,1]},{"id":35,"g":"F","j":"J2","date":"21/06","e1":"Tunisia","e2":"Japan","fr1":"Tunisie","fr2":"Japon","fl1":"🇹🇳","fl2":"🇯🇵","c1":118,"cN":103,"c2":91,"r1":0,"r2":4,"nina":[1,1],"mael":[3,0],"tom":[0,1]},{"id":36,"g":"F","j":"J3","date":"26/06","e1":"Tunisia","e2":"Netherlands","fr1":"Tunisie","fr2":"Pays-Bas","fl1":"🇹🇳","fl2":"🇳🇱","c1":131,"cN":123,"c2":56,"r1":null,"r2":null,"nina":[0,2],"mael":[0,2],"tom":[1,0]},{"id":37,"g":"F","j":"J3","date":"26/06","e1":"Japan","e2":"Sweden","fr1":"Japon","fr2":"Suède","fl1":"🇯🇵","fl2":"🇸🇪","c1":96,"cN":108,"c2":111,"r1":null,"r2":null,"nina":[2,0],"mael":[2,1],"tom":[2,1]},{"id":38,"g":"G","j":"J1","date":"15/06","e1":"Belgium","e2":"Egypt","fr1":"Belgique","fr2":"Égypte","fl1":"🇧🇪","fl2":"🇪🇬","c1":null,"cN":122,"c2":null,"r1":1,"r2":1,"nina":[1,1],"mael":[1,1],"tom":[1,1]},{"id":39,"g":"G","j":"J1","date":"15/06","e1":"Iran","e2":"New Zealand","fr1":"Iran","fr2":"Nouvelle-Zélande","fl1":"🇮🇷","fl2":"🇳🇿","c1":null,"cN":null,"c2":130,"r1":2,"r2":2,"nina":[0,1],"mael":[0,1],"tom":[0,1]},{"id":40,"g":"G","j":"J2","date":"21/06","e1":"Belgium","e2":"Iran","fr1":"Belgique","fr2":"Iran","fl1":"🇧🇪","fl2":"🇮🇷","c1":39,"cN":138,"c2":171,"r1":0,"r2":0,"nina":[2,0],"mael":[2,0],"tom":[2,0]},{"id":41,"g":"G","j":"J2","date":"22/06","e1":"New Zealand","e2":"Egypt","fr1":"Nouvelle-Zélande","fr2":"Égypte","fl1":"🇳🇿","fl2":"🇪🇬","c1":148,"cN":116,"c2":59,"r1":1,"r2":3,"nina":[1,2],"mael":[1,1],"tom":[0,1]},{"id":42,"g":"G","j":"J3","date":"27/06","e1":"New Zealand","e2":"Belgium","fr1":"Nouvelle-Zélande","fr2":"Belgique","fl1":"🇳🇿","fl2":"🇧🇪","c1":172,"cN":129,"c2":32,"r1":null,"r2":null,"nina":[2,0],"mael":[0,2],"tom":[0,2]},{"id":43,"g":"G","j":"J3","date":"27/06","e1":"Egypt","e2":"Iran","fr1":"Égypte","fr2":"Iran","fl1":"🇪🇬","fl2":"🇮🇷","c1":85,"cN":114,"c2":123,"r1":null,"r2":null,"nina":[1,2],"mael":[1,0],"tom":[1,0]},{"id":44,"g":"H","j":"J1","date":"15/06","e1":"Spain","e2":"Cape Verde","fr1":"Espagne","fr2":"Cap-Vert","fl1":"🇪🇸","fl2":"🇨🇻","c1":16,"cN":null,"c2":null,"r1":0,"r2":0,"nina":[3,0],"mael":[3,0],"tom":[3,0]},{"id":45,"g":"H","j":"J1","date":"15/06","e1":"Saudi Arabia","e2":"Uruguay","fr1":"Arabie saoudite","fr2":"Uruguay","fl1":"🇸🇦","fl2":"🇺🇾","c1":null,"cN":null,"c2":50,"r1":1,"r2":1,"nina":[0,2],"mael":[0,4],"tom":[0,1]},{"id":46,"g":"H","j":"J2","date":"21/06","e1":"Spain","e2":"Saudi Arabia","fr1":"Espagne","fr2":"Arabie saoudite","fl1":"🇪🇸","fl2":"🇸🇦","c1":31,"cN":139,"c2":176,"r1":4,"r2":0,"nina":[3,0],"mael":[3,0],"tom":[2,0]},{"id":47,"g":"H","j":"J2","date":"22/06","e1":"Uruguay","e2":"Cape Verde","fr1":"Uruguay","fr2":"Cap-Vert","fl1":"🇺🇾","fl2":"🇨🇻","c1":72,"cN":109,"c2":137,"r1":2,"r2":2,"nina":[1,0],"mael":[3,0],"tom":[2,0]},{"id":48,"g":"H","j":"J3","date":"27/06","e1":"Uruguay","e2":"Spain","fr1":"Uruguay","fr2":"Espagne","fl1":"🇺🇾","fl2":"🇪🇸","c1":143,"cN":112,"c2":57,"r1":null,"r2":null,"nina":[1,2],"mael":[0,1],"tom":[1,0]},{"id":49,"g":"H","j":"J3","date":"27/06","e1":"Cape Verde","e2":"Saudi Arabia","fr1":"Cap-Vert","fr2":"Arabie saoudite","fl1":"🇨🇻","fl2":"🇸🇦","c1":99,"cN":123,"c2":94,"r1":null,"r2":null,"nina":[0,0],"mael":[0,0],"tom":[0,0]},{"id":50,"g":"I","j":"J1","date":"16/06","e1":"France","e2":"Senegal","fr1":"France","fr2":"Sénégal","fl1":"🇫🇷","fl2":"🇸🇳","c1":null,"cN":128,"c2":null,"r1":3,"r2":1,"nina":[1,1],"mael":[1,1],"tom":[2,2]},{"id":51,"g":"I","j":"J1","date":"16/06","e1":"Iraq","e2":"Norway","fr1":"Irak","fr2":"Norvège","fl1":"🇮🇶","fl2":"🇳🇴","c1":178,"cN":144,"c2":30,"r1":1,"r2":4,"nina":[0,1],"mael":[0,1],"tom":[0,0]},{"id":52,"g":"I","j":"J2","date":"22/06","e1":"France","e2":"Iraq","fr1":"France","fr2":"Irak","fl1":"🇫🇷","fl2":"🇮🇶","c1":22,"cN":166,"c2":189,"r1":3,"r2":0,"nina":[2,0],"mael":[3,0],"tom":[3,1]},{"id":53,"g":"I","j":"J2","date":"23/06","e1":"Norway","e2":"Senegal","fr1":"Norvège","fr2":"Sénégal","fl1":"🇳🇴","fl2":"🇸🇳","c1":64,"cN":105,"c2":137,"r1":3,"r2":2,"nina":[0,1],"mael":[1,1],"tom":[0,2]},{"id":54,"g":"I","j":"J3","date":"26/06","e1":"Norway","e2":"France","fr1":"Norvège","fr2":"France","fl1":"🇳🇴","fl2":"🇫🇷","c1":141,"cN":108,"c2":68,"r1":null,"r2":null,"nina":[1,2],"mael":[0,2],"tom":[0,1]},{"id":55,"g":"I","j":"J3","date":"26/06","e1":"Senegal","e2":"Iraq","fr1":"Sénégal","fr2":"Irak","fl1":"🇸🇳","fl2":"🇮🇶","c1":54,"cN":115,"c2":149,"r1":null,"r2":null,"nina":[1,0],"mael":[3,0],"tom":[2,0]},{"id":56,"g":"J","j":"J1","date":"16/06","e1":"Argentina","e2":"Algeria","fr1":"Argentine","fr2":"Algérie","fl1":"🇦🇷","fl2":"🇩🇿","c1":43,"cN":null,"c2":null,"r1":3,"r2":0,"nina":[2,1],"mael":[1,0],"tom":[null,null]},{"id":57,"g":"J","j":"J1","date":"17/06","e1":"Austria","e2":"Jordan","fr1":"Autriche","fr2":"Jordanie","fl1":"🇦🇹","fl2":"🇯🇴","c1":38,"cN":null,"c2":null,"r1":3,"r2":1,"nina":[1,0],"mael":[1,0],"tom":[null,null]},{"id":58,"g":"J","j":"J2","date":"22/06","e1":"Argentina","e2":"Austria","fr1":"Argentine","fr2":"Autriche","fl1":"🇦🇷","fl2":"🇦🇹","c1":63,"cN":105,"c2":132,"r1":2,"r2":0,"nina":[2,0],"mael":[2,0],"tom":[3,1]},{"id":59,"g":"J","j":"J2","date":"23/06","e1":"Jordan","e2":"Algeria","fr1":"Jordanie","fr2":"Algérie","fl1":"🇯🇴","fl2":"🇩🇿","c1":152,"cN":139,"c2":67,"r1":1,"r2":2,"nina":[0,1],"mael":[0,2],"tom":[0,2]},{"id":60,"g":"J","j":"J3","date":"28/06","e1":"Jordan","e2":"Argentina","fr1":"Jordanie","fr2":"Argentine","fl1":"🇯🇴","fl2":"🇦🇷","c1":165,"cN":145,"c2":32,"r1":null,"r2":null,"nina":[1,2],"mael":[0,3],"tom":[0,2]},{"id":61,"g":"J","j":"J3","date":"28/06","e1":"Algeria","e2":"Austria","fr1":"Algérie","fr2":"Autriche","fl1":"🇩🇿","fl2":"🇦🇹","c1":96,"cN":103,"c2":107,"r1":null,"r2":null,"nina":[1,1],"mael":[1,1],"tom":[2,0]},{"id":62,"g":"K","j":"J1","date":"17/06","e1":"Portugal","e2":"DR Congo","fr1":"Portugal","fr2":"RD Congo","fl1":"🇵🇹","fl2":"🇨🇩","c1":34,"cN":null,"c2":null,"r1":1,"r2":1,"nina":[1,0],"mael":[1,0],"tom":[3,0]},{"id":63,"g":"K","j":"J1","date":"17/06","e1":"Uzbekistan","e2":"Colombia","fr1":"Ouzbékistan","fr2":"Colombie","fl1":"🇺🇿","fl2":"🇨🇴","c1":null,"cN":null,"c2":44,"r1":1,"r2":3,"nina":[0,3],"mael":[0,4],"tom":[null,null]},{"id":64,"g":"K","j":"J2","date":"23/06","e1":"Portugal","e2":"Uzbekistan","fr1":"Portugal","fr2":"Ouzbékistan","fl1":"🇵🇹","fl2":"🇺🇿","c1":24,"cN":154,"c2":173,"r1":5,"r2":0,"nina":[1,0],"mael":[3,0],"tom":[4,0]},{"id":65,"g":"K","j":"J2","date":"23/06","e1":"Colombia","e2":"DR Congo","fr1":"Colombie","fr2":"RD Congo","fl1":"🇨🇴","fl2":"🇨🇩","c1":77,"cN":111,"c2":123,"r1":1,"r2":0,"nina":[2,0],"mael":[3,0],"tom":[1,1]},{"id":66,"g":"K","j":"J3","date":"28/06","e1":"Colombia","e2":"Portugal","fr1":"Colombie","fr2":"Portugal","fl1":"🇨🇴","fl2":"🇵🇹","c1":154,"cN":102,"c2":55,"r1":null,"r2":null,"nina":[2,1],"mael":[1,1],"tom":[1,0]},{"id":67,"g":"K","j":"J3","date":"28/06","e1":"DR Congo","e2":"Uzbekistan","fr1":"RD Congo","fr2":"Ouzbékistan","fl1":"🇨🇩","fl2":"🇺🇿","c1":63,"cN":107,"c2":158,"r1":null,"r2":null,"nina":[0,0],"mael":[1,1],"tom":[2,1]},{"id":68,"g":"L","j":"J1","date":"17/06","e1":"England","e2":"Croatia","fr1":"Angleterre","fr2":"Croatie","fl1":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","fl2":"🇭🇷","c1":null,"cN":119,"c2":null,"r1":4,"r2":2,"nina":[2,2],"mael":[1,1],"tom":[null,null]},{"id":69,"g":"L","j":"J1","date":"17/06","e1":"Ghana","e2":"Panama","fr1":"Ghana","fr2":"Panama","fl1":"🇬🇭","fl2":"🇵🇦","c1":73,"cN":null,"c2":null,"r1":1,"r2":0,"nina":[0,0],"mael":[1,0],"tom":[null,null]},{"id":70,"g":"L","j":"J2","date":"23/06","e1":"England","e2":"Ghana","fr1":"Angleterre","fr2":"Ghana","fl1":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","fl2":"🇬🇭","c1":44,"cN":127,"c2":162,"r1":0,"r2":0,"nina":[2,0],"mael":[3,0],"tom":[1,0]},{"id":71,"g":"L","j":"J2","date":"24/06","e1":"Panama","e2":"Croatia","fr1":"Panama","fr2":"Croatie","fl1":"🇵🇦","fl2":"🇭🇷","c1":165,"cN":123,"c2":36,"r1":0,"r2":1,"nina":[0,2],"mael":[0,2],"tom":[0,2]},{"id":72,"g":"L","j":"J3","date":"27/06","e1":"Panama","e2":"England","fr1":"Panama","fr2":"Angleterre","fl1":"🇵🇦","fl2":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","c1":168,"cN":137,"c2":32,"r1":null,"r2":null,"nina":[0,3],"mael":[0,3],"tom":[0,2]},{"id":73,"g":"L","j":"J3","date":"27/06","e1":"Croatia","e2":"Ghana","fr1":"Croatie","fr2":"Ghana","fl1":"🇭🇷","fl2":"🇬🇭","c1":57,"cN":120,"c2":138,"r1":null,"r2":null,"nina":[2,1],"mael":[3,0],"tom":[0,0]}];
+const DATA = [{"id":2,"g":"A","j":"J1","date":"11/06","e1":"Mexico","e2":"South Africa","fr1":"Mexique","fr2":"Afrique du Sud","fl1":"🇲🇽","fl2":"🇿🇦","c1":49,"cN":null,"c2":null,"r1":2,"r2":0,"nina":[1,0],"mael":[1,0],"tom":[null,null]},{"id":3,"g":"A","j":"J1","date":"12/06","e1":"South Korea","e2":"Czechia","fr1":"Corée du Sud","fr2":"Tchéquie","fl1":"🇰🇷","fl2":"🇨🇿","c1":96,"cN":null,"c2":null,"r1":2,"r2":1,"nina":[0,0],"mael":[0,0],"tom":[null,null]},{"id":4,"g":"A","j":"J2","date":"18/06","e1":"Czechia","e2":"South Africa","fr1":"Tchéquie","fr2":"Afrique du Sud","fl1":"🇨🇿","fl2":"🇿🇦","c1":null,"cN":112,"c2":null,"r1":1,"r2":1,"nina":[0,0],"mael":[1,2],"tom":[0,0]},{"id":5,"g":"A","j":"J2","date":"18/06","e1":"Mexico","e2":"South Korea","fr1":"Mexique","fr2":"Corée du Sud","fl1":"🇲🇽","fl2":"🇰🇷","c1":69,"cN":117,"c2":129,"r1":1,"r2":0,"nina":[1,0],"mael":[1,0],"tom":[1,1]},{"id":6,"g":"A","j":"J3","date":"25/06","e1":"Czechia","e2":"Mexico","fr1":"Tchéquie","fr2":"Mexique","fl1":"🇨🇿","fl2":"🇲🇽","c1":109,"cN":99,"c2":91,"r1":null,"r2":null,"nina":[0,1],"mael":[0,3],"tom":[1,0],"h":"03:00"},{"id":7,"g":"A","j":"J3","date":"25/06","e1":"South Africa","e2":"South Korea","fr1":"Afrique du Sud","fr2":"Corée du Sud","fl1":"🇿🇦","fl2":"🇰🇷","c1":117,"cN":103,"c2":87,"r1":null,"r2":null,"nina":[1,1],"mael":[1,0],"tom":[0,1],"h":"03:00"},{"id":8,"g":"B","j":"J1","date":"12/06","e1":"Canada","e2":"Bosnia","fr1":"Canada","fr2":"Bosnie","fl1":"🇨🇦","fl2":"🇧🇦","c1":65,"cN":null,"c2":null,"r1":1,"r2":1,"nina":[2,0],"mael":[3,0],"tom":[null,null]},{"id":9,"g":"B","j":"J1","date":"13/06","e1":"Switzerland","e2":"Qatar","fr1":"Suisse","fr2":"Qatar","fl1":"🇨🇭","fl2":"🇶🇦","c1":33,"cN":null,"c2":null,"r1":1,"r2":1,"nina":[1,0],"mael":[2,0],"tom":[null,null]},{"id":10,"g":"B","j":"J2","date":"18/06","e1":"Switzerland","e2":"Bosnia","fr1":"Suisse","fr2":"Bosnie","fl1":"🇨🇭","fl2":"🇧🇦","c1":76,"cN":108,"c2":134,"r1":4,"r2":1,"nina":[2,0],"mael":[2,0],"tom":[0,1]},{"id":11,"g":"B","j":"J2","date":"18/06","e1":"Canada","e2":"Qatar","fr1":"Canada","fr2":"Qatar","fl1":"🇨🇦","fl2":"🇶🇦","c1":71,"cN":null,"c2":null,"r1":6,"r2":0,"nina":[1,0],"mael":[3,0],"tom":[2,0]},{"id":12,"g":"B","j":"J3","date":"24/06","e1":"Switzerland","e2":"Canada","fr1":"Suisse","fr2":"Canada","fl1":"🇨🇭","fl2":"🇨🇦","c1":68,"cN":106,"c2":129,"r1":2,"r2":1,"nina":[1,1],"mael":[1,1],"tom":[0,1],"h":"21:00"},{"id":13,"g":"B","j":"J3","date":"24/06","e1":"Bosnia","e2":"Qatar","fr1":"Bosnie","fr2":"Qatar","fl1":"🇧🇦","fl2":"🇶🇦","c1":87,"cN":102,"c2":120,"r1":3,"r2":1,"nina":[0,0],"mael":[0,0],"tom":[2,0],"h":"21:00"},{"id":14,"g":"C","j":"J1","date":"13/06","e1":"Brazil","e2":"Morocco","fr1":"Brésil","fr2":"Maroc","fl1":"🇧🇷","fl2":"🇲🇦","c1":55,"cN":null,"c2":null,"r1":1,"r2":1,"nina":[2,1],"mael":[2,0],"tom":[2,1]},{"id":15,"g":"C","j":"J1","date":"13/06","e1":"Scotland","e2":"Haiti","fr1":"Écosse","fr2":"Haïti","fl1":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","fl2":"🇭🇹","c1":44,"cN":131,"c2":154,"r1":1,"r2":0,"nina":[2,0],"mael":[1,0],"tom":[0,0]},{"id":16,"g":"C","j":"J2","date":"19/06","e1":"Morocco","e2":"Scotland","fr1":"Maroc","fr2":"Écosse","fl1":"🇲🇦","fl2":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","c1":91,"cN":null,"c2":null,"r1":1,"r2":0,"nina":[2,1],"mael":[1,0],"tom":[0,2]},{"id":17,"g":"C","j":"J2","date":"19/06","e1":"Brazil","e2":"Haiti","fr1":"Brésil","fr2":"Haïti","fl1":"🇧🇷","fl2":"🇭🇹","c1":21,"cN":null,"c2":null,"r1":3,"r2":0,"nina":[3,0],"mael":[5,0],"tom":[5,0]},{"id":18,"g":"C","j":"J3","date":"25/06","e1":"Scotland","e2":"Brazil","fr1":"Écosse","fr2":"Brésil","fl1":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","fl2":"🇧🇷","c1":145,"cN":124,"c2":48,"r1":null,"r2":null,"nina":[1,2],"mael":[3,0],"tom":[0,3],"h":"00:00"},{"id":19,"g":"C","j":"J3","date":"25/06","e1":"Morocco","e2":"Haiti","fr1":"Maroc","fr2":"Haïti","fl1":"🇲🇦","fl2":"🇭🇹","c1":29,"cN":159,"c2":187,"r1":null,"r2":null,"nina":[2,0],"mael":[2,0],"tom":[3,0],"h":"00:00"},{"id":20,"g":"D","j":"J1","date":"13/06","e1":"USA","e2":"Paraguay","fr1":"États-Unis","fr2":"Paraguay","fl1":"🇺🇸","fl2":"🇵🇾","c1":74,"cN":113,"c2":115,"r1":4,"r2":1,"nina":[1,0],"mael":[1,0],"tom":[0,1]},{"id":21,"g":"D","j":"J1","date":"13/06","e1":"Australia","e2":"Türkiye","fr1":"Australie","fr2":"Turquie","fl1":"🇦🇺","fl2":"🇹🇷","c1":null,"cN":null,"c2":66,"r1":2,"r2":0,"nina":[1,1],"mael":[1,1],"tom":[0,1]},{"id":22,"g":"D","j":"J2","date":"19/06","e1":"USA","e2":"Australia","fr1":"États-Unis","fr2":"Australie","fl1":"🇺🇸","fl2":"🇦🇺","c1":58,"cN":null,"c2":null,"r1":2,"r2":0,"nina":[1,0],"mael":[1,1],"tom":[2,0]},{"id":23,"g":"D","j":"J2","date":"19/06","e1":"Paraguay","e2":"Türkiye","fr1":"Paraguay","fr2":"Turquie","fl1":"🇵🇾","fl2":"🇹🇷","c1":null,"cN":null,"c2":84,"r1":1,"r2":0,"nina":[0,1],"mael":[1,1],"tom":[0,2]},{"id":24,"g":"D","j":"J3","date":"26/06","e1":"Türkiye","e2":"United States","fr1":"Turquie","fr2":"États-Unis","fl1":"🇹🇷","fl2":"🇺🇸","c1":109,"cN":102,"c2":93,"r1":null,"r2":null,"nina":[1,1],"mael":[1,1],"tom":[1,0],"h":"04:00"},{"id":25,"g":"D","j":"J3","date":"26/06","e1":"Paraguay","e2":"Australia","fr1":"Paraguay","fr2":"Australie","fl1":"🇵🇾","fl2":"🇦🇺","c1":74,"cN":104,"c2":131,"r1":null,"r2":null,"nina":[0,1],"mael":[0,1],"tom":[1,0],"h":"04:00"},{"id":26,"g":"E","j":"J1","date":"14/06","e1":"Germany","e2":"Curaçao","fr1":"Allemagne","fr2":"Curaçao","fl1":"🇩🇪","fl2":"🇨🇼","c1":15,"cN":null,"c2":null,"r1":7,"r2":1,"nina":[2,0],"mael":[3,1],"tom":[4,1]},{"id":27,"g":"E","j":"J1","date":"14/06","e1":"Ivory Coast","e2":"Ecuador","fr1":"Côte d'Ivoire","fr2":"Équateur","fl1":"🇨🇮","fl2":"🇪🇨","c1":108,"cN":null,"c2":null,"r1":1,"r2":0,"nina":[1,0],"mael":[1,0],"tom":[2,0]},{"id":28,"g":"E","j":"J2","date":"20/06","e1":"Germany","e2":"Ivory Coast","fr1":"Allemagne","fr2":"Côte d'Ivoire","fl1":"🇩🇪","fl2":"🇨🇮","c1":38,"cN":137,"c2":164,"r1":2,"r2":1,"nina":[2,1],"mael":[1,1],"tom":[2,1]},{"id":29,"g":"E","j":"J2","date":"21/06","e1":"Ecuador","e2":"Curaçao","fr1":"Équateur","fr2":"Curaçao","fl1":"🇪🇨","fl2":"🇨🇼","c1":41,"cN":143,"c2":168,"r1":0,"r2":0,"nina":[0,0],"mael":[1,0],"tom":[3,0]},{"id":30,"g":"E","j":"J3","date":"25/06","e1":"Ecuador","e2":"Germany","fr1":"Équateur","fr2":"Allemagne","fl1":"🇪🇨","fl2":"🇩🇪","c1":145,"cN":129,"c2":42,"r1":null,"r2":null,"nina":[0,3],"mael":[0,7],"tom":[1,3],"h":"22:00"},{"id":31,"g":"E","j":"J3","date":"25/06","e1":"Curaçao","e2":"Ivory Coast","fr1":"Curaçao","fr2":"Côte d'Ivoire","fl1":"🇨🇼","fl2":"🇨🇮","c1":163,"cN":118,"c2":53,"r1":null,"r2":null,"nina":[0,2],"mael":[0,4],"tom":[0,3],"h":"22:00"},{"id":32,"g":"F","j":"J1","date":"14/06","e1":"Netherlands","e2":"Japan","fr1":"Pays-Bas","fr2":"Japon","fl1":"🇳🇱","fl2":"🇯🇵","c1":74,"cN":115,"c2":113,"r1":2,"r2":2,"nina":[1,1],"mael":[1,0],"tom":[0,1]},{"id":33,"g":"F","j":"J1","date":"14/06","e1":"Sweden","e2":"Tunisia","fr1":"Suède","fr2":"Tunisie","fl1":"🇸🇪","fl2":"🇹🇳","c1":null,"cN":null,"c2":122,"r1":5,"r2":1,"nina":[0,1],"mael":[0,1],"tom":[null,null]},{"id":34,"g":"F","j":"J2","date":"20/06","e1":"Netherlands","e2":"Sweden","fr1":"Pays-Bas","fr2":"Suède","fl1":"🇳🇱","fl2":"🇸🇪","c1":67,"cN":122,"c2":131,"r1":5,"r2":1,"nina":[1,0],"mael":[0,0],"tom":[0,1]},{"id":35,"g":"F","j":"J2","date":"21/06","e1":"Tunisia","e2":"Japan","fr1":"Tunisie","fr2":"Japon","fl1":"🇹🇳","fl2":"🇯🇵","c1":118,"cN":103,"c2":91,"r1":0,"r2":4,"nina":[1,1],"mael":[3,0],"tom":[0,1]},{"id":36,"g":"F","j":"J3","date":"26/06","e1":"Tunisia","e2":"Netherlands","fr1":"Tunisie","fr2":"Pays-Bas","fl1":"🇹🇳","fl2":"🇳🇱","c1":131,"cN":123,"c2":56,"r1":null,"r2":null,"nina":[0,2],"mael":[0,2],"tom":[1,0],"h":"01:00"},{"id":37,"g":"F","j":"J3","date":"26/06","e1":"Japan","e2":"Sweden","fr1":"Japon","fr2":"Suède","fl1":"🇯🇵","fl2":"🇸🇪","c1":96,"cN":108,"c2":111,"r1":null,"r2":null,"nina":[2,0],"mael":[2,1],"tom":[2,1],"h":"01:00"},{"id":38,"g":"G","j":"J1","date":"15/06","e1":"Belgium","e2":"Egypt","fr1":"Belgique","fr2":"Égypte","fl1":"🇧🇪","fl2":"🇪🇬","c1":null,"cN":122,"c2":null,"r1":1,"r2":1,"nina":[1,1],"mael":[1,1],"tom":[1,1]},{"id":39,"g":"G","j":"J1","date":"15/06","e1":"Iran","e2":"New Zealand","fr1":"Iran","fr2":"Nouvelle-Zélande","fl1":"🇮🇷","fl2":"🇳🇿","c1":null,"cN":null,"c2":130,"r1":2,"r2":2,"nina":[0,1],"mael":[0,1],"tom":[0,1]},{"id":40,"g":"G","j":"J2","date":"21/06","e1":"Belgium","e2":"Iran","fr1":"Belgique","fr2":"Iran","fl1":"🇧🇪","fl2":"🇮🇷","c1":39,"cN":138,"c2":171,"r1":0,"r2":0,"nina":[2,0],"mael":[2,0],"tom":[2,0]},{"id":41,"g":"G","j":"J2","date":"22/06","e1":"New Zealand","e2":"Egypt","fr1":"Nouvelle-Zélande","fr2":"Égypte","fl1":"🇳🇿","fl2":"🇪🇬","c1":148,"cN":116,"c2":59,"r1":1,"r2":3,"nina":[1,2],"mael":[1,1],"tom":[0,1]},{"id":42,"g":"G","j":"J3","date":"27/06","e1":"New Zealand","e2":"Belgium","fr1":"Nouvelle-Zélande","fr2":"Belgique","fl1":"🇳🇿","fl2":"🇧🇪","c1":172,"cN":129,"c2":32,"r1":null,"r2":null,"nina":[2,0],"mael":[0,2],"tom":[0,2],"h":"05:00"},{"id":43,"g":"G","j":"J3","date":"27/06","e1":"Egypt","e2":"Iran","fr1":"Égypte","fr2":"Iran","fl1":"🇪🇬","fl2":"🇮🇷","c1":85,"cN":114,"c2":123,"r1":null,"r2":null,"nina":[1,2],"mael":[1,0],"tom":[1,0],"h":"05:00"},{"id":44,"g":"H","j":"J1","date":"15/06","e1":"Spain","e2":"Cape Verde","fr1":"Espagne","fr2":"Cap-Vert","fl1":"🇪🇸","fl2":"🇨🇻","c1":16,"cN":null,"c2":null,"r1":0,"r2":0,"nina":[3,0],"mael":[3,0],"tom":[3,0]},{"id":45,"g":"H","j":"J1","date":"15/06","e1":"Saudi Arabia","e2":"Uruguay","fr1":"Arabie saoudite","fr2":"Uruguay","fl1":"🇸🇦","fl2":"🇺🇾","c1":null,"cN":null,"c2":50,"r1":1,"r2":1,"nina":[0,2],"mael":[0,4],"tom":[0,1]},{"id":46,"g":"H","j":"J2","date":"21/06","e1":"Spain","e2":"Saudi Arabia","fr1":"Espagne","fr2":"Arabie saoudite","fl1":"🇪🇸","fl2":"🇸🇦","c1":31,"cN":139,"c2":176,"r1":4,"r2":0,"nina":[3,0],"mael":[3,0],"tom":[2,0]},{"id":47,"g":"H","j":"J2","date":"22/06","e1":"Uruguay","e2":"Cape Verde","fr1":"Uruguay","fr2":"Cap-Vert","fl1":"🇺🇾","fl2":"🇨🇻","c1":72,"cN":109,"c2":137,"r1":2,"r2":2,"nina":[1,0],"mael":[3,0],"tom":[2,0]},{"id":48,"g":"H","j":"J3","date":"27/06","e1":"Uruguay","e2":"Spain","fr1":"Uruguay","fr2":"Espagne","fl1":"🇺🇾","fl2":"🇪🇸","c1":143,"cN":112,"c2":57,"r1":null,"r2":null,"nina":[1,2],"mael":[0,1],"tom":[1,0],"h":"02:00"},{"id":49,"g":"H","j":"J3","date":"27/06","e1":"Cape Verde","e2":"Saudi Arabia","fr1":"Cap-Vert","fr2":"Arabie saoudite","fl1":"🇨🇻","fl2":"🇸🇦","c1":99,"cN":123,"c2":94,"r1":null,"r2":null,"nina":[0,0],"mael":[0,0],"tom":[0,0],"h":"02:00"},{"id":50,"g":"I","j":"J1","date":"16/06","e1":"France","e2":"Senegal","fr1":"France","fr2":"Sénégal","fl1":"🇫🇷","fl2":"🇸🇳","c1":null,"cN":128,"c2":null,"r1":3,"r2":1,"nina":[1,1],"mael":[1,1],"tom":[2,2]},{"id":51,"g":"I","j":"J1","date":"16/06","e1":"Iraq","e2":"Norway","fr1":"Irak","fr2":"Norvège","fl1":"🇮🇶","fl2":"🇳🇴","c1":178,"cN":144,"c2":30,"r1":1,"r2":4,"nina":[0,1],"mael":[0,1],"tom":[0,0]},{"id":52,"g":"I","j":"J2","date":"22/06","e1":"France","e2":"Iraq","fr1":"France","fr2":"Irak","fl1":"🇫🇷","fl2":"🇮🇶","c1":22,"cN":166,"c2":189,"r1":3,"r2":0,"nina":[2,0],"mael":[3,0],"tom":[3,1],"h":"23:00"},{"id":53,"g":"I","j":"J2","date":"23/06","e1":"Norway","e2":"Senegal","fr1":"Norvège","fr2":"Sénégal","fl1":"🇳🇴","fl2":"🇸🇳","c1":64,"cN":105,"c2":137,"r1":3,"r2":2,"nina":[0,1],"mael":[1,1],"tom":[0,2],"h":"02:00"},{"id":54,"g":"I","j":"J3","date":"26/06","e1":"Norway","e2":"France","fr1":"Norvège","fr2":"France","fl1":"🇳🇴","fl2":"🇫🇷","c1":141,"cN":108,"c2":68,"r1":null,"r2":null,"nina":[1,2],"mael":[0,2],"tom":[0,1],"h":"21:00"},{"id":55,"g":"I","j":"J3","date":"26/06","e1":"Senegal","e2":"Iraq","fr1":"Sénégal","fr2":"Irak","fl1":"🇸🇳","fl2":"🇮🇶","c1":54,"cN":115,"c2":149,"r1":null,"r2":null,"nina":[1,0],"mael":[3,0],"tom":[2,0],"h":"21:00"},{"id":56,"g":"J","j":"J1","date":"16/06","e1":"Argentina","e2":"Algeria","fr1":"Argentine","fr2":"Algérie","fl1":"🇦🇷","fl2":"🇩🇿","c1":43,"cN":null,"c2":null,"r1":3,"r2":0,"nina":[2,1],"mael":[1,0],"tom":[null,null]},{"id":57,"g":"J","j":"J1","date":"17/06","e1":"Austria","e2":"Jordan","fr1":"Autriche","fr2":"Jordanie","fl1":"🇦🇹","fl2":"🇯🇴","c1":38,"cN":null,"c2":null,"r1":3,"r2":1,"nina":[1,0],"mael":[1,0],"tom":[null,null]},{"id":58,"g":"J","j":"J2","date":"22/06","e1":"Argentina","e2":"Austria","fr1":"Argentine","fr2":"Autriche","fl1":"🇦🇷","fl2":"🇦🇹","c1":63,"cN":105,"c2":132,"r1":2,"r2":0,"nina":[2,0],"mael":[2,0],"tom":[3,1]},{"id":59,"g":"J","j":"J2","date":"23/06","e1":"Jordan","e2":"Algeria","fr1":"Jordanie","fr2":"Algérie","fl1":"🇯🇴","fl2":"🇩🇿","c1":152,"cN":139,"c2":67,"r1":1,"r2":2,"nina":[0,1],"mael":[0,2],"tom":[0,2],"h":"05:00"},{"id":60,"g":"J","j":"J3","date":"28/06","e1":"Jordan","e2":"Argentina","fr1":"Jordanie","fr2":"Argentine","fl1":"🇯🇴","fl2":"🇦🇷","c1":165,"cN":145,"c2":32,"r1":null,"r2":null,"nina":[1,2],"mael":[0,3],"tom":[0,2],"h":"04:00"},{"id":61,"g":"J","j":"J3","date":"28/06","e1":"Algeria","e2":"Austria","fr1":"Algérie","fr2":"Autriche","fl1":"🇩🇿","fl2":"🇦🇹","c1":96,"cN":103,"c2":107,"r1":null,"r2":null,"nina":[1,1],"mael":[1,1],"tom":[2,0],"h":"04:00"},{"id":62,"g":"K","j":"J1","date":"17/06","e1":"Portugal","e2":"DR Congo","fr1":"Portugal","fr2":"RD Congo","fl1":"🇵🇹","fl2":"🇨🇩","c1":34,"cN":null,"c2":null,"r1":1,"r2":1,"nina":[1,0],"mael":[1,0],"tom":[3,0]},{"id":63,"g":"K","j":"J1","date":"17/06","e1":"Uzbekistan","e2":"Colombia","fr1":"Ouzbékistan","fr2":"Colombie","fl1":"🇺🇿","fl2":"🇨🇴","c1":null,"cN":null,"c2":44,"r1":1,"r2":3,"nina":[0,3],"mael":[0,4],"tom":[null,null]},{"id":64,"g":"K","j":"J2","date":"23/06","e1":"Portugal","e2":"Uzbekistan","fr1":"Portugal","fr2":"Ouzbékistan","fl1":"🇵🇹","fl2":"🇺🇿","c1":24,"cN":154,"c2":173,"r1":5,"r2":0,"nina":[1,0],"mael":[3,0],"tom":[4,0],"h":"19:00"},{"id":65,"g":"K","j":"J2","date":"23/06","e1":"Colombia","e2":"DR Congo","fr1":"Colombie","fr2":"RD Congo","fl1":"🇨🇴","fl2":"🇨🇩","c1":77,"cN":111,"c2":123,"r1":1,"r2":0,"nina":[2,0],"mael":[3,0],"tom":[1,1],"h":"04:00"},{"id":66,"g":"K","j":"J3","date":"28/06","e1":"Colombia","e2":"Portugal","fr1":"Colombie","fr2":"Portugal","fl1":"🇨🇴","fl2":"🇵🇹","c1":154,"cN":102,"c2":55,"r1":null,"r2":null,"nina":[2,1],"mael":[1,1],"tom":[1,0],"h":"01:30"},{"id":67,"g":"K","j":"J3","date":"28/06","e1":"DR Congo","e2":"Uzbekistan","fr1":"RD Congo","fr2":"Ouzbékistan","fl1":"🇨🇩","fl2":"🇺🇿","c1":63,"cN":107,"c2":158,"r1":null,"r2":null,"nina":[0,0],"mael":[1,1],"tom":[2,1],"h":"01:30"},{"id":68,"g":"L","j":"J1","date":"17/06","e1":"England","e2":"Croatia","fr1":"Angleterre","fr2":"Croatie","fl1":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","fl2":"🇭🇷","c1":null,"cN":119,"c2":null,"r1":4,"r2":2,"nina":[2,2],"mael":[1,1],"tom":[null,null]},{"id":69,"g":"L","j":"J1","date":"17/06","e1":"Ghana","e2":"Panama","fr1":"Ghana","fr2":"Panama","fl1":"🇬🇭","fl2":"🇵🇦","c1":73,"cN":null,"c2":null,"r1":1,"r2":0,"nina":[0,0],"mael":[1,0],"tom":[null,null]},{"id":70,"g":"L","j":"J2","date":"23/06","e1":"England","e2":"Ghana","fr1":"Angleterre","fr2":"Ghana","fl1":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","fl2":"🇬🇭","c1":44,"cN":127,"c2":162,"r1":0,"r2":0,"nina":[2,0],"mael":[3,0],"tom":[1,0],"h":"22:00"},{"id":71,"g":"L","j":"J2","date":"24/06","e1":"Panama","e2":"Croatia","fr1":"Panama","fr2":"Croatie","fl1":"🇵🇦","fl2":"🇭🇷","c1":165,"cN":123,"c2":36,"r1":0,"r2":1,"nina":[0,2],"mael":[0,2],"tom":[0,2],"h":"01:00"},{"id":72,"g":"L","j":"J3","date":"27/06","e1":"Panama","e2":"England","fr1":"Panama","fr2":"Angleterre","fl1":"🇵🇦","fl2":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","c1":168,"cN":137,"c2":32,"r1":null,"r2":null,"nina":[0,3],"mael":[0,3],"tom":[0,2],"h":"23:00"},{"id":73,"g":"L","j":"J3","date":"27/06","e1":"Croatia","e2":"Ghana","fr1":"Croatie","fr2":"Ghana","fl1":"🇭🇷","fl2":"🇬🇭","c1":57,"cN":120,"c2":138,"r1":null,"r2":null,"nina":[2,1],"mael":[3,0],"tom":[0,0],"h":"23:00"}];
 const GROUPS=['A','B','C','D','E','F','G','H','I','J','K','L'];
 const PLAYERS=[{id:'nina',name:'Nina',col:'#ED6965'},{id:'mael',name:'Maël',col:'#14D3A9'},{id:'tom',name:'Tom',col:'#5BA8F5'}];
 const NAME={nina:'Nina',mael:'Maël',tom:'Tom'};
@@ -207,7 +278,9 @@ const ESPN='https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scor
 const TALIAS={unitedstates:'usa',usmnt:'usa',us:'usa',turkiye:'turkey',czechrepublic:'czechia',cotedivoire:'ivorycoast',caboverde:'capeverde',bosniaherzegovina:'bosnia',bosniaandherzegovina:'bosnia',congodr:'drcongo',democraticrepublicofcongo:'drcongo',congo:'drcongo',korearepublic:'southkorea',iriran:'iran'};
 function tnorm(s){s=(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');return TALIAS[s]||s;}
 const FX={};DATA.forEach(m=>{const a=tnorm(m.e1),b=tnorm(m.e2);FX[[a,b].sort().join('|')]={id:m.id,e1:a};});
-function espnDates(){const f=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');const n=new Date();const y=new Date(n);y.setDate(n.getDate()-1);return [f(y),f(n)];}
+function espnDates(full){const f=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');const n=new Date();
+  if(full){const out=[];let d=new Date(2026,5,11);const end=new Date(2026,6,19);while(d<=end){out.push(f(d));d=new Date(d.getTime()+86400000);}return out;}
+  const out=[];for(let k=-1;k<=1;k++){const d=new Date(n);d.setDate(n.getDate()+k);out.push(f(d));}return out;}
 
 const P={nina:{},mael:{},tom:{}}; const X2={nina:null,mael:null,tom:null};
 DATA.forEach(m=>{P.nina[m.id]=m.nina.slice();P.mael[m.id]=m.mael.slice();P.tom[m.id]=(m.tom||[null,null]).slice();});
@@ -250,7 +323,7 @@ function renderHero(){const t=totals(player);
   document.getElementById('emptyhint').style.display = t.filled===0?'block':'none';}
 
 function renderChips(){const c=document.getElementById('chips');c.innerHTML='';
-  [['all','Tous'],['soon','À jouer'],['J1','J1'],['J2','J2'],['J3','J3']].forEach(([k,lab])=>{
+  [['all','Tous'],['soon','À venir'],['J1','J1'],['J2','J2'],['J3','J3']].forEach(([k,lab])=>{
     const b=document.createElement('button');b.className='chip'+(filter===k?' act':'');b.textContent=lab;
     b.onclick=()=>{filter=k;renderChips();renderList();document.getElementById('list').scrollIntoView({behavior:'smooth',block:'start'});};
     c.appendChild(b);});}
@@ -269,9 +342,12 @@ function stepper(side,id){const pr=P[player][id];const v=pr[side];
   return '<div class="stepper"><button onclick="bump('+id+','+side+',1)">▲</button>'
     +'<div class="'+(v==null?'num empty':'num')+'" id="n'+id+'_'+side+'">'+(v==null?'–':v)+'</div>'
     +'<button onclick="bump('+id+','+side+',-1)">▼</button></div>';}
+function koMs(m){if(m.time){const d=new Date(m.time);if(!isNaN(d))return d.getTime();}
+  if(m.date&&m.h){const p=m.date.split('/'),q=m.h.split(':');const d=new Date(2026,(+p[1])-1,(+p[0]),(+q[0]),(+q[1]));if(!isNaN(d))return d.getTime();}return null;}
+function hhmmRaw(iso){if(!iso)return'';const d=new Date(iso);if(isNaN(d))return'';return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
 function cardHTML(m){const pr=P[player][m.id];
   let res=m.r1!=null?'<div class="resline"><span>Résultat réel</span><span class="score">'+m.r1+' – '+m.r2+'</span></div>'
-    :'<div class="resline soon"><span>Pas encore joué</span><span>'+(m.date||'')+'</span></div>';
+    :'<div class="resline soon"><span>'+((hhmmRaw(m.time)||m.h)?('Coup d\'envoi '+(hhmmRaw(m.time)||m.h)):'Pas encore joué')+'</span><span>'+(m.date||'')+'</span></div>';
   return '<div class="match" id="m'+m.id+'">'
     +'<div class="head"><span class="gchip">'+m.j+' · Gr.'+m.g+' · '+(m.date||'')+'</span>'
       +'<span class="headr"><button class="x2btn'+(X2[player]===m.id?' on':'')+'" id="x'+m.id+'" onclick="toggleX2('+m.id+')">×2</button>'
@@ -282,13 +358,17 @@ function cardHTML(m){const pr=P[player][m.id];
       +'<div class="team r"><div class="nm"><span class="fl">'+m.fl2+'</span><span>'+m.fr2+'</span></div></div>'
     +'</div>'+res+'</div>';}
 function renderLive(){const el=document.getElementById('live');
-  const now=new Date();const today=String(now.getDate()).padStart(2,'0')+'/'+String(now.getMonth()+1).padStart(2,'0');
-  const todays=DATA.filter(m=>m.date===today);
-  if(!todays.length){el.style.display='none';el.innerHTML='';return;}
+  const past=DATA.filter(m=>m.live===true||m.r1!=null)
+    .sort((a,b)=>((b.live===true)-(a.live===true))||(chrono(b)-chrono(a))||(b.id-a.id)).slice(0,3);
+  const now=Date.now(),H12=12*3600*1000;
+  const soon=DATA.filter(m=>m.live!==true&&m.r1==null).map(m=>({m,k:koMs(m)}))
+    .filter(o=>o.k!=null&&o.k<=now+H12&&o.k>=now-2*3600*1000)
+    .sort((a,b)=>a.k-b.k).map(o=>o.m);
+  if(!past.length&&!soon.length){el.style.display='none';el.innerHTML='';return;}
   el.style.display='block';
-  if(liveHidden){el.innerHTML='<div class="live-collapsed" onclick="toggleLive()">Afficher le direct ('+todays.length+')</div>';return;}
-  todays.sort((a,b)=>a.g<b.g?-1:a.g>b.g?1:a.id-b.id);
-  const anyLive=todays.some(m=>m.live===true);
+  const nLive=past.filter(m=>m.live===true).length;
+  if(liveHidden){el.innerHTML='<div class="live-collapsed" onclick="toggleLive()">'+(nLive?'Afficher le direct ('+nLive+')':'Afficher les matchs')+'</div>';return;}
+  const anyLive=nLive>0;
   const LCOL={nina:'#E83F84',mael:'#137A6E',tom:'#2E6FB7'};
   function pron(m,p){const pr=(P[p.id][m.id]||[null,null]);
     let v=(pr[0]==null)?'<span class="lp-v dash">–</span>':'<span class="lp-v">'+pr[0]+'–'+pr[1]+'</span>';
@@ -297,22 +377,23 @@ function renderLive(){const el=document.getElementById('live');
       const exact=pr[0]===m.r1&&pr[1]===m.r2;pts='<span class="lp-p'+(eff>0?' g':'')+'">'+(eff>0?'+'+eff:'0')+(exact?' ★':'')+(x2?' ×2':'')+'</span>';}
     return '<div class="lp"><span class="lp-i" style="color:'+LCOL[p.id]+'">'+p.name+'</span>'+v+pts+'</div>';}
   function hhmm(iso){if(!iso)return'';const d=new Date(iso);if(isNaN(d))return'';return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
-  function card(m){const has=m.r1!=null;const inplay=m.live===true;const t=hhmm(m.time);
+  function card(m){const has=m.r1!=null;const inplay=m.live===true;const t=hhmm(m.time)||m.h||'';
     let st;
     if(inplay)st='<span class="dot"></span>en direct'+(m.clock?' · '+m.clock:'');
-    else if(has)st='terminé'+(t?' · '+t:'');
-    else st='à suivre';
+    else if(has)st='terminé · '+(t||m.date);
+    else st='à suivre'+(t?' · '+t:'')+' · '+m.date;
     return '<div class="live-card">'
       +'<div class="lc-mid"><div class="lc-team"><span class="lc-fl">'+m.fl1+'</span><span class="lc-nm">'+m.fr1+'</span></div>'
       +'<div class="lc-ctr"><div class="lc-sc'+(has?'':' soon')+'">'+(has?(m.r1+'–'+m.r2):(t||'vs'))+'</div>'
       +'<div class="lc-st'+(inplay?' live':'')+'">'+st+'</div></div>'
       +'<div class="lc-team r"><span class="lc-fl">'+m.fl2+'</span><span class="lc-nm">'+m.fr2+'</span></div></div>'
       +'<div class="lc-pros">'+PLAYERS.map(p=>pron(m,p)).join('')+'</div></div>';}
-  let body='',cur='';
-  todays.forEach(m=>{const key='Groupe '+m.g+' · '+m.j;if(key!==cur){cur=key;body+='<div class="live-sec">'+key+'</div>';}body+=card(m);});
+  let body='';
+  if(soon.length)body+='<div class="live-sec">À venir</div>'+soon.map(card).join('');
+  if(past.length)body+='<div class="live-sec">'+(anyLive?'En cours / derniers':'Derniers résultats')+'</div>'+past.map(card).join('');
   el.innerHTML='<div class="live-band"><div class="live-hd">'
-    +'<span class="live-ttl">'+(anyLive?'<span class="dot"></span>En direct':'Aujourd\'hui')+'</span>'
-    +'<span class="live-date">'+today+'<button class="live-hide" onclick="toggleLive()">masquer</button></span></div>'+body+'</div>';}
+    +'<span class="live-ttl">'+(anyLive?'<span class="dot"></span>En direct':'Matchs')+'</span>'
+    +'<button class="live-hide" onclick="toggleLive()">masquer</button></div>'+body+'</div>';}
 function toggleLive(){liveHidden=!liveHidden;try{localStorage.setItem('cdm2026_live_hidden',liveHidden?'1':'0');}catch(e){}renderLive();}
 function renderList(){document.getElementById('list').innerHTML=sortedList().map(cardHTML).join('');}
 function updateCard(id){const m=DATA.find(x=>x.id===id);if(!m)return;const pr=P[player][id];
@@ -323,7 +404,7 @@ function bump(id,side,d){const pr=P[player][id];let v=pr[side];
   const nEl=document.getElementById('n'+id+'_'+side);nEl.textContent=v;nEl.className='num';updateCard(id);renderHero();}
 function toggleX2(id){const old=X2[player];X2[player]=(old===id?null:id);saveX(player);
   if(old&&old!==id)updateCard(old);updateCard(id);renderHero();toast(X2[player]?'×2 placé':'×2 retiré');}
-function setPlayer(p){player=p;document.body.dataset.p=p;renderToggle();renderHero();renderLive();renderList();}
+function setPlayer(p){player=p;document.body.dataset.p=p;renderToggle();renderHero();renderLive();renderList();if(view==='bracket')renderBracket();}
 
 // ---- CLASSEMENT ----
 let raceC=null,groupC=null;
@@ -337,7 +418,7 @@ function renderCompare(){
   document.getElementById('lb').innerHTML=html+'</table>';
   const sum=T.reduce((s,p)=>s+p.tot,0)||1;
   document.getElementById('cmpTug').innerHTML=PLAYERS.map(p=>'<div style="width:'+(totals(p.id).tot/sum*100)+'%;background:'+p.col+'"></div>').join('');
-  legend('legRace');legend('legGroup');
+  legend('legRace');legend('legGroup');renderProjection();
   Chart.defaults.font.family="'JetBrains Mono', monospace";Chart.defaults.color='#6a8478';const grid='rgba(38,57,47,.7)';
   const lab=cumFor('nina').map((_,i)=>i+1);
   if(raceC)raceC.destroy();
@@ -352,12 +433,163 @@ function renderCompare(){
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#16271f',borderColor:'#26392f',borderWidth:1,padding:9,callbacks:{title:i=>'Groupe '+i[0].label,label:c=>'  '+c.dataset.label+' : '+c.parsed.y+' pts'}}},
       scales:{x:{grid:{display:false},ticks:{font:{size:12,weight:700}}},y:{grid:{color:grid},ticks:{font:{size:10}},beginAtZero:true}}}});}
 
+// ---- PROJECTION ----
+function potential(p){let v=0;DATA.forEach(m=>{if(m.r1==null){const pr=P[p][m.id];if(pr&&pr[0]!=null){
+  const s=sign(pr[0],pr[1]);let c=(s>0?m.c1:(s===0?m.cN:m.c2))||0;let mx=c+20;if(X2[p]===m.id)mx*=2;v+=mx;}}});return v;}
+function remFilled(p){let n=0;DATA.forEach(m=>{if(m.r1==null&&P[p][m.id][0]!=null)n++;});return n;}
+function renderProjection(){
+  const rows=PLAYERS.map(p=>{const t=totals(p.id).tot,pot=potential(p.id);return {n:NAME[p.id],col:p.col,now:t,pot,ceil:t+pot,rem:remFilled(p.id)};});
+  const maxCeil=Math.max(...rows.map(r=>r.ceil),1);
+  const byNow=rows.slice().sort((a,b)=>b.now-a.now);const leader=byNow[0];
+  const bars=byNow.map(r=>{const wNow=r.now/maxCeil*100,wCeil=r.ceil/maxCeil*100;
+    return '<div class="pjrow"><div class="pjhd"><span class="pjnm" style="color:'+r.col+'">'+r.n+'</span>'
+      +'<span class="pjval"><b>'+r.now+'</b> · en jeu +'+r.pot+' · plafond <b>'+r.ceil+'</b></span></div>'
+      +'<div class="pjbar"><div class="pjghost" style="width:'+wCeil+'%;background:'+r.col+'"></div>'
+      +'<div class="pjfill" style="width:'+wNow+'%;background:'+r.col+'"></div></div></div>';}).join('');
+  const chasers=byNow.slice(1).filter(r=>r.ceil>leader.now);
+  let note;
+  if(rows.every(r=>r.rem===0))note='Tous les pronos restants sont joués : classement quasi figé.';
+  else if(!chasers.length)note='<b>'+leader.n+'</b> ne peut plus être rattrapé sur les pronos déjà posés.';
+  else note=chasers.map(r=>r.n+' peut repasser devant '+leader.n+' (retard '+(leader.now-r.now)+', plafond +'+r.pot+')').join('. ')+'.';
+  document.getElementById('cmpProj').innerHTML='<div class="proj"><h3>Projection</h3>'
+    +'<p class="sub">Barre pleine = points actuels · halo = plafond si tous les pronos restants tombent juste.</p>'
+    +bars+'<div class="pjnote">'+note+'</div></div>';}
+
+// ---- POULES (classement des groupes) ----
+function teamsOf(g){const map={};DATA.filter(m=>m.g===g).forEach(m=>{map[m.fr1]={fl:m.fl1};map[m.fr2]={fl:m.fl2};});return map;}
+function standings(g){const meta=teamsOf(g);const t={};const init=n=>t[n]||(t[n]={pl:0,w:0,d:0,l:0,gf:0,ga:0,pts:0});
+  Object.keys(meta).forEach(init);
+  DATA.filter(m=>m.g===g&&m.r1!=null).forEach(m=>{const a=init(m.fr1),b=init(m.fr2);
+    a.pl++;b.pl++;a.gf+=m.r1;a.ga+=m.r2;b.gf+=m.r2;b.ga+=m.r1;
+    if(m.r1>m.r2){a.w++;b.l++;a.pts+=3;}else if(m.r1<m.r2){b.w++;a.l++;b.pts+=3;}else{a.d++;b.d++;a.pts++;b.pts++;}});
+  return Object.keys(t).map(n=>({name:n,fl:meta[n].fl,pl:t[n].pl,gd:t[n].gf-t[n].ga,gf:t[n].gf,pts:t[n].pts}))
+    .sort((x,y)=>y.pts-x.pts||y.gd-x.gd||y.gf-x.gf||x.name.localeCompare(y.name));}
+function renderPoules(){
+  let html='<div class="pleg"><i class="q">qualifié (top 2)</i><i class="t3">3e (barragiste possible)</i></div>';
+  GROUPS.forEach(g=>{const s=standings(g);
+    html+='<div class="pgrp"><h4>Groupe '+g+'</h4><table class="ptab">'
+      +'<tr><th class="l">#&nbsp;&nbsp;Équipe</th><th>J</th><th>Diff</th><th>Pts</th></tr>';
+    s.forEach((r,i)=>{const cls=i<2?'pq':(i===2?'p3':'');
+      html+='<tr class="'+cls+'"><td class="l"><span class="prk">'+(i+1)+'</span> '+r.fl+' '+r.name+'</td>'
+        +'<td>'+r.pl+'</td><td>'+(r.gd>0?'+'+r.gd:r.gd)+'</td><td class="pts">'+r.pts+'</td></tr>';});
+    html+='</table></div>';});
+  html+='<div class="pleg" style="margin-top:-4px">Classement indicatif (départage simplifié : points, diff, buts marqués).</div>';
+  document.getElementById('poules').innerHTML=html;}
+
+// ---- RECAP DU JOUR ----
+function fmtDM(d){return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');}
+function dayPts(ds){const r={nina:0,mael:0,tom:0};DATA.filter(m=>m.date===ds&&m.r1!=null).forEach(m=>{
+  PLAYERS.forEach(p=>{const e=effPts(m,P[p.id][m.id],p.id);if(e)r[p.id]+=e;});});return r;}
+function chrono(m){if(m.time){const d=new Date(m.time);if(!isNaN(d))return d.getTime();}const p=(m.date||'').split('/');if(p.length===2)return new Date(2026,(+p[1])-1,(+p[0])).getTime();return 0;}
+function renderRecap(){const el=document.getElementById('recap');if(!el)return;
+  const played=DATA.filter(m=>m.live===true||m.r1!=null);
+  played.sort((a,b)=>{const d=chrono(b)-chrono(a);return d!==0?d:(b.id-a.id);});
+  const last=played.slice(0,6);
+  if(!last.length){el.innerHTML='';return;}
+  let html='<div class="recap"><h4>Derniers matchs</h4>';
+  last.forEach(m=>{const live=m.live===true,sc=m.r1!=null?(m.r1+'–'+m.r2):'';
+    html+='<div class="rc-row"><span class="rc-tm">'+m.fl1+' '+m.fr1+' – '+m.fr2+' '+m.fl2+'</span>'
+      +'<span class="rc-sc'+(live?' rc-live':'')+'">'+(live?'<span class="rc-dot"></span>':'')+(sc||'à venir')+'</span></div>';});
+  el.innerHTML=html+'</div>';}
+
+// ---- PHASE FINALE (Coupe) ----
+const KO3={"EFGHIJKL":"EJIFHGLK","DFGHIJKL":"HGIDJFLK","DEGHIJKL":"EJIDHGLK","DEFHIJKL":"EJIDHFLK","DEFGIJKL":"EGIDJFLK","DEFGHJKL":"EGJDHFLK","DEFGHIKL":"EGIDHFLK","DEFGHIJL":"EGJDHFLI","DEFGHIJK":"EGJDHFIK","CFGHIJKL":"HGICJFLK","CEGHIJKL":"EJICHGLK","CEFHIJKL":"EJICHFLK","CEFGIJKL":"EGICJFLK","CEFGHJKL":"EGJCHFLK","CEFGHIKL":"EGICHFLK","CEFGHIJL":"EGJCHFLI","CEFGHIJK":"EGJCHFIK","CDGHIJKL":"HGICJDLK","CDFHIJKL":"CJIDHFLK","CDFGIJKL":"CGIDJFLK","CDFGHJKL":"CGJDHFLK","CDFGHIKL":"CGIDHFLK","CDFGHIJL":"CGJDHFLI","CDFGHIJK":"CGJDHFIK","CDEHIJKL":"EJICHDLK","CDEGIJKL":"EGICJDLK","CDEGHJKL":"EGJCHDLK","CDEGHIKL":"EGICHDLK","CDEGHIJL":"EGJCHDLI","CDEGHIJK":"EGJCHDIK","CDEFIJKL":"CJEDIFLK","CDEFHJKL":"CJEDHFLK","CDEFHIKL":"CEIDHFLK","CDEFHIJL":"CJEDHFLI","CDEFHIJK":"CJEDHFIK","CDEFGJKL":"CGEDJFLK","CDEFGIKL":"CGEDIFLK","CDEFGIJL":"CGEDJFLI","CDEFGIJK":"CGEDJFIK","CDEFGHKL":"CGEDHFLK","CDEFGHJL":"CGJDHFLE","CDEFGHJK":"CGJDHFEK","CDEFGHIL":"CGEDHFLI","CDEFGHIK":"CGEDHFIK","CDEFGHIJ":"CGJDHFEI","BFGHIJKL":"HJBFIGLK","BEGHIJKL":"EJIBHGLK","BEFHIJKL":"EJBFIHLK","BEFGIJKL":"EJBFIGLK","BEFGHJKL":"EJBFHGLK","BEFGHIKL":"EGBFIHLK","BEFGHIJL":"EJBFHGLI","BEFGHIJK":"EJBFHGIK","BDGHIJKL":"HJBDIGLK","BDFHIJKL":"HJBDIFLK","BDFGIJKL":"IGBDJFLK","BDFGHJKL":"HGBDJFLK","BDFGHIKL":"HGBDIFLK","BDFGHIJL":"HGBDJFLI","BDFGHIJK":"HGBDJFIK","BDEHIJKL":"EJBDIHLK","BDEGIJKL":"EJBDIGLK","BDEGHJKL":"EJBDHGLK","BDEGHIKL":"EGBDIHLK","BDEGHIJL":"EJBDHGLI","BDEGHIJK":"EJBDHGIK","BDEFIJKL":"EJBDIFLK","BDEFHJKL":"EJBDHFLK","BDEFHIKL":"EIBDHFLK","BDEFHIJL":"EJBDHFLI","BDEFHIJK":"EJBDHFIK","BDEFGJKL":"EGBDJFLK","BDEFGIKL":"EGBDIFLK","BDEFGIJL":"EGBDJFLI","BDEFGIJK":"EGBDJFIK","BDEFGHKL":"EGBDHFLK","BDEFGHJL":"HGBDJFLE","BDEFGHJK":"HGBDJFEK","BDEFGHIL":"EGBDHFLI","BDEFGHIK":"EGBDHFIK","BDEFGHIJ":"HGBDJFEI","BCGHIJKL":"HJBCIGLK","BCFHIJKL":"HJBCIFLK","BCFGIJKL":"IGBCJFLK","BCFGHJKL":"HGBCJFLK","BCFGHIKL":"HGBCIFLK","BCFGHIJL":"HGBCJFLI","BCFGHIJK":"HGBCJFIK","BCEHIJKL":"EJBCIHLK","BCEGIJKL":"EJBCIGLK","BCEGHJKL":"EJBCHGLK","BCEGHIKL":"EGBCIHLK","BCEGHIJL":"EJBCHGLI","BCEGHIJK":"EJBCHGIK","BCEFIJKL":"EJBCIFLK","BCEFHJKL":"EJBCHFLK","BCEFHIKL":"EIBCHFLK","BCEFHIJL":"EJBCHFLI","BCEFHIJK":"EJBCHFIK","BCEFGJKL":"EGBCJFLK","BCEFGIKL":"EGBCIFLK","BCEFGIJL":"EGBCJFLI","BCEFGIJK":"EGBCJFIK","BCEFGHKL":"EGBCHFLK","BCEFGHJL":"HGBCJFLE","BCEFGHJK":"HGBCJFEK","BCEFGHIL":"EGBCHFLI","BCEFGHIK":"EGBCHFIK","BCEFGHIJ":"HGBCJFEI","BCDHIJKL":"HJBCIDLK","BCDGIJKL":"IGBCJDLK","BCDGHJKL":"HGBCJDLK","BCDGHIKL":"HGBCIDLK","BCDGHIJL":"HGBCJDLI","BCDGHIJK":"HGBCJDIK","BCDFIJKL":"CJBDIFLK","BCDFHJKL":"CJBDHFLK","BCDFHIKL":"CIBDHFLK","BCDFHIJL":"CJBDHFLI","BCDFHIJK":"CJBDHFIK","BCDFGJKL":"CGBDJFLK","BCDFGIKL":"CGBDIFLK","BCDFGIJL":"CGBDJFLI","BCDFGIJK":"CGBDJFIK","BCDFGHKL":"CGBDHFLK","BCDFGHJL":"CGBDHFLJ","BCDFGHJK":"HGBCJFDK","BCDFGHIL":"CGBDHFLI","BCDFGHIK":"CGBDHFIK","BCDFGHIJ":"HGBCJFDI","BCDEIJKL":"EJBCIDLK","BCDEHJKL":"EJBCHDLK","BCDEHIKL":"EIBCHDLK","BCDEHIJL":"EJBCHDLI","BCDEHIJK":"EJBCHDIK","BCDEGJKL":"EGBCJDLK","BCDEGIKL":"EGBCIDLK","BCDEGIJL":"EGBCJDLI","BCDEGIJK":"EGBCJDIK","BCDEGHKL":"EGBCHDLK","BCDEGHJL":"HGBCJDLE","BCDEGHJK":"HGBCJDEK","BCDEGHIL":"EGBCHDLI","BCDEGHIK":"EGBCHDIK","BCDEGHIJ":"HGBCJDEI","BCDEFJKL":"CJBDEFLK","BCDEFIKL":"CEBDIFLK","BCDEFIJL":"CJBDEFLI","BCDEFIJK":"CJBDEFIK","BCDEFHKL":"CEBDHFLK","BCDEFHJL":"CJBDHFLE","BCDEFHJK":"CJBDHFEK","BCDEFHIL":"CEBDHFLI","BCDEFHIK":"CEBDHFIK","BCDEFHIJ":"CJBDHFEI","BCDEFGKL":"CGBDEFLK","BCDEFGJL":"CGBDJFLE","BCDEFGJK":"CGBDJFEK","BCDEFGIL":"CGBDEFLI","BCDEFGIK":"CGBDEFIK","BCDEFGIJ":"CGBDJFEI","BCDEFGHL":"CGBDHFLE","BCDEFGHK":"CGBDHFEK","BCDEFGHJ":"HGBCJFDE","BCDEFGHI":"CGBDHFEI","AFGHIJKL":"HJIFAGLK","AEGHIJKL":"EJIAHGLK","AEFHIJKL":"EJIFAHLK","AEFGIJKL":"EJIFAGLK","AEFGHJKL":"EGJFAHLK","AEFGHIKL":"EGIFAHLK","AEFGHIJL":"EGJFAHLI","AEFGHIJK":"EGJFAHIK","ADGHIJKL":"HJIDAGLK","ADFHIJKL":"HJIDAFLK","ADFGIJKL":"IGJDAFLK","ADFGHJKL":"HGJDAFLK","ADFGHIKL":"HGIDAFLK","ADFGHIJL":"HGJDAFLI","ADFGHIJK":"HGJDAFIK","ADEHIJKL":"EJIDAHLK","ADEGIJKL":"EJIDAGLK","ADEGHJKL":"EGJDAHLK","ADEGHIKL":"EGIDAHLK","ADEGHIJL":"EGJDAHLI","ADEGHIJK":"EGJDAHIK","ADEFIJKL":"EJIDAFLK","ADEFHJKL":"HJEDAFLK","ADEFHIKL":"HEIDAFLK","ADEFHIJL":"HJEDAFLI","ADEFHIJK":"HJEDAFIK","ADEFGJKL":"EGJDAFLK","ADEFGIKL":"EGIDAFLK","ADEFGIJL":"EGJDAFLI","ADEFGIJK":"EGJDAFIK","ADEFGHKL":"HGEDAFLK","ADEFGHJL":"HGJDAFLE","ADEFGHJK":"HGJDAFEK","ADEFGHIL":"HGEDAFLI","ADEFGHIK":"HGEDAFIK","ADEFGHIJ":"HGJDAFEI","ACGHIJKL":"HJICAGLK","ACFHIJKL":"HJICAFLK","ACFGIJKL":"IGJCAFLK","ACFGHJKL":"HGJCAFLK","ACFGHIKL":"HGICAFLK","ACFGHIJL":"HGJCAFLI","ACFGHIJK":"HGJCAFIK","ACEHIJKL":"EJICAHLK","ACEGIJKL":"EJICAGLK","ACEGHJKL":"EGJCAHLK","ACEGHIKL":"EGICAHLK","ACEGHIJL":"EGJCAHLI","ACEGHIJK":"EGJCAHIK","ACEFIJKL":"EJICAFLK","ACEFHJKL":"HJECAFLK","ACEFHIKL":"HEICAFLK","ACEFHIJL":"HJECAFLI","ACEFHIJK":"HJECAFIK","ACEFGJKL":"EGJCAFLK","ACEFGIKL":"EGICAFLK","ACEFGIJL":"EGJCAFLI","ACEFGIJK":"EGJCAFIK","ACEFGHKL":"HGECAFLK","ACEFGHJL":"HGJCAFLE","ACEFGHJK":"HGJCAFEK","ACEFGHIL":"HGECAFLI","ACEFGHIK":"HGECAFIK","ACEFGHIJ":"HGJCAFEI","ACDHIJKL":"HJICADLK","ACDGIJKL":"IGJCADLK","ACDGHJKL":"HGJCADLK","ACDGHIKL":"HGICADLK","ACDGHIJL":"HGJCADLI","ACDGHIJK":"HGJCADIK","ACDFIJKL":"CJIDAFLK","ACDFHJKL":"HJFCADLK","ACDFHIKL":"HFICADLK","ACDFHIJL":"HJFCADLI","ACDFHIJK":"HJFCADIK","ACDFGJKL":"CGJDAFLK","ACDFGIKL":"CGIDAFLK","ACDFGIJL":"CGJDAFLI","ACDFGIJK":"CGJDAFIK","ACDFGHKL":"HGFCADLK","ACDFGHJL":"CGJDAFLH","ACDFGHJK":"HGJCAFDK","ACDFGHIL":"HGFCADLI","ACDFGHIK":"HGFCADIK","ACDFGHIJ":"HGJCAFDI","ACDEIJKL":"EJICADLK","ACDEHJKL":"HJECADLK","ACDEHIKL":"HEICADLK","ACDEHIJL":"HJECADLI","ACDEHIJK":"HJECADIK","ACDEGJKL":"EGJCADLK","ACDEGIKL":"EGICADLK","ACDEGIJL":"EGJCADLI","ACDEGIJK":"EGJCADIK","ACDEGHKL":"HGECADLK","ACDEGHJL":"HGJCADLE","ACDEGHJK":"HGJCADEK","ACDEGHIL":"HGECADLI","ACDEGHIK":"HGECADIK","ACDEGHIJ":"HGJCADEI","ACDEFJKL":"CJEDAFLK","ACDEFIKL":"CEIDAFLK","ACDEFIJL":"CJEDAFLI","ACDEFIJK":"CJEDAFIK","ACDEFHKL":"HEFCADLK","ACDEFHJL":"HJFCADLE","ACDEFHJK":"HJECAFDK","ACDEFHIL":"HEFCADLI","ACDEFHIK":"HEFCADIK","ACDEFHIJ":"HJECAFDI","ACDEFGKL":"CGEDAFLK","ACDEFGJL":"CGJDAFLE","ACDEFGJK":"CGJDAFEK","ACDEFGIL":"CGEDAFLI","ACDEFGIK":"CGEDAFIK","ACDEFGIJ":"CGJDAFEI","ACDEFGHL":"HGFCADLE","ACDEFGHK":"HGECAFDK","ACDEFGHJ":"HGJCAFDE","ACDEFGHI":"HGECAFDI","ABGHIJKL":"HJBAIGLK","ABFHIJKL":"HJBAIFLK","ABFGIJKL":"IJBFAGLK","ABFGHJKL":"HJBFAGLK","ABFGHIKL":"HGBAIFLK","ABFGHIJL":"HJBFAGLI","ABFGHIJK":"HJBFAGIK","ABEHIJKL":"EJBAIHLK","ABEGIJKL":"EJBAIGLK","ABEGHJKL":"EJBAHGLK","ABEGHIKL":"EGBAIHLK","ABEGHIJL":"EJBAHGLI","ABEGHIJK":"EJBAHGIK","ABEFIJKL":"EJBAIFLK","ABEFHJKL":"EJBFAHLK","ABEFHIKL":"EIBFAHLK","ABEFHIJL":"EJBFAHLI","ABEFHIJK":"EJBFAHIK","ABEFGJKL":"EJBFAGLK","ABEFGIKL":"EGBAIFLK","ABEFGIJL":"EJBFAGLI","ABEFGIJK":"EJBFAGIK","ABEFGHKL":"EGBFAHLK","ABEFGHJL":"HJBFAGLE","ABEFGHJK":"HJBFAGEK","ABEFGHIL":"EGBFAHLI","ABEFGHIK":"EGBFAHIK","ABEFGHIJ":"HJBFAGEI","ABDHIJKL":"IJBDAHLK","ABDGIJKL":"IJBDAGLK","ABDGHJKL":"HJBDAGLK","ABDGHIKL":"IGBDAHLK","ABDGHIJL":"HJBDAGLI","ABDGHIJK":"HJBDAGIK","ABDFIJKL":"IJBDAFLK","ABDFHJKL":"HJBDAFLK","ABDFHIKL":"HIBDAFLK","ABDFHIJL":"HJBDAFLI","ABDFHIJK":"HJBDAFIK","ABDFGJKL":"FJBDAGLK","ABDFGIKL":"IGBDAFLK","ABDFGIJL":"FJBDAGLI","ABDFGIJK":"FJBDAGIK","ABDFGHKL":"HGBDAFLK","ABDFGHJL":"HGBDAFLJ","ABDFGHJK":"HGBDAFJK","ABDFGHIL":"HGBDAFLI","ABDFGHIK":"HGBDAFIK","ABDFGHIJ":"HGBDAFIJ","ABDEIJKL":"EJBAIDLK","ABDEHJKL":"EJBDAHLK","ABDEHIKL":"EIBDAHLK","ABDEHIJL":"EJBDAHLI","ABDEHIJK":"EJBDAHIK","ABDEGJKL":"EJBDAGLK","ABDEGIKL":"EGBAIDLK","ABDEGIJL":"EJBDAGLI","ABDEGIJK":"EJBDAGIK","ABDEGHKL":"EGBDAHLK","ABDEGHJL":"HJBDAGLE","ABDEGHJK":"HJBDAGEK","ABDEGHIL":"EGBDAHLI","ABDEGHIK":"EGBDAHIK","ABDEGHIJ":"HJBDAGEI","ABDEFJKL":"EJBDAFLK","ABDEFIKL":"EIBDAFLK","ABDEFIJL":"EJBDAFLI","ABDEFIJK":"EJBDAFIK","ABDEFHKL":"HEBDAFLK","ABDEFHJL":"HJBDAFLE","ABDEFHJK":"HJBDAFEK","ABDEFHIL":"HEBDAFLI","ABDEFHIK":"HEBDAFIK","ABDEFHIJ":"HJBDAFEI","ABDEFGKL":"EGBDAFLK","ABDEFGJL":"EGBDAFLJ","ABDEFGJK":"EGBDAFJK","ABDEFGIL":"EGBDAFLI","ABDEFGIK":"EGBDAFIK","ABDEFGIJ":"EGBDAFIJ","ABDEFGHL":"HGBDAFLE","ABDEFGHK":"HGBDAFEK","ABDEFGHJ":"HGBDAFEJ","ABDEFGHI":"HGBDAFEI","ABCHIJKL":"IJBCAHLK","ABCGIJKL":"IJBCAGLK","ABCGHJKL":"HJBCAGLK","ABCGHIKL":"IGBCAHLK","ABCGHIJL":"HJBCAGLI","ABCGHIJK":"HJBCAGIK","ABCFIJKL":"IJBCAFLK","ABCFHJKL":"HJBCAFLK","ABCFHIKL":"HIBCAFLK","ABCFHIJL":"HJBCAFLI","ABCFHIJK":"HJBCAFIK","ABCFGJKL":"CJBFAGLK","ABCFGIKL":"IGBCAFLK","ABCFGIJL":"CJBFAGLI","ABCFGIJK":"CJBFAGIK","ABCFGHKL":"HGBCAFLK","ABCFGHJL":"HGBCAFLJ","ABCFGHJK":"HGBCAFJK","ABCFGHIL":"HGBCAFLI","ABCFGHIK":"HGBCAFIK","ABCFGHIJ":"HGBCAFIJ","ABCEIJKL":"EJBAICLK","ABCEHJKL":"EJBCAHLK","ABCEHIKL":"EIBCAHLK","ABCEHIJL":"EJBCAHLI","ABCEHIJK":"EJBCAHIK","ABCEGJKL":"EJBCAGLK","ABCEGIKL":"EGBAICLK","ABCEGIJL":"EJBCAGLI","ABCEGIJK":"EJBCAGIK","ABCEGHKL":"EGBCAHLK","ABCEGHJL":"HJBCAGLE","ABCEGHJK":"HJBCAGEK","ABCEGHIL":"EGBCAHLI","ABCEGHIK":"EGBCAHIK","ABCEGHIJ":"HJBCAGEI","ABCEFJKL":"EJBCAFLK","ABCEFIKL":"EIBCAFLK","ABCEFIJL":"EJBCAFLI","ABCEFIJK":"EJBCAFIK","ABCEFHKL":"HEBCAFLK","ABCEFHJL":"HJBCAFLE","ABCEFHJK":"HJBCAFEK","ABCEFHIL":"HEBCAFLI","ABCEFHIK":"HEBCAFIK","ABCEFHIJ":"HJBCAFEI","ABCEFGKL":"EGBCAFLK","ABCEFGJL":"EGBCAFLJ","ABCEFGJK":"EGBCAFJK","ABCEFGIL":"EGBCAFLI","ABCEFGIK":"EGBCAFIK","ABCEFGIJ":"EGBCAFIJ","ABCEFGHL":"HGBCAFLE","ABCEFGHK":"HGBCAFEK","ABCEFGHJ":"HGBCAFEJ","ABCEFGHI":"HGBCAFEI","ABCDIJKL":"IJBCADLK","ABCDHJKL":"HJBCADLK","ABCDHIKL":"HIBCADLK","ABCDHIJL":"HJBCADLI","ABCDHIJK":"HJBCADIK","ABCDGJKL":"CJBDAGLK","ABCDGIKL":"IGBCADLK","ABCDGIJL":"CJBDAGLI","ABCDGIJK":"CJBDAGIK","ABCDGHKL":"HGBCADLK","ABCDGHJL":"HGBCADLJ","ABCDGHJK":"HGBCADJK","ABCDGHIL":"HGBCADLI","ABCDGHIK":"HGBCADIK","ABCDGHIJ":"HGBCADIJ","ABCDFJKL":"CJBDAFLK","ABCDFIKL":"CIBDAFLK","ABCDFIJL":"CJBDAFLI","ABCDFIJK":"CJBDAFIK","ABCDFHKL":"HFBCADLK","ABCDFHJL":"CJBDAFLH","ABCDFHJK":"HJBCAFDK","ABCDFHIL":"HFBCADLI","ABCDFHIK":"HFBCADIK","ABCDFHIJ":"HJBCAFDI","ABCDFGKL":"CGBDAFLK","ABCDFGJL":"CGBDAFLJ","ABCDFGJK":"CGBDAFJK","ABCDFGIL":"CGBDAFLI","ABCDFGIK":"CGBDAFIK","ABCDFGIJ":"CGBDAFIJ","ABCDFGHL":"CGBDAFLH","ABCDFGHK":"HGBCAFDK","ABCDFGHJ":"HGBCAFDJ","ABCDFGHI":"HGBCAFDI","ABCDEJKL":"EJBCADLK","ABCDEIKL":"EIBCADLK","ABCDEIJL":"EJBCADLI","ABCDEIJK":"EJBCADIK","ABCDEHKL":"HEBCADLK","ABCDEHJL":"HJBCADLE","ABCDEHJK":"HJBCADEK","ABCDEHIL":"HEBCADLI","ABCDEHIK":"HEBCADIK","ABCDEHIJ":"HJBCADEI","ABCDEGKL":"EGBCADLK","ABCDEGJL":"EGBCADLJ","ABCDEGJK":"EGBCADJK","ABCDEGIL":"EGBCADLI","ABCDEGIK":"EGBCADIK","ABCDEGIJ":"EGBCADIJ","ABCDEGHL":"HGBCADLE","ABCDEGHK":"HGBCADEK","ABCDEGHJ":"HGBCADEJ","ABCDEGHI":"HGBCADEI","ABCDEFKL":"CEBDAFLK","ABCDEFJL":"CJBDAFLE","ABCDEFJK":"CJBDAFEK","ABCDEFIL":"CEBDAFLI","ABCDEFIK":"CEBDAFIK","ABCDEFIJ":"CJBDAFEI","ABCDEFHL":"HFBCADLE","ABCDEFHK":"HEBCAFDK","ABCDEFHJ":"HJBCAFDE","ABCDEFHI":"HEBCAFDI","ABCDEFGL":"CGBDAFLE","ABCDEFGK":"CGBDAFEK","ABCDEFGJ":"CGBDAFEJ","ABCDEFGI":"CGBDAFEI","ABCDEFGH":"HGBCAFDE"};
+const R32=[
+ {m:73,a:{t:'R',g:'A'},b:{t:'R',g:'B'}},{m:74,a:{t:'W',g:'E'},b:{t:'3',col:'1E'}},
+ {m:75,a:{t:'W',g:'F'},b:{t:'R',g:'C'}},{m:76,a:{t:'W',g:'C'},b:{t:'R',g:'F'}},
+ {m:77,a:{t:'W',g:'I'},b:{t:'3',col:'1I'}},{m:78,a:{t:'R',g:'E'},b:{t:'R',g:'I'}},
+ {m:79,a:{t:'W',g:'A'},b:{t:'3',col:'1A'}},{m:80,a:{t:'W',g:'L'},b:{t:'3',col:'1L'}},
+ {m:81,a:{t:'W',g:'D'},b:{t:'3',col:'1D'}},{m:82,a:{t:'W',g:'G'},b:{t:'3',col:'1G'}},
+ {m:83,a:{t:'R',g:'K'},b:{t:'R',g:'L'}},{m:84,a:{t:'W',g:'H'},b:{t:'R',g:'J'}},
+ {m:85,a:{t:'W',g:'B'},b:{t:'3',col:'1B'}},{m:86,a:{t:'W',g:'J'},b:{t:'R',g:'H'}},
+ {m:87,a:{t:'W',g:'K'},b:{t:'3',col:'1K'}},{m:88,a:{t:'R',g:'D'},b:{t:'R',g:'G'}}
+];
+const RTREE=[
+ {m:90,a:73,b:75},{m:89,a:74,b:77},{m:91,a:76,b:78},{m:92,a:79,b:80},
+ {m:93,a:83,b:84},{m:94,a:81,b:82},{m:95,a:86,b:88},{m:96,a:85,b:87},
+ {m:97,a:89,b:90},{m:98,a:93,b:94},{m:99,a:91,b:92},{m:100,a:95,b:96},
+ {m:101,a:97,b:98},{m:102,a:99,b:100},{m:104,a:101,b:102}
+];
+const R32IDS=R32.map(t=>t.m);
+const TH3={'1A':'C/E/F/H/I','1B':'E/F/G/I/J','1D':'B/E/F/I/J','1E':'A/B/C/D/F','1G':'A/E/H/I/J','1I':'C/D/F/G/H','1K':'D/E/I/J/L','1L':'E/H/I/J/K'};
+const KOP={nina:{},mael:{},tom:{}};
+function lsKO(p){return 'cdm2026_ko_'+p;}
+function loadKO(){for(const p of ['nina','mael','tom']){try{const s=localStorage.getItem(lsKO(p));if(s)KOP[p]=JSON.parse(s)||{};}catch(e){}}}
+function saveKO(p){try{localStorage.setItem(lsKO(p),JSON.stringify(KOP[p]||{}));}catch(e){}}
+function groupComplete(g){const ms=DATA.filter(m=>m.g===g);return ms.length>0&&ms.every(m=>m.r1!=null);}
+function allGroupsDone(){return GROUPS.every(groupComplete);}
+function qualifiers(){
+  const W={},R={},rows3=[],third={},nameIdx={};
+  GROUPS.forEach(g=>{if(groupComplete(g)){const s=standings(g);W[g]=s[0];R[g]=s[1];rows3.push({g:g,t:s[2]});nameIdx[s[0].name]=s[0];nameIdx[s[1].name]=s[1];}});
+  if(allGroupsDone()){
+    rows3.sort((a,b)=>b.t.pts-a.t.pts||b.t.gd-a.t.gd||b.t.gf-a.t.gf||a.g.localeCompare(b.g));
+    const best=rows3.slice(0,8),key=best.map(x=>x.g).sort().join(''),assign=KO3[key];
+    if(assign){const cols=['1A','1B','1D','1E','1G','1I','1K','1L'],byG={};best.forEach(x=>byG[x.g]=x.t);
+      cols.forEach((c,i)=>{const tt=byG[assign[i]];third[c]=tt;if(tt)nameIdx[tt.name]=tt;});}
+  }
+  return {W,R,third,nameIdx};
+}
+function teamFor(spec,Q){if(spec.t==='W')return Q.W[spec.g];if(spec.t==='R')return Q.R[spec.g];if(spec.t==='3')return Q.third[spec.col];return null;}
+function specLabel(spec){if(spec.t==='W')return 'Vainqueur gr. '+spec.g;if(spec.t==='R')return '2e gr. '+spec.g;return '3e ('+TH3[spec.col]+')';}
+function tieById(m){return R32.find(t=>t.m===m)||RTREE.find(t=>t.m===m);}
+function winnerOf(m,Q){const pk=(KOP[player]||{})[m];if(!pk)return null;return Q.nameIdx[pk]||{name:pk,fl:''};}
+function teamInSlot(m,side,Q){const t=tieById(m);if(!t)return null;
+  if(R32IDS.indexOf(m)>=0){return teamFor(side==='a'?t.a:t.b,Q);}
+  return winnerOf(side==='a'?t.a:t.b,Q);}
+function clearDownstream(m){const nxt=RTREE.find(t=>t.a===m||t.b===m);if(!nxt)return;if((KOP[player]||{})[nxt.m]!==undefined){delete KOP[player][nxt.m];clearDownstream(nxt.m);}}
+function pickWin(m,name){if(!KOP[player])KOP[player]={};if(KOP[player][m]===name)delete KOP[player][m];else KOP[player][m]=name;clearDownstream(m);saveKO(player);renderBracket();}
+function resetKO(){KOP[player]={};saveKO(player);renderBracket();toast('Pronos coupe effacés');}
+function esc(s){return (s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+function tieHTML(m,Q){
+  const t=tieById(m),ta=teamInSlot(m,'a',Q),tb=teamInSlot(m,'b',Q),pk=(KOP[player]||{})[m];
+  function row(side,tm){
+    if(!tm){let lbl;if(R32IDS.indexOf(m)>=0)lbl=specLabel(side==='a'?t.a:t.b);else lbl='Vainqueur M'+(side==='a'?t.a:t.b);
+      return '<div class="tm ph"><span class="nm lab">'+lbl+'</span></div>';}
+    const sel=pk&&pk===tm.name;
+    return '<div class="tm'+(sel?' pk':'')+'" onclick="pickWin('+m+',\''+esc(tm.name)+'\')"><span class="fl">'+(tm.fl||'')+'</span><span class="nm">'+tm.name+'</span></div>';
+  }
+  return '<div class="tie" data-m="'+m+'">'+row('a',ta)+row('b',tb)+'<div class="mno">M'+m+'</div></div>';
+}
+function renderBracket(){
+  const Q=qualifiers();
+  const cols=[
+    {h:'16es',ids:[73,75,74,77,76,78,79,80,83,84,81,82,86,88,85,87]},
+    {h:'8es',ids:[90,89,91,92,93,94,95,96]},
+    {h:'Quarts',ids:[97,98,99,100]},
+    {h:'Demies',ids:[101,102]},
+    {h:'Finale',ids:[104],fin:true}
+  ];
+  const colsHtml=cols.map(c=>'<div class="brkcol'+(c.fin?' brkfin':'')+'"><div class="brkrnd">'+c.h+'</div><div class="brktie">'+c.ids.map(m=>tieHTML(m,Q)).join('')+'</div></div>').join('');
+  document.getElementById('bracket').innerHTML=
+    '<div class="brkhead"><h3>Phase finale</h3><button class="brkreset" onclick="resetKO()">↺ Mes pronos</button></div>'
+    +'<div class="brkhint">Touche l\'équipe qui passe (pronos de '+NAME[player]+'). 1ers/2es affichés dès qu\'un groupe est terminé, 3es dès que les 12 groupes sont finis.</div>'
+    +'<div class="brkscroll"><div class="brkcols">'+colsHtml+'</div></div>';
+  requestAnimationFrame(drawBrkLines);
+}
+function drawBrkLines(){
+  const wrap=document.querySelector('.brkcols');if(!wrap)return;
+  const old=wrap.querySelector('svg.brklines');if(old)old.remove();
+  const get=m=>wrap.querySelector('.tie[data-m="'+m+'"]');
+  let p='';
+  RTREE.forEach(t=>{const tgt=get(t.m);if(!tgt)return;
+    const tx=tgt.offsetLeft,ty=tgt.offsetTop+tgt.offsetHeight/2;
+    [t.a,t.b].forEach(s=>{const src=get(s);if(!src)return;
+      const sx=src.offsetLeft+src.offsetWidth,sy=src.offsetTop+src.offsetHeight/2,mx=(sx+tx)/2;
+      p+='<path d="M'+sx+' '+sy+' H'+mx+' V'+ty+' H'+tx+'"/>';});});
+  const W=wrap.scrollWidth||wrap.offsetWidth,H=wrap.offsetHeight;
+  wrap.insertAdjacentHTML('afterbegin','<svg class="brklines" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">'+p+'</svg>');
+}
+
 function showView(v){view=v;
   document.getElementById('viewMatchs').style.display=v==='matchs'?'':'none';
   document.getElementById('viewCompare').style.display=v==='compare'?'':'none';
+  document.getElementById('viewPoules').style.display=v==='poules'?'':'none';
+  document.getElementById('viewBracket').style.display=v==='bracket'?'':'none';
   document.getElementById('tabMatchs').classList.toggle('act',v==='matchs');
+  document.getElementById('tabPoules').classList.toggle('act',v==='poules');
+  document.getElementById('tabBracket').classList.toggle('act',v==='bracket');
   document.getElementById('tabCmp').classList.toggle('act',v==='compare');
-  if(v==='compare')renderCompare();window.scrollTo({top:0,behavior:'smooth'});}
+  if(v==='compare')renderCompare();if(v==='poules')renderPoules();if(v==='bracket')renderBracket();window.scrollTo({top:0,behavior:'smooth'});}
 
 // ---- AUTO-UPDATE DES SCORES ----
 function normTeam(n){if(!n)return '';let s=n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z]/g,'');
@@ -367,15 +599,15 @@ function normTeam(n){if(!n)return '';let s=n.toLowerCase().normalize('NFD').repl
     czechrepublic:'czechia',czechia:'czechia',southafrica:'southafrica'};
   return A[s]||s;}
 function setStatus(t,cls){const e=document.getElementById('status');e.textContent=t;e.className=cls||'';}
-async function fetchScores(manual){
+async function fetchScores(manual,full){
   const btn=document.getElementById('refreshBtn');btn.classList.add('spin');
-  setStatus('Mise à jour des scores…');
+  setStatus(full?'Rattrapage des scores…':'Mise à jour des scores…');
   let ok=false,upd=0,src='';
   // 1) ESPN en direct (navigateur)
   try{
-    for(const d of espnDates()){
-      const r=await fetch(ESPN+d,{cache:'no-store'});if(!r.ok)continue;
-      const j=await r.json();
+    const dates=espnDates(full||manual);
+    const settled=await Promise.allSettled(dates.map(d=>fetch(ESPN+d,{cache:'no-store'}).then(r=>r.ok?r.json():null)));
+    settled.forEach(s=>{if(s.status!=='fulfilled'||!s.value)return;const j=s.value;
       (j.events||[]).forEach(ev=>{const comp=(ev.competitions||[])[0];if(!comp)return;
         const cs=comp.competitors||[];if(cs.length!==2)return;
         const home=cs.find(c=>c.homeAway==='home')||cs[0],away=cs.find(c=>c.homeAway==='away')||cs[1];
@@ -389,8 +621,7 @@ async function fetchScores(manual){
         let r1,r2;if(hn===f.e1){r1=hs;r2=as;}else{r1=as;r2=hs;}
         m.live=(state==='in');m.clock=(state==='in')?(stt.displayClock||typ.shortDetail||''):'';
         if(m.r1!==r1||m.r2!==r2){m.r1=r1;m.r2=r2;upd++;}});
-      ok=true;src='ESPN';
-    }
+      ok=true;src='ESPN';});
   }catch(e){ok=false;}
   // 2) repli results.json (flux GitHub Actions)
   if(!ok){try{const r=await fetch(API+'?t='+Date.now(),{cache:'no-store'});const j=await r.json();const sc=j.scores||j;
@@ -398,7 +629,7 @@ async function fetchScores(manual){
     ok=true;src='cache';}catch(e2){}}
   if(ok){const hh=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
     setStatus('Scores à jour · '+hh+(upd?(' · '+upd+' maj'):''),'live');
-    renderHero();renderLive();renderList();if(view==='compare')renderCompare();
+    renderHero();renderLive();renderList();if(view==='compare')renderCompare();if(view==='poules')renderPoules();if(view==='bracket')renderBracket();
     if(manual)toast(upd?upd+' score(s) mis à jour':'Déjà à jour');}
   else{setStatus('Hors ligne — derniers scores connus','err');if(manual)toast('Mise à jour impossible');}
   btn.classList.remove('spin');}
@@ -415,11 +646,13 @@ document.getElementById('foot').innerHTML='Scores mis à jour automatiquement à
 
 load();
 try{const s=localStorage.getItem('cdm2026_sort');if(s==='date'||s==='poule')sortMode=s;}catch(e){}
-try{liveHidden=localStorage.getItem('cdm2026_live_hidden')==='1';}catch(e){}
+try{const v=localStorage.getItem('cdm2026_live_hidden');liveHidden=(v===null?true:v==='1');}catch(e){}
+loadKO();
 setSort(sortMode);setPlayer('nina');renderChips();
-fetchScores(false);
+fetchScores(false,true);
 setInterval(()=>{if(!document.hidden)fetchScores(false);},60000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)fetchScores(false);});
+window.addEventListener('resize',()=>{if(view==='bracket')drawBrkLines();});
 </script>
 </body>
 </html>
