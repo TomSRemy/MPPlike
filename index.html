@@ -283,6 +283,8 @@ const ESPN='https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scor
 const TALIAS={unitedstates:'usa',usmnt:'usa',us:'usa',turkiye:'turkey',czechrepublic:'czechia',cotedivoire:'ivorycoast',caboverde:'capeverde',bosniaherzegovina:'bosnia',bosniaandherzegovina:'bosnia',congodr:'drcongo',democraticrepublicofcongo:'drcongo',congo:'drcongo',korearepublic:'southkorea',iriran:'iran'};
 function tnorm(s){s=(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');return TALIAS[s]||s;}
 const FX={};DATA.forEach(m=>{const a=tnorm(m.e1),b=tnorm(m.e2);FX[[a,b].sort().join('|')]={id:m.id,e1:a};});
+const TEAMINFO={};DATA.forEach(m=>{TEAMINFO[tnorm(m.e1)]={fr:m.fr1,fl:m.fl1};TEAMINFO[tnorm(m.e2)]={fr:m.fr2,fl:m.fl2};});
+const EXTRA={};
 function espnDates(full){const f=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');const n=new Date();
   if(full){const out=[];let d=new Date(2026,5,11);const end=new Date(2026,6,19);while(d<=end){out.push(f(d));d=new Date(d.getTime()+86400000);}return out;}
   const out=[];for(let k=-1;k<=1;k++){const d=new Date(n);d.setDate(n.getDate()+k);out.push(f(d));}return out;}
@@ -363,13 +365,14 @@ function cardHTML(m){const pr=P[player][m.id];
       +'<div class="team r"><div class="nm"><span class="fl">'+m.fl2+'</span><span>'+m.fr2+'</span></div></div>'
     +'</div>'+res+'</div>';}
 function renderLive(){const el=document.getElementById('live');
-  const live=DATA.filter(m=>m.live===true).sort((a,b)=>chrono(b)-chrono(a)||(b.id-a.id)).slice(0,6);
+  const ALLM=DATA.concat(Object.values(EXTRA));
+  const live=ALLM.filter(m=>m.live===true).sort((a,b)=>chrono(b)-chrono(a)||((b.id>a.id)?1:-1)).slice(0,6);
   const now=Date.now(),H12=12*3600*1000;
-  const soon=DATA.filter(m=>m.live!==true&&m.r1==null).map(m=>({m,k:koMs(m)}))
+  const soon=ALLM.filter(m=>m.live!==true&&m.r1==null).map(m=>({m,k:koMs(m)}))
     .filter(o=>o.k!=null&&o.k<=now+H12&&o.k>=now-2*3600*1000)
     .sort((a,b)=>a.k-b.k).map(o=>o.m).slice(0,6);
-  const past=DATA.filter(m=>m.live!==true&&m.r1!=null)
-    .sort((a,b)=>chrono(b)-chrono(a)||(b.id-a.id)).slice(0,6);
+  const past=ALLM.filter(m=>m.live!==true&&m.r1!=null)
+    .sort((a,b)=>chrono(b)-chrono(a)||((b.id>a.id)?1:-1)).slice(0,6);
   if(!live.length&&!soon.length&&!past.length){el.style.display='none';el.innerHTML='';return;}
   el.style.display='block';
   const nLive=live.length;
@@ -393,7 +396,7 @@ function renderLive(){const el=document.getElementById('live');
       +'<div class="lc-ctr"><div class="lc-sc'+(has?'':' soon')+'">'+(has?(m.r1+'–'+m.r2):(t||'vs'))+'</div>'
       +'<div class="lc-st'+(inplay?' live':'')+'">'+st+'</div></div>'
       +'<div class="lc-team r"><span class="lc-fl">'+m.fl2+'</span><span class="lc-nm">'+m.fr2+'</span></div></div>'
-      +'<div class="lc-pros">'+PLAYERS.map(p=>pron(m,p)).join('')+'</div></div>';}
+      +(m.ko?'':'<div class="lc-pros">'+PLAYERS.map(p=>pron(m,p)).join('')+'</div>')+'</div>';}
   const secs=[{k:'live',cl:'s-live',lab:'En direct',arr:live,dot:true},{k:'soon',cl:'s-soon',lab:'À venir',arr:soon},{k:'past',cl:'s-past',lab:'Derniers résultats',arr:past}];
   let body='';
   secs.forEach(s=>{if(!s.arr.length)return;const col=SEC[s.k]===true;
@@ -623,9 +626,16 @@ async function fetchScores(manual,full){
         const cs=comp.competitors||[];if(cs.length!==2)return;
         const home=cs.find(c=>c.homeAway==='home')||cs[0],away=cs.find(c=>c.homeAway==='away')||cs[1];
         const hn=tnorm((home.team||{}).displayName||(home.team||{}).name),an=tnorm((away.team||{}).displayName||(away.team||{}).name);
-        const f=FX[[hn,an].sort().join('|')];if(!f)return;
-        const m=DATA.find(x=>x.id===f.id);if(!m)return;
         const stt=ev.status||{},typ=stt.type||{},state=typ.state||'';
+        const f=FX[[hn,an].sort().join('|')];
+        if(!f){const ha=TEAMINFO[hn],aa=TEAMINFO[an];if(!ha||!aa)return;
+          const eid='e'+(ev.id||(hn+an));const e=EXTRA[eid]||(EXTRA[eid]={id:eid,ko:true});
+          e.fr1=ha.fr;e.fl1=ha.fl;e.fr2=aa.fr;e.fl2=aa.fl;
+          if(ev.date){e.time=ev.date;const d=new Date(ev.date);if(!isNaN(d))e.date=String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');}
+          if(state==='pre'){e.live=false;e.clock='';e.r1=null;e.r2=null;}
+          else{const hs=parseInt(home.score),as=parseInt(away.score);if(!isNaN(hs)&&!isNaN(as)){e.r1=hs;e.r2=as;}e.live=(state==='in');e.clock=(state==='in')?(stt.displayClock||typ.shortDetail||''):'';}
+          return;}
+        const m=DATA.find(x=>x.id===f.id);if(!m)return;
         if(ev.date)m.time=ev.date;
         if(state==='pre'){m.live=false;m.clock='';return;}
         const hs=parseInt(home.score),as=parseInt(away.score);if(isNaN(hs)||isNaN(as))return;
