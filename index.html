@@ -285,6 +285,10 @@ function tnorm(s){s=(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLo
 const FX={};DATA.forEach(m=>{const a=tnorm(m.e1),b=tnorm(m.e2);FX[[a,b].sort().join('|')]={id:m.id,e1:a};});
 const TEAMINFO={};DATA.forEach(m=>{TEAMINFO[tnorm(m.e1)]={fr:m.fr1,fl:m.fl1};TEAMINFO[tnorm(m.e2)]={fr:m.fr2,fl:m.fl2};});
 const EXTRA={};
+const KOCOTES={};
+function setKO(a,b,c1,cN,c2){const na=tnorm(a),nb=tnorm(b);KOCOTES[[na,nb].sort().join('|')]={nul:cN,[na]:c1,[nb]:c2};}
+setKO('South Africa','Canada',141,121,64);
+function MALL(){return DATA.concat(Object.values(EXTRA));}
 function espnDates(full){const f=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');const n=new Date();
   if(full){const out=[];let d=new Date(2026,5,11);const end=new Date(2026,6,19);while(d<=end){out.push(f(d));d=new Date(d.getTime()+86400000);}return out;}
   const out=[];for(let k=-1;k<=1;k++){const d=new Date(n);d.setDate(n.getDate()+k);out.push(f(d));}return out;}
@@ -294,7 +298,7 @@ DATA.forEach(m=>{P.nina[m.id]=m.nina.slice();P.mael[m.id]=m.mael.slice();P.tom[m
 
 function lsP(p){return 'cdm2026_pronos_'+p;} function lsX(p){return 'cdm2026_x2_'+p;}
 function load(){for(const p of ['nina','mael','tom']){
-  try{const s=localStorage.getItem(lsP(p));if(s){const o=JSON.parse(s);for(const id in o)if(P[p][id])P[p][id]=o[id];}}catch(e){}
+  try{const s=localStorage.getItem(lsP(p));if(s){const o=JSON.parse(s);for(const id in o)P[p][id]=o[id];}}catch(e){}
   try{const x=localStorage.getItem(lsX(p));if(x!==null&&x!=='')X2[p]=parseInt(x);}catch(e){}
 }}
 function saveP(p){try{localStorage.setItem(lsP(p),JSON.stringify(P[p]));}catch(e){}}
@@ -308,7 +312,7 @@ function matchPts(m,pr){const k=pr[0],l=pr[1];
   if(k===m.r1&&l===m.r2)p+=20; return p;}
 function effPts(m,pr,p){const b=matchPts(m,pr);if(b==null)return null;return X2[p]===m.id?b*2:b;}
 function totals(p){let tot=0,bons=0,exacts=0,played=0,filled=0;
-  DATA.forEach(m=>{const pr=P[p][m.id];if(pr[0]!=null)filled++;if(m.r1!=null)played++;
+  MALL().forEach(m=>{const pr=P[p][m.id]||[null,null];if(pr[0]!=null)filled++;if(m.r1!=null)played++;
     const e=effPts(m,pr,p);if(e!=null){tot+=e;if(sign(pr[0],pr[1])===sign(m.r1,m.r2))bons++;if(pr[0]===m.r1&&pr[1]===m.r2)exacts++;}});
   return {tot,bons,exacts,played,filled};}
 
@@ -326,17 +330,17 @@ function renderHero(){const t=totals(player);
     const col=d>0?'var(--accent)':(d<0?'var(--tx2)':'var(--canary)');
     return o.n+' '+o.t+' (<span class="gap" style="color:'+col+'">'+(d>0?'+'+d:(d<0?d:'='))+'</span>)';}).join(' · ');
   const x=X2[player];
-  document.getElementById('x2info').textContent = x?('×2 actif sur : '+(()=>{const m=DATA.find(z=>z.id===x);return m.fr1+' – '+m.fr2;})()):'×2 : choisis un match à doubler (bouton ×2)';
+  document.getElementById('x2info').textContent = x?('×2 actif sur : '+(()=>{const m=MALL().find(z=>z.id===x);return m?(m.fr1+' – '+m.fr2):'';})()):'×2 : choisis un match à doubler (bouton ×2)';
   document.getElementById('emptyhint').style.display = t.filled===0?'block':'none';}
 
 function renderChips(){const c=document.getElementById('chips');c.innerHTML='';
-  [['all','Tous'],['soon','À venir'],['J1','J1'],['J2','J2'],['J3','J3']].forEach(([k,lab])=>{
+  [['all','Tous'],['soon','À venir'],['ko','Coupe'],['J1','J1'],['J2','J2'],['J3','J3']].forEach(([k,lab])=>{
     const b=document.createElement('button');b.className='chip'+(filter===k?' act':'');b.textContent=lab;
     b.onclick=()=>{filter=k;renderChips();renderList();document.getElementById('list').scrollIntoView({behavior:'smooth',block:'start'});};
     c.appendChild(b);});}
-function visible(m){if(filter==='all')return true;if(filter==='soon')return m.r1==null;return m.j===filter;}
+function visible(m){if(filter==='all')return true;if(filter==='soon')return m.r1==null;if(filter==='ko')return m.ko===true;return m.j===filter;}
 function dkey(m){const p=(m.date||'1/1').split('/').map(Number);return (p[1]||0)*100+(p[0]||0);}
-function sortedList(){let a=DATA.filter(visible);if(sortMode==='date')a=a.slice().sort((x,y)=>dkey(x)-dkey(y)||x.g.localeCompare(y.g)||x.id-y.id);return a;}
+function sortedList(){let a=MALL().filter(visible);if(sortMode==='date')a=a.slice().sort((x,y)=>dkey(x)-dkey(y)||String(x.g).localeCompare(String(y.g))||x.id-y.id);return a;}
 function setSort(s){sortMode=s;try{localStorage.setItem('cdm2026_sort',s);}catch(e){}
   document.getElementById('sPoule').classList.toggle('act',s==='poule');document.getElementById('sDate').classList.toggle('act',s==='date');renderList();}
 
@@ -352,11 +356,12 @@ function stepper(side,id){const pr=P[player][id];const v=pr[side];
 function koMs(m){if(m.time){const d=new Date(m.time);if(!isNaN(d))return d.getTime();}
   if(m.date&&m.h){const p=m.date.split('/'),q=m.h.split(':');const d=new Date(2026,(+p[1])-1,(+p[0]),(+q[0]),(+q[1]));if(!isNaN(d))return d.getTime();}return null;}
 function hhmmRaw(iso){if(!iso)return'';const d=new Date(iso);if(isNaN(d))return'';return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
-function cardHTML(m){const pr=P[player][m.id];
+function cardHTML(m){if(!P[player][m.id])P[player][m.id]=[null,null];const pr=P[player][m.id];
+  const head=m.ko?((m.round||'Phase finale')+' · '+(m.date||'')):(m.j+' · Gr.'+m.g+' · '+(m.date||''));
   let res=m.r1!=null?'<div class="resline"><span>Résultat réel</span><span class="score">'+m.r1+' – '+m.r2+'</span></div>'
     :'<div class="resline soon"><span>'+((hhmmRaw(m.time)||m.h)?('Coup d\'envoi '+(hhmmRaw(m.time)||m.h)):'Pas encore joué')+'</span><span>'+(m.date||'')+'</span></div>';
   return '<div class="match" id="m'+m.id+'">'
-    +'<div class="head"><span class="gchip">'+m.j+' · Gr.'+m.g+' · '+(m.date||'')+'</span>'
+    +'<div class="head"><span class="gchip">'+head+'</span>'
       +'<span class="headr"><button class="x2btn'+(X2[player]===m.id?' on':'')+'" id="x'+m.id+'" onclick="toggleX2('+m.id+')">×2</button>'
       +'<span id="b'+m.id+'">'+badgeFor(m,pr,player)+'</span></span></div>'
     +'<div class="teams">'
@@ -410,10 +415,10 @@ function renderLive(){const el=document.getElementById('live');
 function toggleSec(k){SEC[k]=!SEC[k];try{localStorage.setItem('cdm2026_live_sec',JSON.stringify(SEC));}catch(e){}renderLive();}
 function toggleLive(){liveHidden=!liveHidden;try{localStorage.setItem('cdm2026_live_hidden',liveHidden?'1':'0');}catch(e){}renderLive();}
 function renderList(){document.getElementById('list').innerHTML=sortedList().map(cardHTML).join('');}
-function updateCard(id){const m=DATA.find(x=>x.id===id);if(!m)return;const pr=P[player][id];
+function updateCard(id){const m=MALL().find(x=>x.id===id);if(!m)return;const pr=P[player][id]||[null,null];
   const b=document.getElementById('b'+id);if(b)b.innerHTML=badgeFor(m,pr,player);
   const x=document.getElementById('x'+id);if(x)x.classList.toggle('on',X2[player]===id);}
-function bump(id,side,d){const pr=P[player][id];let v=pr[side];
+function bump(id,side,d){if(!P[player][id])P[player][id]=[null,null];const pr=P[player][id];let v=pr[side];
   if(v==null)v=0;else v=Math.max(0,Math.min(20,v+d));pr[side]=v;saveP(player);
   const nEl=document.getElementById('n'+id+'_'+side);nEl.textContent=v;nEl.className='num';updateCard(id);renderHero();}
 function toggleX2(id){const old=X2[player];X2[player]=(old===id?null:id);saveX(player);
@@ -422,7 +427,7 @@ function setPlayer(p){player=p;document.body.dataset.p=p;renderToggle();renderHe
 
 // ---- CLASSEMENT ----
 let raceC=null,groupC=null;
-function cumFor(p){let run=0;const a=[];DATA.forEach(m=>{if(m.r1==null)return;let e=effPts(m,P[p][m.id],p);run+=(e||0);a.push(run);});return a;}
+function cumFor(p){let run=0;const a=[];MALL().forEach(m=>{if(m.r1==null)return;let e=effPts(m,P[p][m.id]||[null,null],p);run+=(e||0);a.push(run);});return a;}
 function groupVals(p){const g={};DATA.forEach(m=>{let e=effPts(m,P[p][m.id],p);if(e==null)return;g[m.g]=(g[m.g]||0)+e;});return GROUPS.map(x=>g[x]||0);}
 function legend(el){document.getElementById(el).innerHTML=PLAYERS.map(p=>'<span><i class="dot" style="background:'+p.col+'"></i>'+p.name+'</span>').join('');}
 function renderCompare(){
@@ -629,8 +634,11 @@ async function fetchScores(manual,full){
         const stt=ev.status||{},typ=stt.type||{},state=typ.state||'';
         const f=FX[[hn,an].sort().join('|')];
         if(!f){const ha=TEAMINFO[hn],aa=TEAMINFO[an];if(!ha||!aa)return;
-          const eid='e'+(ev.id||(hn+an));const e=EXTRA[eid]||(EXTRA[eid]={id:eid,ko:true});
+          const eid=parseInt(ev.id)||(1e9+hn.length*1000+an.length);
+          const e=EXTRA[eid]||(EXTRA[eid]={id:eid,ko:true,g:'KO',j:'Phase finale'});
           e.fr1=ha.fr;e.fl1=ha.fl;e.fr2=aa.fr;e.fl2=aa.fl;
+          e.round=(comp.notes&&comp.notes[0]&&comp.notes[0].headline)||e.round||'Phase finale';
+          const cc=KOCOTES[[hn,an].sort().join('|')];if(cc){e.cN=cc.nul;e.c1=cc[hn];e.c2=cc[an];}
           if(ev.date){e.time=ev.date;const d=new Date(ev.date);if(!isNaN(d))e.date=String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');}
           if(state==='pre'){e.live=false;e.clock='';e.r1=null;e.r2=null;}
           else{const hs=parseInt(home.score),as=parseInt(away.score);if(!isNaN(hs)&&!isNaN(as)){e.r1=hs;e.r2=as;}e.live=(state==='in');e.clock=(state==='in')?(stt.displayClock||typ.shortDetail||''):'';}
