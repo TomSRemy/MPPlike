@@ -204,16 +204,16 @@
   .bcell{position:absolute;z-index:1}
   .btie{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
   .btie.bl{box-shadow:0 0 0 2px #E5483D}
-  .bt{display:flex;align-items:center;gap:6px;padding:5px 8px;min-height:22px}
+  .bt{display:flex;align-items:center;gap:6px;padding:5px 8px;min-height:24px}
   .bt+.bt{border-top:1px solid var(--line)}
   .bt.win{background:rgba(20,211,169,.14)}
   .bt.out{opacity:.5}
   .bt.ph{opacity:.5}
   .bfl{font-size:15px;flex:0 0 auto}
-  .bn{font-size:12px;color:var(--tx);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+  .bn{font-size:11.5px;color:var(--tx);font-weight:600;white-space:nowrap;flex:1}
   .bn.lab{color:var(--tx3);font-weight:500;font-size:10.5px;font-style:italic}
   .bt.win .bn{font-weight:800}
-  .bsc{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:800;color:var(--tx2);flex:0 0 auto}
+  .bsc{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:800;color:var(--tx);flex:0 0 auto;min-width:14px;text-align:right}
   .bck{color:var(--mint,#14D3A9);font-weight:900;font-size:12px;flex:0 0 auto}
   .bfin .btie{box-shadow:0 0 0 2px var(--canary,#F2C94C)}
   .brklines{position:absolute;left:0;top:0;pointer-events:none;overflow:visible;z-index:0}
@@ -628,7 +628,7 @@ function tieBox(m){const tm=teamsOfM(m),a=tm[0],b=tm[1];const r=tieResult(a,b);c
   return '<div class="btie'+(r&&r.live?' bl':'')+'" data-m="'+m+'">'+row(a,r?r.r1:'','a')+row(b,r?r.r2:'','b')+'</div>';}
 function renderBracket(){
   const cols=[{h:'16es',ids:R32ORDER},{h:'8es',ids:[90,89,91,92,93,94,95,96]},{h:'Quarts',ids:[97,98,99,100]},{h:'Demies',ids:[101,102]},{h:'Finale',ids:[104],fin:true}];
-  const rowH=56,colW=170,tieH=48,padT=26;
+  const rowH=74,colW=212,tieH=62,padT=26;
   const YC={};R32ORDER.forEach((m,i)=>YC[m]=padT+i*rowH+rowH/2);
   RTREE.forEach(t=>{YC[t.m]=(YC[t.a]+YC[t.b])/2;});
   const totalH=padT+16*rowH,totalW=cols.length*colW;
