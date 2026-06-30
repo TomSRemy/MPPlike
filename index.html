@@ -329,6 +329,8 @@ KOR32.forEach((r,i)=>{const na=tnorm(r[0]),nb=tnorm(r[1]);const a=TEAMINFO[na]||
     e1:r[0],e2:r[1],fr1:a.fr,fl1:a.fl,fr2:b.fr,fl2:b.fl,r1:null,r2:null,live:false,
     c1:cc?cc[na]:null,cN:cc?cc.nul:null,c2:cc?cc[nb]:null});
   KOFX[key]={id,e1:na};});
+[[[89,90,91,92,93,94,95,96],'8e de finale'],[[97,98,99,100],'quart de finale'],[[101,102],'demi-finale'],[[103],'3e place'],[[104],'finale']].forEach(function(rr){rr[0].forEach(function(M){
+  KO_LIST.push({id:200+M,m:M,syn:true,ko:true,g:'KO',j:'Phase finale',round:rr[1],date:'',h:'',e1:'',e2:'',fr1:'',fl1:'',fr2:'',fl2:'',r1:null,r2:null,live:false,c1:null,cN:null,c2:null});});});
 function MALL(){return DATA.concat(KO_LIST).concat(Object.values(EXTRA));}
 function espnDates(full){const f=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');const n=new Date();
   if(full){const out=[];let d=new Date(2026,5,11);const end=new Date(2026,6,19);while(d<=end){out.push(f(d));d=new Date(d.getTime()+86400000);}return out;}
@@ -352,7 +354,7 @@ function matchPts(m,pr){const k=pr[0],l=pr[1];
   if(ks===rs){let c=ks>0?m.c1:(ks===0?m.cN:m.c2);p=c||0;}
   if(k===m.r1&&l===m.r2)p+=20; return p;}
 function effPts(m,pr,p){const b=matchPts(m,pr);if(b==null)return null;return X2[p]===m.id?b*2:b;}
-function totals(p){let tot=0,bons=0,exacts=0,played=0,filled=0;
+function totals(p){syncKO();let tot=0,bons=0,exacts=0,played=0,filled=0;
   MALL().forEach(m=>{const pr=P[p][m.id]||[null,null];if(pr[0]!=null)filled++;if(m.r1!=null)played++;
     const e=effPts(m,pr,p);if(e!=null){tot+=e;if(sign(pr[0],pr[1])===sign(m.r1,m.r2))bons++;if(pr[0]===m.r1&&pr[1]===m.r2)exacts++;}});
   return {tot,bons,exacts,played,filled};}
@@ -381,7 +383,7 @@ function renderChips(){const c=document.getElementById('chips');c.innerHTML='';
     c.appendChild(b);});}
 function visible(m){if(filter==='all')return true;if(filter==='soon')return m.r1==null;if(filter==='ko')return m.ko===true;return m.j===filter;}
 function dkey(m){const p=(m.date||'1/1').split('/').map(Number);return (p[1]||0)*100+(p[0]||0);}
-function sortedList(){let a=MALL().filter(visible);if(sortMode==='date')a=a.slice().sort((x,y)=>dkey(x)-dkey(y)||String(x.g).localeCompare(String(y.g))||x.id-y.id);return a;}
+function sortedList(){syncKO();let a=MALL().filter(m=>!(m.syn&&!m.fr1)).filter(visible);if(sortMode==='date')a=a.slice().sort((x,y)=>dkey(x)-dkey(y)||String(x.g).localeCompare(String(y.g))||x.id-y.id);return a;}
 function setSort(s){sortMode=s;try{localStorage.setItem('cdm2026_sort',s);}catch(e){}
   document.getElementById('sPoule').classList.toggle('act',s==='poule');document.getElementById('sDate').classList.toggle('act',s==='date');renderList();}
 
@@ -395,7 +397,7 @@ function stepper(side,id){const pr=P[player][id];const v=pr[side];
     +'<div class="'+(v==null?'num empty':'num')+'" id="n'+id+'_'+side+'">'+(v==null?'–':v)+'</div>'
     +'<button onclick="bump('+id+','+side+',-1)">▼</button></div>';}
 function koMs(m){if(m.time){const d=new Date(m.time);if(!isNaN(d))return d.getTime();}
-  if(m.date&&m.h){const p=m.date.split('/'),q=m.h.split(':');const d=new Date(2026,(+p[1])-1,(+p[0]),(+q[0]),(+q[1]));if(!isNaN(d))return d.getTime();}return null;}
+  if(m.date){const p=m.date.split('/'),q=(m.h||'18:00').split(':');const d=new Date(2026,(+p[1])-1,(+p[0]),(+q[0]),(+q[1]));if(!isNaN(d))return d.getTime();}return null;}
 function hhmmRaw(iso){if(!iso)return'';const d=new Date(iso);if(isNaN(d))return'';return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
 function cardHTML(m){if(!P[player][m.id])P[player][m.id]=[null,null];const pr=P[player][m.id];
   const head=m.ko?((m.round||'Phase finale')+' · '+(m.date||'')):(m.j+' · Gr.'+m.g+' · '+(m.date||''));
@@ -411,12 +413,14 @@ function cardHTML(m){if(!P[player][m.id])P[player][m.id]=[null,null];const pr=P[
       +'<div class="team r"><div class="nm"><span class="fl">'+m.fl2+'</span><span>'+m.fr2+'</span></div></div>'
     +'</div>'+res+'</div>';}
 function renderLive(){const el=document.getElementById('live');
-  const ALLM=DATA.concat(Object.values(EXTRA));
+  syncKO();
+  const ALLM=MALL().filter(m=>!(m.syn&&!m.fr1));
   const live=ALLM.filter(m=>m.live===true).sort((a,b)=>chrono(b)-chrono(a)||((b.id>a.id)?1:-1)).slice(0,6);
   const now=Date.now(),H12=12*3600*1000;
-  const soon=ALLM.filter(m=>m.live!==true&&m.r1==null).map(m=>({m,k:koMs(m)}))
-    .filter(o=>o.k!=null&&o.k<=now+H12&&o.k>=now-2*3600*1000)
-    .sort((a,b)=>a.k-b.k).map(o=>o.m).slice(0,6);
+  const upc=ALLM.filter(m=>m.live!==true&&m.r1==null).map(m=>({m,k:koMs(m)})).filter(o=>o.k!=null).sort((a,b)=>a.k-b.k);
+  let soonO=upc.filter(o=>o.k<=now+H12&&o.k>=now-2*3600*1000);
+  if(!soonO.length)soonO=upc.filter(o=>o.k>=now-2*3600*1000).slice(0,3);
+  const soon=soonO.map(o=>o.m).slice(0,6);
   const past=ALLM.filter(m=>m.live!==true&&m.r1!=null)
     .sort((a,b)=>chrono(b)-chrono(a)||((b.id>a.id)?1:-1)).slice(0,6);
   if(!live.length&&!soon.length&&!past.length){el.style.display='none';el.innerHTML='';return;}
@@ -604,11 +608,18 @@ const MN2KO={73:0,74:1,75:2,76:3,77:5,78:4,79:6,80:7,81:9,82:8,83:12,84:10,85:11
 const R32ORDER=[73,75,74,77,76,78,79,80,83,84,81,82,86,88,85,87];
 function koTeam(en){if(!en)return null;const n=tnorm(en);const ti=TEAMINFO[n]||{};return {en,name:ti.fr||en,fl:ti.fl||'',n};}
 function srcByPair(na,nb){const key=[na,nb].sort().join('|');
-  let m=KO_LIST.find(x=>[tnorm(x.e1),tnorm(x.e2)].sort().join('|')===key);
-  if(m)return {r1:m.r1,r2:m.r2,n1:tnorm(m.e1),n2:tnorm(m.e2),advn:m.advn,live:m.live};
+  let m=KO_LIST.find(x=>!x.syn&&x.e1&&[tnorm(x.e1),tnorm(x.e2)].sort().join('|')===key);
+  if(m)return {r1:m.r1,r2:m.r2,n1:tnorm(m.e1),n2:tnorm(m.e2),advn:m.advn,live:m.live,date:m.date,h:m.h,time:m.time};
   let e=Object.values(EXTRA).find(x=>x.n1&&[x.n1,x.n2].sort().join('|')===key);
-  if(e)return {r1:e.r1,r2:e.r2,n1:e.n1,n2:e.n2,advn:e.advn,live:e.live};
+  if(e)return {r1:e.r1,r2:e.r2,n1:e.n1,n2:e.n2,advn:e.advn,live:e.live,date:e.date,h:e.h,time:e.time};
   return null;}
+function syncKO(){KO_LIST.forEach(m=>{if(!m.syn)return;const tm=teamsOfM(m.m),a=tm[0],b=tm[1];
+  if(a){m.fr1=a.name;m.fl1=a.fl;m.e1=a.en;}else{m.fr1='';m.fl1='';m.e1='';}
+  if(b){m.fr2=b.name;m.fl2=b.fl;m.e2=b.en;}else{m.fr2='';m.fl2='';m.e2='';}
+  if(a&&b){const r=tieResult(a,b);m.r1=r?r.r1:null;m.r2=r?r.r2:null;m.live=r?!!r.live:false;
+    const s=srcByPair(a.n,b.n);if(s){if(s.date)m.date=s.date;if(s.time)m.time=s.time;if(s.h)m.h=s.h;}
+    const cc=KOCOTES[[a.n,b.n].sort().join('|')];m.c1=cc?cc[a.n]:null;m.cN=cc?cc.nul:null;m.c2=cc?cc[b.n]:null;}
+  else{m.r1=null;m.r2=null;m.live=false;}});}
 function tieResult(a,b){if(!a||!b)return null;const s=srcByPair(a.n,b.n);if(!s)return null;
   let r1,r2;if(s.n1===a.n){r1=s.r1;r2=s.r2;}else{r1=s.r2;r2=s.r1;}
   let advn=s.advn;if(!advn&&r1!=null&&r2!=null&&r1!==r2)advn=(r1>r2?a.n:b.n);
@@ -627,6 +638,7 @@ function tieBox(m){const tm=teamsOfM(m),a=tm[0],b=tm[1];const r=tieResult(a,b);c
       +'<span class="bsc">'+(has?sc:'')+'</span>'+(win?'<span class="bck">✓</span>':'')+'</div>';}
   return '<div class="btie'+(r&&r.live?' bl':'')+'" data-m="'+m+'">'+row(a,r?r.r1:'','a')+row(b,r?r.r2:'','b')+'</div>';}
 function renderBracket(){
+  syncKO();
   const cols=[{h:'16es',ids:R32ORDER},{h:'8es',ids:[90,89,91,92,93,94,95,96]},{h:'Quarts',ids:[97,98,99,100]},{h:'Demies',ids:[101,102]},{h:'Finale',ids:[104],fin:true}];
   const colW=212,tieH=62,padT=26,smallGap=18,bigGap=48;
   const YC={};let yy=padT;
