@@ -288,7 +288,32 @@ const EXTRA={};
 const KOCOTES={};
 function setKO(a,b,c1,cN,c2){const na=tnorm(a),nb=tnorm(b);KOCOTES[[na,nb].sort().join('|')]={nul:cN,[na]:c1,[nb]:c2};}
 setKO('South Africa','Canada',141,121,64);
-function MALL(){return DATA.concat(Object.values(EXTRA));}
+const KOR32=[
+ ['South Africa','Canada','28/06','21:00'],
+ ['Germany','Paraguay','29/06',''],
+ ['Netherlands','Morocco','29/06',''],
+ ['Brazil','Japan','29/06',''],
+ ['Ivory Coast','Norway','30/06',''],
+ ['France','Sweden','30/06',''],
+ ['Mexico','Ecuador','30/06',''],
+ ['England','DR Congo','01/07',''],
+ ['Belgium','Senegal','01/07',''],
+ ['USA','Bosnia','01/07',''],
+ ['Spain','Austria','02/07',''],
+ ['Algeria','Switzerland','02/07',''],
+ ['Portugal','Croatia','02/07',''],
+ ['Argentina','Cape Verde','03/07',''],
+ ['Colombia','Ghana','03/07',''],
+ ['Egypt','Australia','03/07','']
+];
+const KO_LIST=[];const KOFX={};
+KOR32.forEach((r,i)=>{const na=tnorm(r[0]),nb=tnorm(r[1]);const a=TEAMINFO[na]||{fr:r[0],fl:''},b=TEAMINFO[nb]||{fr:r[1],fl:''};
+  const id=201+i;const key=[na,nb].sort().join('|');const cc=KOCOTES[key];
+  KO_LIST.push({id,ko:true,g:'KO',j:'Phase finale',round:'16e de finale',date:r[2],h:r[3]||'',
+    e1:r[0],e2:r[1],fr1:a.fr,fl1:a.fl,fr2:b.fr,fl2:b.fl,r1:null,r2:null,live:false,
+    c1:cc?cc[na]:null,cN:cc?cc.nul:null,c2:cc?cc[nb]:null});
+  KOFX[key]={id,e1:na};});
+function MALL(){return DATA.concat(KO_LIST).concat(Object.values(EXTRA));}
 function espnDates(full){const f=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');const n=new Date();
   if(full){const out=[];let d=new Date(2026,5,11);const end=new Date(2026,6,19);while(d<=end){out.push(f(d));d=new Date(d.getTime()+86400000);}return out;}
   const out=[];for(let k=-1;k<=1;k++){const d=new Date(n);d.setDate(n.getDate()+k);out.push(f(d));}return out;}
@@ -633,7 +658,12 @@ async function fetchScores(manual,full){
         const hn=tnorm((home.team||{}).displayName||(home.team||{}).name),an=tnorm((away.team||{}).displayName||(away.team||{}).name);
         const stt=ev.status||{},typ=stt.type||{},state=typ.state||'';
         const f=FX[[hn,an].sort().join('|')];
-        if(!f){const ha=TEAMINFO[hn],aa=TEAMINFO[an];if(!ha||!aa)return;
+        if(!f){const kf=KOFX[[hn,an].sort().join('|')];
+          if(kf){const km=KO_LIST.find(x=>x.id===kf.id);if(km){if(ev.date){km.time=ev.date;}
+            if(state==='pre'){km.live=false;km.clock='';}
+            else{const hs=parseInt(home.score),as=parseInt(away.score);if(!isNaN(hs)&&!isNaN(as)){if(hn===kf.e1){km.r1=hs;km.r2=as;}else{km.r1=as;km.r2=hs;}}km.live=(state==='in');km.clock=(state==='in')?(stt.displayClock||typ.shortDetail||''):'';}}
+            return;}
+          const ha=TEAMINFO[hn],aa=TEAMINFO[an];if(!ha||!aa)return;
           const eid=parseInt(ev.id)||(1e9+hn.length*1000+an.length);
           const e=EXTRA[eid]||(EXTRA[eid]={id:eid,ko:true,g:'KO',j:'Phase finale'});
           e.fr1=ha.fr;e.fl1=ha.fl;e.fr2=aa.fr;e.fl2=aa.fl;
