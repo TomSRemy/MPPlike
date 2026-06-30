@@ -628,10 +628,12 @@ function tieBox(m){const tm=teamsOfM(m),a=tm[0],b=tm[1];const r=tieResult(a,b);c
   return '<div class="btie'+(r&&r.live?' bl':'')+'" data-m="'+m+'">'+row(a,r?r.r1:'','a')+row(b,r?r.r2:'','b')+'</div>';}
 function renderBracket(){
   const cols=[{h:'16es',ids:R32ORDER},{h:'8es',ids:[90,89,91,92,93,94,95,96]},{h:'Quarts',ids:[97,98,99,100]},{h:'Demies',ids:[101,102]},{h:'Finale',ids:[104],fin:true}];
-  const rowH=74,colW=212,tieH=62,padT=26;
-  const YC={};R32ORDER.forEach((m,i)=>YC[m]=padT+i*rowH+rowH/2);
+  const colW=212,tieH=62,padT=26,smallGap=18,bigGap=48;
+  const YC={};let yy=padT;
+  R32ORDER.forEach((m,i)=>{YC[m]=yy+tieH/2;yy+=tieH+((i%2===0)?smallGap:bigGap);});
   RTREE.forEach(t=>{YC[t.m]=(YC[t.a]+YC[t.b])/2;});
-  const totalH=padT+16*rowH,totalW=cols.length*colW;
+  const maxY=Math.max.apply(null,R32ORDER.map(m=>YC[m]));
+  const totalH=maxY+tieH/2+padT,totalW=cols.length*colW;
   let html='';
   cols.forEach((c,ci)=>{html+='<div class="brnd" style="left:'+(ci*colW)+'px">'+c.h+'</div>';
     c.ids.forEach(m=>{const y=YC[m];
